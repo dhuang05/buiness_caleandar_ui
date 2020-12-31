@@ -1,0 +1,71 @@
+@import 'variables.scss';
+
+@import 'variables.scss';
+
+.button{
+    width: 251px;
+    height: 42px;
+    border-radius: 3px;
+    outline:none;
+    text-align: center;
+    padding: 6px 10;
+    font-size: 18px;
+    margin-top:20px;
+    color:$primary-action;
+    border:1px solid $primary-action;
+    cursor:pointer;
+  }
+
+.input {
+    padding-top:20px;
+    text-align:center;
+    margin: 0 auto;
+    width:250px;
+}
+
+.error{
+    text-align:center;
+    margin: 0 auto;
+    color: #EF3E3E;
+    min-height: 50px;
+    height: 50px;
+}
+
+.label {
+    text-align:left;
+    padding-left:3px;
+    padding-top:15px;
+    margin: 0 auto;
+    width:250px;
+}
+
+.extra {
+    text-align:center;
+    padding-left:3px;
+    padding-top:5px;
+    margin: 0 auto;
+    width:250px;
+    font-size: 11px;
+}
+
+.flex-container {
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.div-center {
+    text-align:center;
+    margin: 0 auto;
+    width:250px;
+}
+.div-left {
+    text-align:left;
+    margin: 0 auto;
+    width:250px;
+}
+.div-right {
+    text-align:right;
+    margin: 0 auto;
+    width:250px;
+}
