@@ -16,6 +16,7 @@ export class LogoutComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.route.queryParams.subscribe(params => {});
   }
 
   logout(e:Event){

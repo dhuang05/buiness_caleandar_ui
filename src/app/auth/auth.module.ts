@@ -10,6 +10,9 @@ import { ForgetPasswordComponent } from './forget-password/forget-password.compo
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { LogoutComponent } from './logout/logout.component';
 import { AuthService } from './services/auth.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { AuthGuard } from '../auth-guard';
 
 @NgModule({
         declarations: [
@@ -19,7 +22,9 @@ import { AuthService } from './services/auth.service';
             LogoutComponent
         ],
         imports: [
-
+            CommonModule,
+            FormsModule,
+            ReactiveFormsModule
         ],
         providers: [
             AuthService

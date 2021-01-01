@@ -7,15 +7,15 @@
 import { map } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { LoginForm } from '../auth/model/cal-model';
 import { AuthService } from '../auth/services/auth.service';
 
 @Component({
-  selector: 'cal-admin',
-  templateUrl: './admin.component.html',
-  styleUrls: [ './admin.component.scss' ]
+  selector: 'cal-cal-admin',
+  templateUrl: './cal-admin.component.html',
+  styleUrls: [ './cal-admin.component.scss' ]
 })
 export class CalAdminComponent implements OnInit {
+  message: string = '';
 
   constructor(
     private router: Router,
@@ -24,8 +24,9 @@ export class CalAdminComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.route.queryParams.subscribe(params => {});
     if(this.authService == undefined) {
-      this.router.navigate(["../auth/login"]);
+      this.router.navigate(['login']);
     }
   }
   

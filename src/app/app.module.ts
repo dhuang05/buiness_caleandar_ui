@@ -5,26 +5,35 @@ import { HttpService } from './service/http.service';
 
 //
 import { AppComponent } from './app.component';
-import { LoginComponent } from './auth/login/login.component';
-import { LogoutComponent } from './auth/logout/logout.component'
-import { ForgetPasswordComponent } from './auth/forget-password/forget-password.component';
-import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 import { CalAdminComponent } from './cal-admin/cal-admin.component';
+import { AuthModule } from './auth/auth.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { Router, RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { AuthService } from './auth/services/auth.service';
+import { mainRouting } from './app.routing';
+import { AuthGuard } from './auth-guard';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    CalAdminComponent,
   ],
   imports: [
     BrowserModule,
-    LoginComponent,
-    LogoutComponent,
-    ForgetPasswordComponent,
-    ResetPasswordComponent,
-    CalAdminComponent
+    AuthModule,    
+    HttpClientModule,
+    RouterModule,
+    FormsModule,
+    CommonModule,
+    ReactiveFormsModule,
+    mainRouting,
   ],
   providers: [
-    HttpService
+    HttpService,
+    AuthService,
+    AuthGuard
   ],
   bootstrap: [AppComponent]
 })

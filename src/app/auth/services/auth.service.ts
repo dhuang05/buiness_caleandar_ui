@@ -5,18 +5,21 @@
 
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { catchError, retry } from 'rxjs/operators';
+import { LoginForm, UserInfo } from 'src/app/auth/model/cal-model';
 import { HttpService } from 'src/app/service/http.service';
-import { LoginForm, UserInfo} from '../model/cal-model';
 
-@Injectable()
+
+
+@Injectable({
+    providedIn: 'root',
+  })
 export class AuthService extends HttpService{
     public userInfo: UserInfo | undefined;
 
-    public login (loginForm: LoginForm):  boolean {
-        let result = super.post("admin/login", loginForm);
-        
-        return true;
+    public login (loginForm: LoginForm):  Observable<any> {
+        return super.post("admin/login", loginForm);
     }
 
     public logout () {
@@ -32,4 +35,7 @@ export class AuthService extends HttpService{
         let result = super.post("admin/forgetpassword", LoginForm);
     }
  
+    public isLoggedIn() : boolean {
+        return this.userInfo != undefined;
+    }
 }

@@ -9,10 +9,11 @@ import { LogoutComponent } from './auth/logout/logout.component'
 import { ForgetPasswordComponent } from './auth/forget-password/forget-password.component';
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 import { CalAdminComponent } from './cal-admin/cal-admin.component';
+import { AuthGuard } from './auth-guard';
 
-const APP_ROUTES: Routes = [
+export const APP_ROUTES: Routes = [
     {path: '', redirectTo: 'cal-admin', pathMatch: 'full' },
-    {path: 'cal-admin', component: CalAdminComponent},
+    {path: 'cal-admin', component: CalAdminComponent, canActivate: [AuthGuard] },
     {path: 'login', component: LoginComponent},
     {path: 'forgetpassword', component: ForgetPasswordComponent},
     {path: 'resetpassword', component: ResetPasswordComponent},

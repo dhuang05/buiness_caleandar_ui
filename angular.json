@@ -124,5 +124,8 @@
       }
     }
   },
-  "defaultProject": "buscalui"
+  "defaultProject": "buscalui",
+  "cli": {
+    "analytics": "ef4b8819-7b94-486d-8a26-b48049a27c24"
+  }
 }

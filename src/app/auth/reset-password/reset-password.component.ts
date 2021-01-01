@@ -3,10 +3,10 @@
  * Capco Digital Framework.
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, NgModule, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { Router, Params, ActivatedRoute } from '@angular/router';
-import { LoginForm } from '../model/cal-model';
+import { LoginForm } from 'src/app/auth/model/cal-model';
 
 @Component({
   selector: 'cal-reset-password',
@@ -24,6 +24,7 @@ export class ResetPasswordComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.route.queryParams.subscribe(params => {});
   }
 
   resetpassword(e: Event){
@@ -38,8 +39,8 @@ export class ResetPasswordComponent implements OnInit {
 
   
 
-  toLogin(){
-    this.router.navigate(["../login"]);
+  toLogin(e: Event){
+    this.router.navigate(["./login"]);
   }
 
 

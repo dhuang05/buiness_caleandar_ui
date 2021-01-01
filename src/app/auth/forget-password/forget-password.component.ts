@@ -3,10 +3,10 @@
  * Capco Digital Framework.
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, NgModule, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LoginForm } from '../model/cal-model';
+import { LoginForm } from 'src/app/auth/model/cal-model';
 
 
 @Component({
@@ -16,8 +16,8 @@ import { LoginForm } from '../model/cal-model';
 })
 export class ForgetPasswordComponent implements OnInit {
   private emailPattern:RegExp = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$/;
-  private loginForm: LoginForm = new LoginForm();
-  private errorMsg: string = '';
+  loginForm: LoginForm = new LoginForm();
+  errorMsg: string = '';
 
   constructor(
     private router: Router,
@@ -46,6 +46,9 @@ export class ForgetPasswordComponent implements OnInit {
      } 
   }
 
+  toLogin(e: Event){
+    this.router.navigate(["./login"]);
+  }
 
   isEmpty(text: string): boolean{
     return text == null || text == undefined || text.trim().length == 0;
