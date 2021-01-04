@@ -8,7 +8,8 @@ import { map } from 'rxjs/operators';
 import { Component, Input, NgModule, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-import { LoginForm } from 'src/app/auth/model/cal-model';
+import { ApiError, LoginForm, UserInfo } from 'src/app/model/cal-model';
+
 
 
 @Component({
@@ -32,18 +33,28 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    if(this.loginForm.password != null && this.loginForm.password.length > 0 && this.loginForm.userId != null && this.loginForm.userId.length > 0 ) {
+    if(!this.isEmpty(this.loginForm.password) && !this.isEmpty(this.loginForm.userId)) {
       this.message = '';
       this.authService.login (this.loginForm).subscribe(resp => {
-        console.log("Return for login=" + JSON.stringify(resp));
-       
-        //this.router.navigate(['cal-admin']);
-     
-    });
+        let json = JSON.stringify(resp);
+        let error: ApiError = JSON.parse(json);
+        if(error.status == null || error.status == undefined) {
+          let userInfo: UserInfo = JSON.parse(json);
+          this.authService.userInfo = userInfo;
+          this.router.navigate(['cal-admin', {calendarOwnerships: userInfo.businessCalendarOwnerships}]);
+        } else {
+          this.message = error.message;
+        }
+       });
   
     } else  {
       this.message = "Please input user id and password";
     }
   }
   
+
+  isEmpty(text: string| undefined): boolean{
+    return text == null || text == undefined || text.trim().length == 0;
+  }
+
 }

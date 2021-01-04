@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { UserInfo } from 'src/app/model/cal-model';
 import { AuthService } from '../services/auth.service';
 
 @Component({
@@ -20,7 +21,7 @@ export class LogoutComponent implements OnInit {
   }
 
   logout(e:Event){
-    this.authService.logout ();
+    this.authService.logout ( this.authService.getUserInfo().user.userId);
     this.router.navigate(["../login"]);
   }
 

@@ -7,7 +7,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
-import { LoginForm, UserInfo } from 'src/app/auth/model/cal-model';
+import { LoginForm, UserInfo } from 'src/app/model/cal-model';
 import { HttpService } from 'src/app/service/http.service';
 
 
@@ -18,23 +18,27 @@ import { HttpService } from 'src/app/service/http.service';
 export class AuthService extends HttpService{
     public userInfo: UserInfo | undefined;
 
-    public login (loginForm: LoginForm):  Observable<any> {
-        return super.post("admin/login", loginForm);
+    public getUserInfo(): UserInfo {
+        return this.userInfo as UserInfo;
     }
 
-    public logout () {
-        let result = super.get("admin/logout");
+    public login (loginForm: LoginForm):  Observable<any> {
+        return super.post("api/admin/user/login", loginForm);
+    }
+
+    public logout (userId: string) {
+        let result = super.get("api/admin/user/logout/" + userId);
         this.userInfo = undefined;
     }
 
     public resetpassword (loginForm: LoginForm) {
-        let result = super.get("admin/resetpassword");
+        return  super.get("api/admin/user/resetpassword");
     }
  
     public forgetpassword (loginForm: LoginForm) {
-        let result = super.post("admin/forgetpassword", LoginForm);
+        let result = super.post("api/admin/user/forgetpassword", LoginForm);
     }
- 
+
     public isLoggedIn() : boolean {
         return this.userInfo != undefined;
     }

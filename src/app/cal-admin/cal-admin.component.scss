@@ -1,38 +1,39 @@
 @import '../../scss/variables.scss';
 
+.header-title {
+    padding: 5px;
+    text-align: center;
+    background: #599689;
+    color: white;
+    font-size: 30px;
+}
+
 .button{
-    width: 251px;
-    height: 42px;
+    width: 250px;
+    height: 30px;
     border-radius: 3px;
     outline:none;
     text-align: center;
-    padding: 6px 10;
-    font-size: 18px;
-    margin-top:20px;
+    padding: 2px;
+    font-size: 14px;
+    margin-top:2px;
     color:$primary-action;
     border:1px solid $primary-action;
     cursor:pointer;
   }
 
-.input {
-    padding-top:20px;
-    text-align:center;
-    margin: 0 auto;
-    width:250px;
-}
-
 .error{
     text-align:center;
     margin: 0 auto;
     color: #EF3E3E;
-    min-height: 50px;
-    height: 50px;
+    min-height: 10px;
+    height: 20px;
 }
 
 .label {
     text-align:left;
     padding-left:3px;
-    padding-top:15px;
+    padding-top:5px;
     margin: 0 auto;
     width:250px;
 }
@@ -40,7 +41,7 @@
 .extra {
     text-align:center;
     padding-left:3px;
-    padding-top:5px;
+    padding-top:3px;
     margin: 0 auto;
     width:250px;
     font-size: 11px;
@@ -52,18 +53,37 @@
     flex-direction: row;
     justify-content: space-between;
 }
-.div-center {
-    text-align:center;
-    margin: 0 auto;
-    width:250px;
-}
-.div-left {
+.list-item {
     text-align:left;
     margin: 0 auto;
-    width:250px;
+    padding: 2px;
 }
-.div-right {
-    text-align:right;
-    margin: 0 auto;
-    width:250px;
+.outmost {
+    height: 100%;
+    width: 100%;
+    padding: 3px;
+}
+
+.flow-layout {
+    display: flex;
+}
+
+.weekly-workinghour-block{
+    width: 120px;
+    position: relative;
+    padding-right: 5px;
+}
+
+.special-workinghour-block {
+    width: 200px;
+    position: relative;
+    padding-right: 5px;
+    padding-bottom: 15px;
+}
+
+.holiday-rule-block {
+    width: 200px;
+    position: relative;
+    padding-right: 5px;
+    padding-bottom: 10px;
 }

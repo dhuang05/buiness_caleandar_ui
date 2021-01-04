@@ -6,7 +6,7 @@
 import { Component, NgModule, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LoginForm } from 'src/app/auth/model/cal-model';
+import { LoginForm } from 'src/app/model/cal-model';
 
 
 @Component({

@@ -1,11 +1,11 @@
 
 {
-  "/api": {
+  "/api/*": {
     "target": "http://localhost:9040",
     "secure": false,
     "changeOrigin": true
   },
-  "/admin": {
+  "/admin/*": {
     "target": "http://localhost:9040",
     "secure": false,
     "changeOrigin": true

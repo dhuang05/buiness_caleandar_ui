@@ -20,12 +20,13 @@ export class CalendarInst {
         desc!: string;
         timeZone!: string;
         businessHours!: BusinessHour[];
-        dayRules!: DayRule[];
+        holidayRules!: DayRule[];
 }
 
 export class BusinessHour {
         dayExpr!: string;
-        isOverriding!: boolean;
+        desc!: string;
+        overriding!: boolean;
         //HH!:mm!:ss
         businessHourFrom!: string;
         //HH!:mm!:ss
@@ -36,8 +37,8 @@ export class DayRule {
         dayRuleId!: string;
         desc!: string;
         expr!: string;
-        effectiveDate!: Date;
-        expiredDate!: Date;
+        effectiveDate!: Date | undefined;
+        expiredDate!: Date | undefined;
 }
 
 export class AvailableTimeslot {
@@ -128,4 +129,12 @@ export class Contact {
         primaryPhone!: string;
         secondaryPhone!: string;
         otherInfo!: string;
+}
+
+export class ApiError {
+        status!: string;
+        timestamp!: Date;
+        code !: string;
+        message !: string;
+        subErrors !: string[];
 }
