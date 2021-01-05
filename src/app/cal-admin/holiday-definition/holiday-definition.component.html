@@ -31,7 +31,11 @@
         <mat-form-field>
           <mat-label>Rule Expression</mat-label>
           <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="2"
-            cdkAutosizeMaxRows="5" class="rule" (change)="checkValue()" readonly [(ngModel)]="holidayRule.expr">
+            cdkAutosizeMaxRows="5" 
+            (click) = "openEditor()"
+            class = "rule"
+            [style] = "passedTest? 'color:darkblue' :'color:darkred'" 
+            (change)="checkValue()" readonly [(ngModel)]="holidayRule.expr">
           </textarea>
         </mat-form-field>
       </div>

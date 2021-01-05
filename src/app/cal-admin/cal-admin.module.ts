@@ -23,6 +23,8 @@ import { CalErr } from '../common/common-model';
 import { ErrorComponent } from '../common/error/error.component';
 import { LogoutComponent } from '../auth/logout/logout.component';
 import { AuthModule } from '../auth/auth.module';
+import { RuleEditorComponent } from './rule-editor/rule-editor.component';
+import { RuleEditorHelpComponent } from './rule-editor/help/help.component';
 
 @NgModule({
         declarations: [
@@ -31,6 +33,8 @@ import { AuthModule } from '../auth/auth.module';
             SpecialWorkingHourComponent,
             HoldayDefinitionComponent,
             ErrorComponent,
+            RuleEditorComponent,
+            RuleEditorHelpComponent,
         ],
         imports: [
             CommonModule,

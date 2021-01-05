@@ -1,15 +1,38 @@
 <div>
     <!-- will get from server-->
     <h1>Day Rule Expression Document</h1>
-    <p>The day rule expressions contain 5 logic units as listed below, each logic units are joined via logic key words '<b>and</b>', '<b>or</b>'. 
-      and '<b>(</b>', '<b>)</b>'  as well as '<b>not</b>'. Each logic unit can have parameters.
+    <p>The day rule expressions contain 6 logic units as listed below, each logic units are joined via logic key words '<b>and</b>', '<b>or</b>'. 
+      and '<b>(</b>', '<b>)</b>'  as well as '<b>not</b>'. Each logic unit can have parameters. </p>
+    <span>Day rule Logic Units: </span>
     <ol>
-      <li>Year, month, day and day of week logic units</li>
-      <li>The first, second, third, ... day of week in month logic units</li>
-      <li>The first, second, third, ... day of week in year logic units</li>
-      <li>Built in function logic units</li>
-      <li>Custom function logic units</li>
+      <li>Dates range</li>
+      <li>Year, month, day and day of week</li>
+      <li>The first, second, third, ... day of week in month</li>
+      <li>The first, second, third, ... day of week in year</li>
+      <li>Built in function</li>
+      <li>Custom function</li>
     </ol>
+
+     <!-- Dates ranget -->
+     <h2>Dates range logic unit</h2>
+     <div>
+      <span class = "desc">
+        Date range is a leading logic units defines the range the day of the rule expression may locate.
+        it is OPTIONAL, but must be the first logic unit of others if the date range is defined.
+        The format is '<i style="color: blue;">From</i> <b> MOTH DAY</b> <i style="color: blue;"> to </i> <b> MOTH DAY</b><i style="color: blue;"></i>;
+      </span>
+      <ol>
+        <li>MONT: names of month, like <i style="color: blue;">January, February, March, ...December</i> etc. </li>
+        <li>DAY: 1 or 2 digit values, like <i style="color: blue;">1, 2, 3, 4, ...31</i> etc. Note that 29, 30, or 31 may become invalid depends on month and year.</li>
+      </ol>
+        <span class = "desc">
+          Examples: 
+        </span>
+        <ul>
+          <li>'<i style="color: blue;">From January 01 To January 03; </i>'</li>
+          <li>'<i style="color: blue;">From March 20 To April 28;</i> <i>Good Friday</i>' the good friday should may in the range of March 20 To April 28</li>
+        </ul>
+    </div>
 
     <!-- Year, month, day and day of week logic unit -->
     <h2>Year, month, day and day of week logic unit</h2>
@@ -24,27 +47,29 @@
         <li>Day: 1 or 2 digit values, like <i style="color: blue;">1, 2, 3, 4, ...31</i> etc. Note that 29, 30, or 31 may become invalid depends on month and year.</li>
         <li>Day of week: name of day of week, like <i style="color: blue;">Sunday, Monday, Tuesday, ...Sunday</i> etc. </li>
         </ol>
+        <p>The combination of day and day of week is for narrow down the result. </p>
         <span class = "desc">
           Examples: 
         </span>
         <ul>
           <li>'<i style="color: blue;">2020 January 01</i>': if the date is January/1/2020</li>
+          <li>'<i style="color: blue;">2021 01 Monday</i>': also as '<i style="color: blue;">2021 01 and Monday</i>' will give 3 days: February/1 2021, March/1 2021, and November/1 2021</li>
           <li>'<i style="color: blue;">December 5 Friday</i>': if the date is December/5 and it is Friday in any year, this also can be rewriten as '<i style="color: blue;">December 05 and Friday</i>'</li>
           <li>'<i style="color: blue;">05 Friday</i>': if the date is day 5 of any month and also it is Friday, in any year, this also can be rewriten as '<i style="color: blue;">05 and Friday</i>'</li>
           <li>'<i style="color: blue;">December Friday</i>': if the date is Friday in December, this also can be rewriten as '<i style="color: blue;">December and Friday</i>'</li>
         </ul>
     </div>
-
+ 
     <!-- The first, second, third, ... day of week in month logic unit -->
     <h2>The first, second, third, ... day of week in month logic unit</h2>
     <div>
       <span class = "desc">
-        The first, second, third, ... day of week in month logic unit is a pattern base logic unit using natural English language. The pattern looks like '<i style="color: blue;">The</i> <b>X DAY_OF_WEEK</b> <i style="color: blue;"> in </i><b> </span>MONTH</b>' 
+        The first, second, third, ... day of week in month logic unit is a pattern base logic unit using natural English language. The pattern looks like '<i style="color: blue;">The</i> <b>X DAY_OF_WEEK</b> <i style="color: blue;"> in </i><b> MONTH</b>' 
         Note that the word order DOES matter here: 
       </span>
       <ol>
         <li><b>X</b>: The count of day of week in month, like <i style="color: blue;">1st, 2nd, 3rd, 4th, 5th</i> etc. The 5th may never existing depends on months and years, there is no such thing of '<i style="color: blue;">6th</i>' and above in this pattern.</li>
-        <li><b>DAY_OF_WEEK</b>: Name of day of week, like <i style="color: blue;">Sunday, Monday, Tuesday, ...Sunday</i> etc. </li></li>
+        <li><b>DAY_OF_WEEK</b>: Name of day of week, like <i style="color: blue;">Sunday, Monday, Tuesday, ...Sunday</i> etc. </li>
         <li><b>MONTH</b>: Name of month, or '<i style="color: blue;">every month</i>' like <i style="color: blue;">January, February, March, ...December</i> or '<i style="color: blue;">every month</i>' etc. </li>
         
         </ol>
@@ -75,14 +100,14 @@
         <span class = "desc">
         Examples: 
         </span>
-        <ol>
+        <ul>
         <li>'<i style="color: blue;">The 1st Monday of the year</i>'. the order matter. The 'year' keyword is mandary.</li>
         <li>'<i style="color: blue;">The 22nd Saturday of the year</i>'. the order matter. The 'year' keyword is mandary.</li>
         <li>'<i style="color: blue;">The 13rd Friday of the year</i>'. the order matter. The 'year' keyword is mandary.</li>
         <li>'<i style="color: blue;">The 44th Monday of the year</i>'. the order matter. The 'year' keyword is mandary.</li>
         <li>'<i style="color: blue;">The 39th Saturday of the year</i>'. This day may never exists. The 'year' keyword is mandary.</li>
         <li>'<i style="color: blue;">The 54th Monday of the year</i>'. the order matter. The 'year' keyword is mandary.</li>
-        </ol>
+        </ul>
     </div>
 
     <!-- TBuilt in function logic units -->
@@ -106,47 +131,48 @@
     <h2>Custom function logic units</h2>
     <div>
     <span class = "desc">
-        Custom function logic unit are defined as javascript function codes.
+        Custom function logic unit are defined as javascript function codes. Note that it is simple calculation codes that should NOT use any other third party library, and the comment in codes is not recommended.
     </span>
     <p>The function signatures are:</p>
-        <p>
-            <i style="color: blue;">function</i> <b>FUNCTION_NAME</b> <i style="color: blue;">(</i>year<i style="color: blue;">) {</i> <br/>
+        <div>
+            <i style="color: blue;">function</i> <b>FUNCTION_NAME</b> <i style="color: blue;">(</i>year<i style="color: blue;">) &#123; </i> <br/>
                 &nbsp;&nbsp;&nbsp;&nbsp; //codes here <br/>
                 &nbsp;&nbsp;&nbsp;&nbsp;<i style="color: blue;">return</i> <b>YYYY-MM-DD_FORMAT_VALUE</b>; <br/>
-            <i style="color: blue;">}</i>
+            <i style="color: blue;">&#125;</i>
         <br/><br/>
         Here, <b>YYYY-MM-DD_FORMAT_VALUE</b> is a string value or variable refering to a value with ISO date 'YYYY-MM-DD' format, like '<i style="color: blue;">2021-10-04</i>' and  
-        <b>FUNCTION_NAME</b> is function name like '<i style="color: blue;">goodFriday</i>' in below example without space.<br/><div class="">In one word, a javascript function take year as argument and returns a date string with the ISO date format. 
-            
+        <b>FUNCTION_NAME</b> is function name like '<i style="color: blue;">goodFriday</i>' in below example without space.<br/>
         </div>
-    </p>
+        <div class="">In one word, a javascript function take year as argument and returns a date string with the ISO date format. </div>
     <br/>
     <br/>
     
     <span class = "desc">
         Example: 
     </span>
-        <pre style="color: green;">
-            function goodFriday(Y) { 
-                var C = Math.floor(Y/100);
-                var N = Y - 19*Math.floor(Y/19); 
-                var K = Math.floor((C - 17)/25);
-                var I = C - Math.floor(C/4) - Math.floor((C - K)/3) + 19*N + 15;
-                I = I - 30*Math.floor((I/30));
-                I = I - Math.floor(I/28)*(1 - Math.floor(I/28)*Math.floor(29/(I + 1))*Math.floor((21 - N)/11));
-                var J = Y + Math.floor(Y/4) + I + 2 - C + Math.floor(C/4);
-                J = J - 7*Math.floor(J/7);
-                var L = I - J;
-                var M = 3 + Math.floor((L + 40)/44);
-                var D = L + 28 - 31*Math.floor(M/4);
-                D = D-2;
-                if (D &lt;= 0){
-                    D = D + 31;
-                    M = 3;
-                }
-                return Y + '-' + parseInt(M, 10) + '-' + parseInt(D, 10);
-            }
-        </pre>
+    <div>
+      <p style="color: green; font-size:10px;">
+        function goodFriday (Y) &#123;<br/>
+          &nbsp;&nbsp;var C = Math.floor(Y/100); <br/>
+          &nbsp;&nbsp;var N = Y - 19*Math.floor(Y/19); <br/>
+          &nbsp;&nbsp;var K = Math.floor((C - 17)/25); <br/>
+          &nbsp;&nbsp;var I = C - Math.floor(C/4) - Math.floor((C - K)/3) + 19*N + 15; <br/>
+          &nbsp;&nbsp;I = I - 30*Math.floor((I/30)); <br/>
+          &nbsp;&nbsp;I = I - Math.floor(I/28)*(1 - Math.floor(I/28)*Math.floor(29/(I + 1))*Math.floor((21 - N)/11)); <br/>
+          &nbsp;&nbsp;var J = Y + Math.floor(Y/4) + I + 2 - C + Math.floor(C/4); <br/>
+          &nbsp;&nbsp;J = J - 7 * Math.floor(J/7); <br/>
+          &nbsp;&nbsp;var L = I - J; <br/>
+          &nbsp;&nbsp;var M = 3 + Math.floor((L + 40)/44); <br/>
+          &nbsp;&nbsp;var D = L + 28 - 31*Math.floor(M/4);<br/>
+          &nbsp;&nbsp;D = D-2; <br/>
+          &nbsp;&nbsp;if (D &lt;= 0) &#123; <br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;D = D + 31; <br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;M = 3;<br/> 
+            &nbsp;&nbsp; &#125; <br/>
+            &nbsp;&nbsp;return Y + '-' + parseInt(M, 10) + '-' + parseInt(D, 10); <br/>
+        <b>&#125;</b><br/>
+      </p>
+    </div>
     </div>
   </div>
 
@@ -160,12 +186,25 @@
   <span class = "desc">
     Examples: 
     </span>
-    <ol>
+    <ul>
     <li>'<i style="color: blue;">May 10 (-1, 0, 1, 2, 3)</i>' equals to '<i style="color: blue;">May 9 or May 10 or May 11 or May 12 or May 13</i>'</li>
     <li>'<i style="color: blue;">May 10 (0)</i>' equals to '<i style="color: blue;">May 10</i>'</li>
     <li>'<i style="color: blue;">May 24(0,-1,-2,-3,-4,-5,-6) and Monday</i>' is the rule for 'Victorial Day' that is 'the last Monday before inclusively May/24', without parameters it will be 
     <i style="color: blue;">(May 24 or May 23  or May 22  or May 21  or May 20  or May 19 or May 18) and Monday</i>  
     <li>'<i style="color: blue;">good friday (2)</i>', a parameter apply to built-in function, that is the day of 2 days after good friday</li>
-    <li>'<i style="color: blue;">function goodFriday (Y) { ..... }(-1)</i>', a parameter apply to custom function, that is the day before the day that goodFriday function defines</li>
-    </li>
-    </ol>
+    <li>'<i style="color: blue;">function goodFriday (Y) &#123;  ... &#125;(-1)</i>', a parameter apply to custom function, that is the day before the day that goodFriday function defines</li>
+    </ul>
+
+    <h2>Logic '<i style="color: blue;">not</i>'</h2>
+    <div>
+      <span class = "desc">
+          Any logic unit can affix '<i style="color: blue;">not</i>' into itself. The template is '<i style="color: blue;">not</i> <b>LOGIC_UNIT</b>', the '<i style="color: blue;">not</i>' is logically applying negative result of  
+          the '<b>LOGIC_UNIT</b>',  The <b>LOGIC_UNIT</b> is any logic unit listed above, including built-in functions and custom functions. 
+      </span>
+
+      <ul>
+        <li>'<i style="color: blue;">not January</i>' equals to '<i style="color: blue;">February or March or ...December</i>'</li>
+        <li>'<i style="color: blue;">not ( Saturday and Sunday)</i>' equals to '<i style="color: blue;">Monday or Tuesday or Wednesday or Thursday or Friday</i>'</li>
+        <li>'<i style="color: blue;">December 25 and not Saturday and not Sunday ) or ( December 26 and not Saturday and not Sunday ) or December 26 Saturday(2) or December 25 Saturday(2) or December 26 Sunday(2) or December 25 Sunday(2)</i> defines the Christmas and boxing day holiday in most western country.</li>
+        </ul>
+    </div>

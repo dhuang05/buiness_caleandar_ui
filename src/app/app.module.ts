@@ -12,10 +12,11 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from './auth/services/auth.service';
 import { mainRouting } from './app.routing';
 import { AuthGuard } from './auth-guard';
-import {MatInputModule} from '@angular/material/input';
-import {MatSelectModule} from '@angular/material/select';
+import { MatInputModule} from '@angular/material/input';
+import { MatSelectModule} from '@angular/material/select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { CalAdminModule } from './cal-admin/cal-admin.module';
+import { MatDialogModule} from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -29,11 +30,12 @@ import { CalAdminModule } from './cal-admin/cal-admin.module';
     FormsModule,
     CommonModule,
     ReactiveFormsModule,
-    MatInputModule,
-    MatSelectModule,
     mainRouting,
     BrowserAnimationsModule,
     CalAdminModule,
+    MatInputModule,
+    MatSelectModule,
+    MatDialogModule,
     MatInputModule,
     MatSelectModule,
   ],

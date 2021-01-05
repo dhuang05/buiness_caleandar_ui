@@ -138,3 +138,13 @@ export class ApiError {
         message !: string;
         subErrors !: string[];
 }
+
+export class RuleEditData{
+        expression: string;
+        title: string;
+        passedTest: boolean = false;
+        constructor(expression: string, title: string) {
+                this.expression = expression;
+                this.title = title;
+        }
+}

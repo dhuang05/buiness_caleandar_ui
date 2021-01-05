@@ -7,10 +7,12 @@
 import { map } from 'rxjs/operators';
 import { Component, Input, NgModule, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ApiError, BusinessHour } from 'src/app/model/cal-model';
+import { ApiError, BusinessHour, RuleEditData } from 'src/app/model/cal-model';
 import { EventEmitter } from '@angular/core';
 import { Output } from '@angular/core';
 import { CalErr } from 'src/app/common/common-model';
+import { RuleEditorComponent } from '../rule-editor/rule-editor.component';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 
 
 
@@ -21,12 +23,14 @@ import { CalErr } from 'src/app/common/common-model';
 })
 export class SpecialWorkingHourComponent implements OnInit {
   errorInfo: CalErr| undefined;
+  passedTest: boolean = true;
   @Input() businessHour: BusinessHour | undefined;
   @Output() deleteEvent = new EventEmitter<BusinessHour>();
 
   constructor(
     private router: Router,
-    private route: ActivatedRoute){
+    private route: ActivatedRoute,
+    public dialog: MatDialog){
   }
 
   ngOnInit() {
@@ -58,8 +62,21 @@ export class SpecialWorkingHourComponent implements OnInit {
     this.deleteEvent.emit(this.businessHour);
   }
 
-  test(){
-    
+  openEditor() : void {
+      const dialogRef = this.dialog.open(RuleEditorComponent, {
+        width: '1000px',
+        height: '600px',
+        data: new RuleEditData(this.businessHour?.dayExpr as string, this.businessHour?.desc as string)
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The editor was closed');
+        let data: RuleEditData = result;
+        if(data && this.businessHour) {
+          this.businessHour.dayExpr = data.expression;
+          // handle error not pass test
+        }
+      });
   }
 
   isEmpty(text: string| undefined): boolean{
