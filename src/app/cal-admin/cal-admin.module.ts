@@ -21,6 +21,8 @@ import { SpecialWorkingHourComponent } from './special-workinghour/special-worki
 import { HoldayDefinitionComponent } from './holiday-definition/holiday-definition.component';
 import { CalErr } from '../common/common-model';
 import { ErrorComponent } from '../common/error/error.component';
+import { LogoutComponent } from '../auth/logout/logout.component';
+import { AuthModule } from '../auth/auth.module';
 
 @NgModule({
         declarations: [
@@ -39,6 +41,7 @@ import { ErrorComponent } from '../common/error/error.component';
             MatInputModule,
             MatIconModule,
             TextFieldModule,
+            AuthModule,
         ],
         providers: [
             CalAdminService,

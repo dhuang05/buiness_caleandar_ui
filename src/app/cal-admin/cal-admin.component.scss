@@ -6,6 +6,8 @@
     background: #599689;
     color: white;
     font-size: 30px;
+    display: flex;
+    flex-grow: 2;
 }
 
 .button{
@@ -62,6 +64,7 @@
     height: 100%;
     width: 100%;
     padding: 3px;
+    overflow-y: scroll;
 }
 
 .flow-layout {

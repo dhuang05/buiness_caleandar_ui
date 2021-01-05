@@ -3,7 +3,7 @@
  * Capco Digital Framework.
  */
 
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
@@ -16,10 +16,23 @@ import { HttpService } from 'src/app/service/http.service';
     providedIn: 'root',
   })
 export class AuthService extends HttpService{
-    public userInfo: UserInfo | undefined;
+    private userInfo: UserInfo | undefined;
+    private userInfoEmitter: EventEmitter<UserInfo> = new EventEmitter();
 
+    public getUserInfoEventEmitter(){
+        return this.userInfoEmitter;
+    }
+    
+    public setUserInfo(userInfo: UserInfo) {
+        this.userInfo = userInfo;
+        this.userInfoEmitter.emit(this.userInfo);
+    }
     public getUserInfo(): UserInfo {
         return this.userInfo as UserInfo;
+    }
+    
+    public hasUser(): boolean {
+        return this.userInfo != undefined && this.userInfo.user != undefined;
     }
 
     public login (loginForm: LoginForm):  Observable<any> {

@@ -1,5 +1,10 @@
 <div class="outmost">
-  <div class="header-title"><span>Business Calendar Administration</span></div>
+  <div class="header-title">
+    <div style="text-align: center; width:95%;"><span>Business Calendar Administration</span></div>
+    <div style="text-align: right; width:20px;">
+      <cal-logout></cal-logout>
+    </div>
+  </div>
   <table style="width:100%; ">
     <tr>
       <td style="vertical-align:top; width:260px;">
@@ -51,13 +56,13 @@
                 <cal-special-workinghour [businessHour]="businessHour"
                   (deleteEvent)="deleteSpecialBusinessHour($event)"></cal-special-workinghour>
               </div>
-              <div *ngIf = "i == (specialBusinessHourChunks.length - 1)"> 
+              <div *ngIf="i == (specialBusinessHourChunks.length - 1)">
                 <a href="#" (click)="addSpecialBusinessHour()">
                   <mat-icon style="font-size:14px; color: rgb(49, 218, 181);">add</mat-icon>
                 </a>
               </div>
             </div>
-            <div *ngIf = "!specialBusinessHourChunks || specialBusinessHourChunks.length == 0"> 
+            <div *ngIf="!specialBusinessHourChunks || specialBusinessHourChunks.length == 0">
               <a href="#" (click)="addSpecialBusinessHour()">
                 <mat-icon style="font-size:14px; color: rgb(49, 218, 181);">add</mat-icon>
               </a>
@@ -71,13 +76,13 @@
                 <cal-holiday-definition [holidayRule]="holidayRule" (deleteEvent)="deleteHolidayRule($event)">
                 </cal-holiday-definition>
               </div>
-              <div *ngIf = "i == (holidayChunks.length - 1)"> 
+              <div *ngIf="i == (holidayChunks.length - 1)">
                 <a href="#" (click)="addHolidayRule()">
                   <mat-icon style="font-size:14px; color: rgb(49, 218, 181);">add</mat-icon>
                 </a>
               </div>
             </div>
-            <div *ngIf = "!holidayChunks || holidayChunks.length == 0"> 
+            <div *ngIf="!holidayChunks || holidayChunks.length == 0">
               <a href="#" (click)="addHolidayRule()">
                 <mat-icon style="font-size:14px; color: rgb(49, 218, 181);">add</mat-icon>
               </a>

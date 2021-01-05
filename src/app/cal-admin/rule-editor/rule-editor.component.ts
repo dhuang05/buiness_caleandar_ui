@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { CalErr } from 'src/app/common/common-model';
@@ -12,7 +12,9 @@ import { CalAdminService } from '../services/cal_admin.service';
 })
 export class RuleEditorComponent implements OnInit {
   errorInfo: CalErr| undefined;
-  
+  @Input() expression: string | undefined;
+  @Output() testEvent = new EventEmitter<boolean>();
+
   constructor(
     private router: Router,
     private calAdminService: CalAdminService,
@@ -21,6 +23,14 @@ export class RuleEditorComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  testRule() {
+
+  }
+
+  testAndExit() {
+    
   }
 
 }

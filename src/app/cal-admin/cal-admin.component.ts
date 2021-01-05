@@ -30,6 +30,8 @@ export class CalAdminComponent implements OnInit {
   holidayChunks: DayRule[][] = [];
   //
   
+  ruleNUmPerRow: number = 6;
+
   constructor(
     private router: Router,
     private calAdminService: CalAdminService,
@@ -39,11 +41,11 @@ export class CalAdminComponent implements OnInit {
 
   ngOnInit() {
     this.businessCalendarOwnerships = undefined;
-    if(this.authService.userInfo == undefined) {
+    if(this.authService.getUserInfo() == undefined) {
       this.router.navigate(['login']);
       return;
     }
-    this.businessCalendarOwnerships = this.authService.userInfo.businessCalendarOwnerships;
+    this.businessCalendarOwnerships = this.authService.getUserInfo().businessCalendarOwnerships;
     this.initialize();
   }
   
@@ -83,18 +85,15 @@ export class CalAdminComponent implements OnInit {
     this.selectedSpecialBusinessHours = specialBusinessHours;
     this.selectedCalendarInst = selectedCalendarInst;
     if(this.selectedCalendarInst.holidayRules) {
-      this.holidayChunks = this.chunks(this.selectedCalendarInst.holidayRules, 5) as DayRule[][];
+      this.holidayChunks = this.chunks(this.selectedCalendarInst.holidayRules, this.ruleNUmPerRow) as DayRule[][];
     }
     if(this.selectedSpecialBusinessHours) {
-      this.specialBusinessHourChunks = this.chunks(this.selectedSpecialBusinessHours, 5) as BusinessHour[][];
+      this.specialBusinessHourChunks = this.chunks(this.selectedSpecialBusinessHours, this.ruleNUmPerRow) as BusinessHour[][];
     }
-
   }
 
   private makeEmpty(dow: number): BusinessHour {
     let businessHour = new BusinessHour();
-    
-
     return businessHour;
   }
 
@@ -109,7 +108,7 @@ export class CalAdminComponent implements OnInit {
       });
     }
     if(this.selectedSpecialBusinessHours) {
-      this.specialBusinessHourChunks = this.chunks(this.selectedSpecialBusinessHours, 5) as BusinessHour[][];
+      this.specialBusinessHourChunks = this.chunks(this.selectedSpecialBusinessHours, this.ruleNUmPerRow) as BusinessHour[][];
     }
   }
 
@@ -118,7 +117,7 @@ export class CalAdminComponent implements OnInit {
     businessHour.overriding = true;
     this.selectedSpecialBusinessHours.push(businessHour);
     if(this.selectedSpecialBusinessHours) {
-      this.specialBusinessHourChunks = this.chunks(this.selectedSpecialBusinessHours, 5) as BusinessHour[][];
+      this.specialBusinessHourChunks = this.chunks(this.selectedSpecialBusinessHours, this.ruleNUmPerRow) as BusinessHour[][];
     }
   }
 
@@ -129,7 +128,7 @@ export class CalAdminComponent implements OnInit {
       });
     }
     if(this.selectedCalendarInst?.holidayRules) {
-      this.holidayChunks = this.chunks(this.selectedCalendarInst.holidayRules, 5) as DayRule[][];
+      this.holidayChunks = this.chunks(this.selectedCalendarInst.holidayRules, this.ruleNUmPerRow) as DayRule[][];
     }
   }
 
@@ -137,7 +136,7 @@ export class CalAdminComponent implements OnInit {
     let dayRule = new DayRule();
     this.selectedCalendarInst?.holidayRules.push(dayRule);
     if(this.selectedCalendarInst?.holidayRules) {
-      this.holidayChunks = this.chunks(this.selectedCalendarInst.holidayRules, 5) as DayRule[][];
+      this.holidayChunks = this.chunks(this.selectedCalendarInst.holidayRules, this.ruleNUmPerRow) as DayRule[][];
     }
   }
 
@@ -176,7 +175,7 @@ export class CalAdminComponent implements OnInit {
     this.DOW_NUM_MAP.set("SUNDAY", 6);
   } 
 
-  
+
   timezones: string[] = ["America/Adak",
   "America/Anchorage",
   "America/Anguilla",

@@ -30,7 +30,7 @@ import { AuthGuard } from '../auth-guard';
             AuthService
         ],
         exports: [
-            
+            LogoutComponent
         ]
     }
 )

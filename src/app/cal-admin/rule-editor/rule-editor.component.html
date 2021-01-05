@@ -1,0 +1,16 @@
+<div class="outmost">
+  <div class="header-title">Rule Expression Editor</div>
+  <div class="flex-container" style="padding-top: 10px;">
+    <div>
+      <mat-form-field>
+        <mat-label>Rule Expression</mat-label>
+        <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="10" style= "width:400px"
+          cdkAutosizeMaxRows="50" class="rule" (change)="checkValue()" readonly [(ngModel)]="holidayRule.expr">
+        </textarea>
+      </mat-form-field>
+      <button mat-raised-button color="primary" (click) = "testRule()" >Test</button> <button mat-raised-button color="primary" (click) = "testAndExit()" >Test and exit</button>
+    </div>
+    <div>
+      <div ng-include="'help_en.html'"></div>
+    </div>
+</div>
