@@ -20,5 +20,6 @@ export class RuleEditorHelpComponent implements OnInit {
   }
 
   ngOnInit() {
+    
   }
 }

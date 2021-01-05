@@ -6,9 +6,9 @@
         <textarea  [(ngModel)]="data.expression" rows="30" cols="50">
         </textarea>
         <div mat-dialog-actions>
+          <button mat-button (click)="cancel()" cdkFocusInitial>Cancel Edit</button> &nbsp;&nbsp;&nbsp;
           <button mat-button (click)="testRule()">Test</button> &nbsp;&nbsp;&nbsp;
-          <button mat-button (click)="cancel()">Cancel Edit</button> &nbsp;&nbsp;&nbsp;
-          <button mat-button mat-dialog-close  (click)="testAndExit()" cdkFocusInitial>Test and Exit</button>
+          <button mat-button mat-dialog-close  (click)="testAndExit()">Test and Exit</button>
         </div>
     </div>
     <div>
