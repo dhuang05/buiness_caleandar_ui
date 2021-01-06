@@ -15,6 +15,7 @@
       <li>Year, month, day and day of week</li>
       <li>The first, second, third, ... day of week in month</li>
       <li>The first, second, third, ... day of week in year</li>
+      <li>Last day of month</li>
       <li>Built in function</li>
       <li>Custom function</li>
     </ol>
@@ -23,7 +24,7 @@
     <li>Paramters</li>
     </ul>
     
-    <p>The usage of logic '<i style="color: darkblue;">not</i>': The logic '<i style="color: darkblue;">not</i>' should be affix at a logic unit.</p>
+    <p>The usage of logic '<i style="color: darkblue;">not </i>': The logic '<i style="color: darkblue;">not </i>' can and only can be affixed at a logic unit.</p>
 
   </section>
      <!-- Dates ranget -->
@@ -36,15 +37,15 @@
         The format is '<i style="color: darkblue;">From</i> <b> MOTH DAY</b> <i style="color: darkblue;"> to </i> <b> MOTH DAY</b><i style="color: darkblue;"></i>;
       </span>
       <ol>
-        <li>MONT: names of month, like <i style="color: darkblue;">January, February, March, ...December</i> etc. </li>
-        <li>DAY: 1 or 2 digit values, like <i style="color: darkblue;">1, 2, 3, 4, ...31</i> etc. Note that 29, 30, or 31 may become invalid depends on month and year.</li>
+        <li><b>MONT</b>: names of month, like <i style="color: darkblue;">January, February, March, ...December</i> etc. </li>
+        <li><b>DAY</b>: 1 or 2 digit values, like <i style="color: darkblue;">1, 2, 3, 4, ...31</i> etc. Note that 29, 30, or 31 may become invalid depends on month and year.</li>
       </ol>
         <span class = "desc">
           Examples: 
         </span>
         <ul>
-          <li>'<i style="color: darkblue;">From January 01 To January 03; </i>'</li>
-          <li>'<i style="color: darkblue;">From March 20 To April 28;</i> <i> Good Friday</i>' the good friday should be in the range of March 20 To April 28</li>
+          <li>'<i style="color: darkblue;">From January 01 To January 03; Decemeber 25</i>'. No such a date of Decemeber 25 that within January 01 To January 03. </li>
+          <li>'<i style="color: darkblue;">From March 20 To April 28; Good Friday </i>'. The good friday within March 20 To April 28, equals to '<i style="color: darkblue;"> Good Friday </i>' for the good friday always within March 20 and April 28.</li>
         </ul>
     </div>
   </section>
@@ -57,10 +58,10 @@
         The valid words are listed below. Note that the word order does NOT matter here: 
       </span>
       <ol>
-        <li>Year: 4 digit values, like <i style="color: darkblue;">2020, 2025, ...</i> etc. It is illegal if the value is less than or more then 4 digits.</li>
-        <li>Month: names of month, like <i style="color: darkblue;">January, February, March, ...December</i> etc. </li>
-        <li>Day: 1 or 2 digit values, like <i style="color: darkblue;">1, 2, 3, 4, ...31</i> etc. Note that 29, 30, or 31 may become invalid depends on month and year.</li>
-        <li>Day of week: name of day of week, like <i style="color: darkblue;">Sunday, Monday, Tuesday, ...Sunday</i> etc. </li>
+        <li><b>Year</b>: 4 digit values, like <i style="color: darkblue;">2020, 2025, ...</i> etc. It is illegal if the value is less than or more then 4 digits.</li>
+        <li><b>Month</b>: names of month, like <i style="color: darkblue;">January, February, March, ...December</i> etc. </li>
+        <li><b>Day</b>: 1 or 2 digit values, like <i style="color: darkblue;">1, 2, 3, 4, ...31</i> etc. Note that 29, 30, or 31 may become invalid depends on month and year.</li>
+        <li><b>Day of week</b>: name of day of week, like <i style="color: darkblue;">Sunday, Monday, Tuesday, ...Sunday</i> etc. </li>
         </ol>
         <p>The combination of day and day of week is for narrow down the result. </p>
         <span class = "desc">
@@ -110,8 +111,8 @@
         Not that the word order DOES matter here: 
     </span>
     <ol>
-        <li>x: The count of day of week in year, like <i style="color: darkblue;">1st, 2nd, 3rd, 4th, 5th,......55th</i> etc. There is no 56th or any number above it in this pattern.</li>
-        <li>DAY_OF_WEEK: name of day of week, like <i style="color: darkblue;">Sunday, Monday, Tuesday, ...Sunday</i> etc. </li>
+        <li><b>X</b>: The count of day of week in year, like <i style="color: darkblue;">1st, 2nd, 3rd, 4th, 5th,......55th</i> etc. There is no 56th or any number above it in this pattern.</li>
+        <li><b>DAY_OF_WEEK</b>: name of day of week, like <i style="color: darkblue;">Sunday, Monday, Tuesday, ...Sunday</i> etc. </li>
     </ol>
         <span class = "desc">
         Examples: 
@@ -126,6 +127,27 @@
         </ul>
     </div>
 
+     <!-- Last day of month -->
+     <h2 id="xey">Last day of month Login Unit</h2>
+     <div>
+     <span class = "desc">
+        The last day of month is a pattern base logic unit using natural English language. The pattern looks like '<i style="color: darkblue;">The last day of </i> <b> MONTH</b>' 
+         Not that the word order DOES matter here.
+     </span>
+     <p>The <b> MONTH</b> value is:</p>
+     <ol>
+         <li>Name of month: <i style="color: darkblue;">January, February, March, ...December</i> etc. </li>
+         <li>Key word: '<i style="color: darkblue;">every month</i>'</li>
+     </ol>
+         <span class = "desc">
+         Examples: 
+         </span>
+         <ul>
+         <li>'<i style="color: darkblue;">The last day of February</i>'. The order matter.</li>
+         <li>'<i style="color: darkblue;">The last day of every month</i>'. The order matter and the 'every month' keywords are mandary.</li>
+         </ul>
+     </div>
+
     <!-- TBuilt in function logic units -->
     <h2 id="bf">Built in function logic units</h2>
     <div>
@@ -139,7 +161,7 @@
         Examples: 
     </span>
     <ul>
-            <li>'<i style="color: darkblue;">Good Friday</i>', The day of Good Friday</li>
+      <li>'<i style="color: darkblue;">Good Friday</i>', The day of Good Friday</li>
     </ul>
     </div>
 
@@ -213,7 +235,7 @@
     </ul>
 </div>
 </section>
-
+<section>
     <h2 id="ln">Logic '<i style="color: darkblue;">not</i> '</h2>
     <div>
       <span class = "desc">
@@ -227,3 +249,4 @@
         <li>'<i style="color: darkblue;">December 25 and not Saturday and not Sunday ) or ( December 26 and not Saturday and not Sunday ) or December 26 Saturday(2) or December 25 Saturday(2) or December 26 Sunday(2) or December 25 Sunday(2)</i> defines the Christmas and boxing day holiday in most western country.</li>
         </ul>
     </div>
+</section>
