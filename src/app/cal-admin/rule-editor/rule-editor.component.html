@@ -1,17 +1,54 @@
 <div class="outmost">
-  <div class="header-title"> Rule Expression Editor</div>
-  <div class="flex-container" style="padding-top: 10px;">
-    <div>
-        <div><mat-label>{{data.title}}</mat-label></div>
-        <textarea  [(ngModel)]="data.expression" rows="30" cols="50">
-        </textarea>
-        <div mat-dialog-actions>
-          <button mat-button (click)="cancel()" cdkFocusInitial>Cancel Edit</button> &nbsp;&nbsp;&nbsp;
-          <button mat-button (click)="testRule()">Test</button> &nbsp;&nbsp;&nbsp;
-          <button mat-button mat-dialog-close  (click)="testAndExit()">Test and Exit</button>
+  <mat-tab-group>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">edit</mat-icon>
+        Rule Editor
+      </ng-template>
+      <div class="flex-container" style="padding-top: 10px;">
+        <div>
+          <div class="flex-container">
+            <div>
+              <mat-label>{{data.title}}</mat-label>
+            </div>
+            <div style="width:90%;"></div>
+            <div>
+              <select [(ngModel)]="selectedYear">
+                <option *ngFor="let year of years" [value]="year">{{year}}</option>
+              </select>
+            </div>
+            <div>
+              <button *ngIf= "data.expression && data.expression.trim()"  mat-button (click)="testRule()">Test</button>
+            </div>
+          </div>
+          <textarea class="editor" [(ngModel)]="data.expression" (input)="changeExpr($event)" rows="27" cols="50">
+          </textarea>
+          <div style="align-content: center;">
+            <div mat-dialog-actions>
+              <button mat-button mat-dialog-close (click)="cancel()" cdkFocusInitial>Cancel</button> &nbsp;&nbsp;&nbsp;
+              <button *ngIf="canSave && isEdited()" mat-button (click)="saveRule()"><span style="color:red">Save</span></button>
+              &nbsp;&nbsp;&nbsp;
+            </div>
+          </div>
         </div>
-    </div>
-    <div>
-      <div style= "padding-left:4px; height: 450px; overflow-y: scroll;"><cal-rule-editor-help language = "en"></cal-rule-editor-help></div>
-    </div>
+        <div style="padding-left:4px; height: 450px; overflow-y: scroll;">
+          <cal-expr-test-view [exprTestResult]="exprTestResult"> </cal-expr-test-view>
+        </div>
+        <div style="width: 10px;">
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">library_books</mat-icon>
+        Help
+      </ng-template>
+      <div>
+        <div style="padding-left:4px; height: 450px; overflow-y: scroll;">
+          <cal-rule-editor-help language="en"></cal-rule-editor-help>
+        </div>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+
 </div>

@@ -139,7 +139,7 @@ export class ApiError {
         subErrors !: string[];
 }
 
-export class RuleEditData{
+export class RuleEditData {
         expression: string;
         title: string;
         passedTest: boolean = false;
@@ -147,4 +147,33 @@ export class RuleEditData{
                 this.expression = expression;
                 this.title = title;
         }
+}
+
+export class RuleExprTestResult {
+        name: string = "";
+        year?: number;
+        success: boolean = true;
+        ruleDates: String[] =[];
+        ruleExprError?: RuleExprError;
+        testDate: Date = new Date();
+}
+
+export class RuleExpr {
+        name?: string;
+        expr?: string;
+}
+
+export class CalendarAdminInstTestResult {
+        success: boolean = true;
+        year?: number;
+        calendar?: Calendar;
+        ruleExprErrors: RuleExprError[] =[];
+        testDate: Date = new Date();
+}
+
+export class RuleExprError {
+        name: string = "";
+        ruleType?: string;
+        exprName?: string;
+        elementErrors: Element[] = [];
 }

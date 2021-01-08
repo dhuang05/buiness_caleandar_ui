@@ -25,6 +25,8 @@ import { LogoutComponent } from '../auth/logout/logout.component';
 import { AuthModule } from '../auth/auth.module';
 import { RuleEditorComponent } from './rule-editor/rule-editor.component';
 import { RuleEditorHelpComponent } from './rule-editor/help/help.component';
+import {MatTabsModule} from '@angular/material/tabs';
+import { ExprTestViewComponent } from './rule-editor/expr-test-view/expr-test-view.component';
 
 @NgModule({
         declarations: [
@@ -35,6 +37,7 @@ import { RuleEditorHelpComponent } from './rule-editor/help/help.component';
             ErrorComponent,
             RuleEditorComponent,
             RuleEditorHelpComponent,
+            ExprTestViewComponent,
         ],
         imports: [
             CommonModule,
@@ -46,6 +49,7 @@ import { RuleEditorHelpComponent } from './rule-editor/help/help.component';
             MatIconModule,
             TextFieldModule,
             AuthModule,
+            MatTabsModule,
         ],
         providers: [
             CalAdminService,

@@ -17,6 +17,7 @@ import { MatSelectModule} from '@angular/material/select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { CalAdminModule } from './cal-admin/cal-admin.module';
 import { MatDialogModule} from '@angular/material/dialog';
+import {MatTabsModule} from '@angular/material/tabs';
 
 
 @NgModule({
@@ -39,6 +40,7 @@ import { MatDialogModule} from '@angular/material/dialog';
     MatDialogModule,
     MatInputModule,
     MatSelectModule,
+    MatTabsModule,
   ],
   providers: [
     HttpService,

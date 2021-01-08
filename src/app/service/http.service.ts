@@ -9,41 +9,42 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root',
 })
 export class HttpService {
+  
   constructor(
     private httpClient: HttpClient,
     private router: Router, private route: ActivatedRoute,
   ) {}
 
-  post(path: string, payload: any, ...params : string[]): Observable<any> {
+  protected post(path: string, payload: any, ...params : string[]): Observable<any> {
     path = this.buildPath(path, params);
     const rtn = this.httpClient.post(path, payload);
     return rtn;
   }
 
-  put(path: string, payload: any, ...params : string[]): Observable<any> {
+  protected put(path: string, payload: any, ...params : string[]): Observable<any> {
     path = this.buildPath(path, params);
     const rtn = this.httpClient.put(path, payload);
     return rtn;
   }
 
-  get(path: string, ...params: string[]): Observable<any> {
+  protected get(path: string, ...params: string[]): Observable<any> {
     path = this.buildPath(path, params);
     const rtn = this.httpClient.get(path);
     return rtn;
   }
 
-  delete(path: string, ...params : string[]): Observable<any> {
+  protected delete(path: string, ...params : string[]): Observable<any> {
     path = this.buildPath(path, params);
     const rtn = this.httpClient.delete(path);;
     return rtn;
   }
 
-  patch(path: string, payload: any, ... params : string[]): Observable<any> {
+  protected patch(path: string, payload: any, ... params : string[]): Observable<any> {
     const rtn = this.httpClient.patch(path, payload);
     return rtn;
   }
 
-  buildPath(path: string, params: string[]): string {
+  protected buildPath(path: string, params: string[]): string {
     if(params == null || params.length == 0) {
       return path;
     }
