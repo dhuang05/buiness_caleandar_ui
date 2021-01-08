@@ -45,7 +45,7 @@ export class AuthService extends HttpService{
     }
 
     public resetpassword (loginForm: LoginForm) {
-        return  super.get("api/admin/user/resetpassword");
+        return  super.post("api/admin/user/resetpassword", loginForm);
     }
  
     public forgetpassword (loginForm: LoginForm) {

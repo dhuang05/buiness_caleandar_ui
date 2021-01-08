@@ -13,6 +13,9 @@ import { Output } from '@angular/core';
 import { CalErr } from 'src/app/common/common-model';
 import { RuleEditorComponent } from '../rule-editor/rule-editor.component';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { Util } from 'src/app/common/util';
+import { ConfirmDialogComponent } from 'src/app/common/confirm-dialog/confirm-dialog.component';
+import { InfoDialogComponent } from 'src/app/common/info-dialog/info-dialog.component';
 
 
 
@@ -26,6 +29,7 @@ export class SpecialWorkingHourComponent implements OnInit {
   passedTest: boolean = true;
   @Input() businessHour: BusinessHour | undefined;
   @Output() deleteEvent = new EventEmitter<BusinessHour>();
+  @Output() changedEvent = new EventEmitter<boolean>();
 
   constructor(
     private router: Router,
@@ -35,12 +39,15 @@ export class SpecialWorkingHourComponent implements OnInit {
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {});
-    this.checkValue();
+    this.checkValue(false);
   }
 
-  checkValue() {
+  checkValue( isChanged: boolean) {
     this.errorInfo = undefined;
     let errorMsgs: string[] = [];
+    if(this.isEmpty(this.businessHour?.desc)) {
+      errorMsgs.push("Name");
+    }
     if(this.isEmpty(this.businessHour?.businessHourFrom)) {
       errorMsgs.push("Start time");
     }
@@ -55,6 +62,10 @@ export class SpecialWorkingHourComponent implements OnInit {
       errorInfo.errMsgs = errorMsgs;
       errorInfo.title = "Required:";
       this.errorInfo = errorInfo;
+    } 
+
+    if(isChanged) {
+      this.contentChanged();
     }
   }
   
@@ -63,6 +74,13 @@ export class SpecialWorkingHourComponent implements OnInit {
   }
 
   openEditor() : void {
+    if(Util.isEmpty(this.businessHour?.desc)) {
+      const dialogRef = this.dialog.open(InfoDialogComponent, {
+        width: '250px',
+        height: '180px',
+        data: "Please input name before editing rule expression."
+      });
+    } else {
       const dialogRef = this.dialog.open(RuleEditorComponent, {
         width: '1000px',
         height: '600px',
@@ -70,14 +88,21 @@ export class SpecialWorkingHourComponent implements OnInit {
       });
   
       dialogRef.afterClosed().subscribe(result => {
-        console.log('The editor was closed');
+        console.log('The special working day expr editor was closed');
         let data: RuleEditData = result;
         if(data && this.businessHour) {
           this.businessHour.dayExpr = data.expression;
-          // handle error not pass test
+          this.checkValue(true);
         }
       });
+    }
   }
+
+
+  contentChanged() {
+    this.changedEvent.emit(true);
+  }
+
 
   isEmpty(text: string| undefined): boolean{
     return text == null || text == undefined || text.trim().length == 0;

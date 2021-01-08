@@ -10,6 +10,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ApiError, BusinessCalendarOwnership, BusinessHour, CalendarInst, DayRule } from '../model/cal-model';
 import { CalAdminService } from './services/cal_admin.service';
 import { AuthService } from '../auth/services/auth.service';
+import { Util } from '../common/util';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '../common/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'cal-cal-admin',
@@ -23,20 +26,27 @@ export class CalAdminComponent implements OnInit {
   DOW_NUM_MAP: Map<string, number>  = new Map();
 
   //
+  selectedBusinessCalendarOwnership: BusinessCalendarOwnership | undefined;
   selectedCalendarInst: CalendarInst | undefined;
+  //temp only
   selectedWeeklyBusinessHours: BusinessHour[] = [];
   selectedSpecialBusinessHours: BusinessHour[] = [];
   specialBusinessHourChunks: BusinessHour[][] = [];
   holidayChunks: DayRule[][] = [];
+  isContentChanged: boolean = false;
+  backupCalendarInst: CalendarInst | undefined;
+
   //
-  
+   edited: boolean = false;
   ruleNUmPerRow: number = 6;
+  dialogRef: any;
 
   constructor(
     private router: Router,
     private calAdminService: CalAdminService,
     private authService: AuthService,
-    private route: ActivatedRoute){
+    private route: ActivatedRoute,
+    public dialog: MatDialog){
   }
 
   ngOnInit() {
@@ -49,16 +59,38 @@ export class CalAdminComponent implements OnInit {
     this.initialize();
   }
   
-  fetchCalendarInstance(calId: string) {
+  fetchCalendarInstance(businessCalendarOwnership: BusinessCalendarOwnership) {
+    let canLoadNew = true;
+    if(this.isContentChanged) {
+      this.dialogRef = this.dialog.open(ConfirmDialogComponent, {
+        width: '350px',
+        height: '250px',
+        data: "The calendar content has been edited, Are you sure to reload without persistence to backend?"
+      });
+  
+      this.dialogRef.afterClosed().subscribe((result: boolean) => {
+         if(result == true) {
+          this.dialogRef.close();
+          this.reload(businessCalendarOwnership);
+         }
+      });
+    } else {
+      this.reload(businessCalendarOwnership);
+    }
+  }
+
+  private reload(businessCalendarOwnership: BusinessCalendarOwnership) {
     this.message = "";
     this.clearSelectd();
-    this.calAdminService.fetchCalendarInst(calId).subscribe(resp => {
+    this.calAdminService.fetchCalendarInst(businessCalendarOwnership.calId).subscribe(resp => {
       let json = JSON.stringify(resp);
       console.log("json: " + json);
       let error: ApiError = JSON.parse(json);
       if(error.status == null || error.status == undefined) {
         this.selectedCalendarInst = JSON.parse(json);
+        this.selectedBusinessCalendarOwnership = businessCalendarOwnership;
         this.sortCalendar(this.selectedCalendarInst as CalendarInst);
+        this.backupCalendarInst = Util.copy(this.selectedCalendarInst);
       } else {
         this.message = error.message;
       }
@@ -66,6 +98,18 @@ export class CalAdminComponent implements OnInit {
   }
 
   sortCalendar(selectedCalendarInst: CalendarInst) {
+    this.selectedCalendarInst = selectedCalendarInst;
+    this.sortOpenHours(this.selectedCalendarInst as CalendarInst);
+    this.sortHolidys(this.selectedCalendarInst as CalendarInst);
+  }
+
+  sortHolidys(selectedCalendarInst: CalendarInst) {
+    if(selectedCalendarInst.holidayRules) {
+      this.holidayChunks = this.chunks(selectedCalendarInst.holidayRules, this.ruleNUmPerRow) as DayRule[][];
+    }
+  }
+
+  sortOpenHours(selectedCalendarInst: CalendarInst) {
     let weeklyBusinessHours: BusinessHour[] = [];
     let specialBusinessHours: BusinessHour[] = [];
     for (let [key, value] of this.NUM_DOW_MAP) {
@@ -83,14 +127,13 @@ export class CalAdminComponent implements OnInit {
     }
     this.selectedWeeklyBusinessHours = weeklyBusinessHours;
     this.selectedSpecialBusinessHours = specialBusinessHours;
-    this.selectedCalendarInst = selectedCalendarInst;
-    if(this.selectedCalendarInst.holidayRules) {
-      this.holidayChunks = this.chunks(this.selectedCalendarInst.holidayRules, this.ruleNUmPerRow) as DayRule[][];
-    }
+
     if(this.selectedSpecialBusinessHours) {
       this.specialBusinessHourChunks = this.chunks(this.selectedSpecialBusinessHours, this.ruleNUmPerRow) as BusinessHour[][];
     }
   }
+
+  
 
   private makeEmpty(dow: number): BusinessHour {
     let businessHour = new BusinessHour();
@@ -102,23 +145,24 @@ export class CalAdminComponent implements OnInit {
   }
 
   deleteSpecialBusinessHour(businessHour: BusinessHour){
-    if(this.selectedSpecialBusinessHours) {
-      this.selectedSpecialBusinessHours.forEach( (item, index) => {
-        if(item === businessHour) this.selectedSpecialBusinessHours.splice(index,1);
+    if(this.selectedCalendarInst?.businessHours) {
+      this.selectedCalendarInst?.businessHours.forEach( (item, index) => {
+        if(item === businessHour) this.selectedCalendarInst?.businessHours.splice(index,1);
       });
     }
+    this.sortOpenHours(this.selectedCalendarInst as CalendarInst);
     if(this.selectedSpecialBusinessHours) {
       this.specialBusinessHourChunks = this.chunks(this.selectedSpecialBusinessHours, this.ruleNUmPerRow) as BusinessHour[][];
     }
+    this.isChanged();
   }
 
   addSpecialBusinessHour() {
     let businessHour = new BusinessHour();
     businessHour.overriding = true;
-    this.selectedSpecialBusinessHours.push(businessHour);
-    if(this.selectedSpecialBusinessHours) {
-      this.specialBusinessHourChunks = this.chunks(this.selectedSpecialBusinessHours, this.ruleNUmPerRow) as BusinessHour[][];
-    }
+    this.selectedCalendarInst?.businessHours.push(businessHour);
+    this.sortOpenHours(this.selectedCalendarInst as CalendarInst) ;
+    this.isChanged();
   }
 
   deleteHolidayRule (holidayRule: DayRule){
@@ -127,28 +171,37 @@ export class CalAdminComponent implements OnInit {
         if(item === holidayRule) this.selectedCalendarInst?.holidayRules.splice(index,1);
       });
     }
-    if(this.selectedCalendarInst?.holidayRules) {
-      this.holidayChunks = this.chunks(this.selectedCalendarInst.holidayRules, this.ruleNUmPerRow) as DayRule[][];
-    }
+    this.sortHolidys(this.selectedCalendarInst as CalendarInst) ;
+    this.isChanged();
   }
 
   addHolidayRule() {
     let dayRule = new DayRule();
     this.selectedCalendarInst?.holidayRules.push(dayRule);
-    if(this.selectedCalendarInst?.holidayRules) {
-      this.holidayChunks = this.chunks(this.selectedCalendarInst.holidayRules, this.ruleNUmPerRow) as DayRule[][];
-    }
+    this.sortHolidys(this.selectedCalendarInst as CalendarInst);
+    this.isChanged();
   }
 
   clearSelectd(){
+    this.selectedBusinessCalendarOwnership  = undefined;
     this.selectedCalendarInst = undefined;
     this.selectedWeeklyBusinessHours = [];
     this.selectedSpecialBusinessHours = [];
     this.holidayChunks = [];
     this.specialBusinessHourChunks = [];
+    //
+    
+    this.isContentChanged  = false;
+    this.backupCalendarInst = undefined;
   }
 
-
+  resetPassword(e: Event) {
+    if(this.authService.getUserInfo() != undefined) {
+      this.router.dispose();
+      this.router.navigate(['resetpassword']);
+    }
+  }
+ 
   chunks(arr:any[], n:number) : any[][]{
     let chunks: any[][] = [];
     for (let i = 0; i < arr.length; i += n) {
@@ -156,6 +209,24 @@ export class CalAdminComponent implements OnInit {
     }
     return chunks;
   }
+
+  isChanged() {
+    this.isContentChanged = true || Util.isEqual(this.backupCalendarInst, this.selectedCalendarInst);
+  }
+
+  saveCalednar(){
+    let ownership: BusinessCalendarOwnership = Util.copy(this.selectedBusinessCalendarOwnership);
+    ownership.calendarInst = this.selectedCalendarInst as CalendarInst;
+    
+
+    console.log( "After changed: " + JSON.stringify(this.selectedCalendarInst));
+  }
+
+
+  testCalednar(){
+    
+  }
+
 
   initialize() {
     this.NUM_DOW_MAP.set(0, "Monday");

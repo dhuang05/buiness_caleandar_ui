@@ -5,7 +5,7 @@
 
 
 import { map } from 'rxjs/operators';
-import { Component, Input, NgModule, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ApiError, BusinessHour } from 'src/app/model/cal-model';
 import { CalErr } from 'src/app/common/common-model';
@@ -20,6 +20,7 @@ import { CalErr } from 'src/app/common/common-model';
 export class WeeklyWorkingHourComponent implements OnInit {
   errorInfo: CalErr| undefined;
   @Input() businessHour: BusinessHour| undefined;
+  @Output() changedEvent = new EventEmitter<boolean>();
   
   constructor(
     private router: Router,
@@ -29,9 +30,10 @@ export class WeeklyWorkingHourComponent implements OnInit {
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {});
+    this.checkValue(false);
   }
 
-  checkValue() {
+  checkValue( isChanged: boolean) {
     this.errorInfo = undefined;
     let errorMsgs: string[] = [];
     if(!this.isEmpty(this.businessHour?.businessHourFrom) || !this.isEmpty(this.businessHour?.businessHourTo)) {
@@ -47,7 +49,11 @@ export class WeeklyWorkingHourComponent implements OnInit {
           errorInfo.title = "Required:";
           this.errorInfo = errorInfo;
           this.errorInfo.note = "Both empty means not working";
+        } 
+        if(isChanged) {
+          this.changedEvent.emit(true);
         }
+
     }
   }
   

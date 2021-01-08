@@ -30,6 +30,8 @@ import { AuthGuard } from '../auth-guard';
             AuthService
         ],
         exports: [
+            ForgetPasswordComponent,
+            ResetPasswordComponent,
             LogoutComponent
         ]
     }

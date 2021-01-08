@@ -4,7 +4,7 @@
       <div>
         <mat-form-field appearance="legacy">
           <mat-label>Holiday Name</mat-label>
-          <input matInput class="input" name="desc" type="text" [(ngModel)]="holidayRule.desc" />
+          <input matInput class="input" (input) = "checkValue(true)" name="desc" type="text" [(ngModel)]="holidayRule.desc" />
         </mat-form-field>
       </div>
       <div>
@@ -35,7 +35,7 @@
             (click) = "openEditor()"
             class = "rule"
             [style] = "passedTest? 'color:darkblue' :'color:darkred'" 
-            (change)="checkValue()" readonly [(ngModel)]="holidayRule.expr">
+            (change)="checkValue(true)" readonly [(ngModel)]="holidayRule.expr">
           </textarea>
         </mat-form-field>
       </div>

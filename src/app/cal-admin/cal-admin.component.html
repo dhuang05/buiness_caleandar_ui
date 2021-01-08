@@ -1,10 +1,21 @@
 <div class="outmost">
-  <div class="header-title">
-    <div style="text-align: center; width:95%;"><span>Business Calendar Administration</span></div>
-    <div style="text-align: right; width:20px;">
-      <cal-logout></cal-logout>
-    </div>
-  </div>
+  <table style="width:100%;">
+    <tr class="header-title" style="width:100%;">
+      <td>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </td>
+      <td style = "width; 95%;"><div style="text-align: center;"><span>Business Calendar Administration</span></div></td>
+      <td style="text-align: right;">
+        &nbsp;<a *ngIf="selectedCalendarInst && isContentChanged" class = "alink" style = "color: darkred;" href="#" (click)="saveCalednar()">Save</a>
+        &nbsp;<span *ngIf="selectedCalendarInst && isContentChanged" style="color:rgba(255, 255, 255, 0.541); font-size: 14px;">|</span>&nbsp;
+        <a *ngIf="selectedCalendarInst" class = "alink" href="#" (click)="testCalednar()">Test</a>
+        &nbsp;<span *ngIf="selectedCalendarInst" style="color:rgba(255, 255, 255, 0.541); font-size: 14px;">|</span>&nbsp;
+        <cal-logout ></cal-logout>&nbsp;<span style="color:rgba(255, 255, 255, 0.541); font-size: 14px;">|</span>&nbsp;
+        <a class = "alink" href="#" (click)="resetPassword($event)"><span>Reset password</span>&nbsp;</a>
+      </td>
+    </tr>
+  </table>
+
   <table style="width:100%; ">
     <tr>
       <td style="vertical-align:top; width:260px;">
@@ -14,7 +25,7 @@
           </div>
           <div class="list-item" *ngFor="let businessCalendarOwnership of businessCalendarOwnerships; index as i">
             <button class="button"
-              (click)="fetchCalendarInstance(businessCalendarOwnership.calId)">{{businessCalendarOwnership.description}}</button>
+              (click)="fetchCalendarInstance(businessCalendarOwnership)">{{businessCalendarOwnership.description}}</button>
           </div>
         </div>
       </td>
@@ -27,11 +38,11 @@
           <div>
             <mat-form-field appearance="legacy">
               <mat-label>Calendar Name</mat-label>
-              <input matInput class="input" name="cal_name" type="text" [(ngModel)]="selectedCalendarInst.desc" />
+              <input matInput (change) = "isChanged()" class="input" name="cal_name" type="text" [(ngModel)]="selectedCalendarInst.desc" />
             </mat-form-field>
             <mat-form-field appearance="legacy">
               <mat-label>Timezone</mat-label>
-              <mat-select [(ngModel)]="selectedCalendarInst.timeZone">
+              <mat-select (change) = "isChanged()" [(ngModel)]="selectedCalendarInst.timeZone">
                 <mat-option><span style="color:red">please select</span></mat-option>
                 <mat-option *ngFor="let timezone of timezones" [value]="timezone">{{timezone}}</mat-option>
               </mat-select>
@@ -43,7 +54,7 @@
             </div>
             <div class="flow-layout">
               <div class="weekly-workinghour-block" *ngFor="let businessHour of selectedWeeklyBusinessHours">
-                <cal-weekly-workinghour [businessHour]="businessHour"></cal-weekly-workinghour>
+                <cal-weekly-workinghour [businessHour]="businessHour" (changedEvent) = "isChanged()" ></cal-weekly-workinghour>
               </div>
             </div>
 
@@ -53,7 +64,7 @@
             <div class="flow-layout" *ngFor="let specialBusinessHours of specialBusinessHourChunks; let i = index;">
               <div class="special-workinghour-block" *ngFor="let businessHour of specialBusinessHours; let j = index;"
                 style="vertical-align: top;">
-                <cal-special-workinghour [businessHour]="businessHour"
+                <cal-special-workinghour [businessHour]="businessHour" (changedEvent) = "isChanged()" 
                   (deleteEvent)="deleteSpecialBusinessHour($event)"></cal-special-workinghour>
               </div>
               <div *ngIf="i == (specialBusinessHourChunks.length - 1)">
@@ -73,7 +84,7 @@
             <div class="flow-layout" *ngFor="let holidayRules of holidayChunks; let i = index;">
               <div class="holiday-rule-block" *ngFor="let holidayRule of holidayRules; let j = index;"
                 style="vertical-align: top;">
-                <cal-holiday-definition [holidayRule]="holidayRule" (deleteEvent)="deleteHolidayRule($event)">
+                <cal-holiday-definition [holidayRule]="holidayRule" (deleteEvent)="deleteHolidayRule($event)" (changedEvent) = "isChanged()" >
                 </cal-holiday-definition>
               </div>
               <div *ngIf="i == (holidayChunks.length - 1)">

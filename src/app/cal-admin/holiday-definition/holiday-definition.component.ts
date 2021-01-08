@@ -13,6 +13,8 @@ import { Output } from '@angular/core';
 import { CalErr } from 'src/app/common/common-model';
 import { MatDialog } from '@angular/material/dialog';
 import { RuleEditorComponent } from '../rule-editor/rule-editor.component';
+import { InfoDialogComponent } from 'src/app/common/info-dialog/info-dialog.component';
+import { Util } from 'src/app/common/util';
 
 
 
@@ -26,6 +28,7 @@ export class HoldayDefinitionComponent implements OnInit {
   @Input() holidayRule: DayRule | undefined;
   passedTest: boolean = true;
   @Output() deleteEvent = new EventEmitter<DayRule>();
+  @Output() changedEvent = new EventEmitter<boolean>();
 
   constructor(
     private router: Router,
@@ -35,12 +38,11 @@ export class HoldayDefinitionComponent implements OnInit {
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {});
-    this.checkValue();
+    this.checkValue(false);
   }
 
-  checkValue() {
+  checkValue( isChanged: boolean) {
     this.errorInfo = undefined;
-
     let messages: string[] = [];
     if(this.isEmpty(this.holidayRule?.desc)) {
       messages.push("Holiday Name");
@@ -53,25 +55,40 @@ export class HoldayDefinitionComponent implements OnInit {
       errorInfo.errMsgs = messages;
       errorInfo.title = "Required:";
       this.errorInfo = errorInfo;
+    } 
+    if(isChanged) {
+        this.contentChanged();
     }
   }
   
   openEditor() : void {
-    const dialogRef = this.dialog.open(RuleEditorComponent, {
-      width: '1000px',
-      height: '600px',
-      data: new RuleEditData(this.holidayRule?.expr as string, this.holidayRule?.desc as string)
-    });
+    if(Util.isEmpty(this.holidayRule?.desc)) {
+      const dialogRef = this.dialog.open(InfoDialogComponent, {
+        width: '250px',
+        height: '180px',
+        data: "Please input name before editing rule expression."
+      });
+    } else {
+      const dialogRef = this.dialog.open(RuleEditorComponent, {
+        width: '1000px',
+        height: '600px',
+        data: new RuleEditData(this.holidayRule?.expr as string, this.holidayRule?.desc as string)
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The holiday expr editor was closed');
+        let data: RuleEditData = result;
+        if(data && this.holidayRule) {
+          this.holidayRule.expr = data.expression;
+          this.checkValue(true);
+        }
+      });
+    }
+  }
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The editor was closed');
-      let data: RuleEditData = result;
-      if(data && this.holidayRule?.expr) {
-        this.holidayRule.expr = data.expression;
-        // handle error not pass test
-      }
-    });
-}
+  contentChanged() {
+    this.changedEvent.emit(true);
+  }
 
   delete(){
     this.deleteEvent.emit(this.holidayRule);

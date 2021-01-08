@@ -27,6 +27,7 @@ import { RuleEditorComponent } from './rule-editor/rule-editor.component';
 import { RuleEditorHelpComponent } from './rule-editor/help/help.component';
 import {MatTabsModule} from '@angular/material/tabs';
 import { ExprTestViewComponent } from './rule-editor/expr-test-view/expr-test-view.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
         declarations: [
@@ -40,6 +41,7 @@ import { ExprTestViewComponent } from './rule-editor/expr-test-view/expr-test-vi
             ExprTestViewComponent,
         ],
         imports: [
+            RouterModule,
             CommonModule,
             FormsModule,
             ReactiveFormsModule,
