@@ -7,12 +7,14 @@
 import { map } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ApiError, BusinessCalendarOwnership, BusinessHour, CalendarInst, DayRule } from '../model/cal-model';
+import { ApiError, BusinessCalendarOwnership, BusinessHour, CalendarAdminInstTestResult, CalendarInst, DayRule } from '../model/cal-model';
 import { CalAdminService } from './services/cal_admin.service';
 import { AuthService } from '../auth/services/auth.service';
 import { Util } from '../common/util';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../common/confirm-dialog/confirm-dialog.component';
+import { InfoDialogComponent } from '../common/info-dialog/info-dialog.component';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'cal-cal-admin',
@@ -35,11 +37,14 @@ export class CalAdminComponent implements OnInit {
   holidayChunks: DayRule[][] = [];
   isContentChanged: boolean = false;
   backupCalendarInst: CalendarInst | undefined;
-
+  selectedYear: number = new Date().getFullYear();
+  testResult: CalendarAdminInstTestResult | undefined;
   //
-   edited: boolean = false;
+  edited: boolean = false;
   ruleNUmPerRow: number = 6;
   dialogRef: any;
+  years: number[] = [];
+  step = 0;
 
   constructor(
     private router: Router,
@@ -57,14 +62,22 @@ export class CalAdminComponent implements OnInit {
     }
     this.businessCalendarOwnerships = this.authService.getUserInfo().businessCalendarOwnerships;
     this.initialize();
+
+    this.years = [];
+    let selectedYear = new Date().getFullYear();
+    for (let i = 0; i < 10; i++) {
+      this.years.push(this.selectedYear + i);
+    }
+    this.selectedYear = selectedYear;
+    this.step = 0;
   }
   
   fetchCalendarInstance(businessCalendarOwnership: BusinessCalendarOwnership) {
     let canLoadNew = true;
     if(this.isContentChanged) {
       this.dialogRef = this.dialog.open(ConfirmDialogComponent, {
-        width: '350px',
-        height: '250px',
+        width: '320px',
+        height: '210px',
         data: "The calendar content has been edited, Are you sure to reload without persistence to backend?"
       });
   
@@ -190,9 +203,11 @@ export class CalAdminComponent implements OnInit {
     this.holidayChunks = [];
     this.specialBusinessHourChunks = [];
     //
-    
+    this.testResult = undefined;
     this.isContentChanged  = false;
     this.backupCalendarInst = undefined;
+
+    this.step = 0;
   }
 
   resetPassword(e: Event) {
@@ -214,19 +229,96 @@ export class CalAdminComponent implements OnInit {
     this.isContentChanged = true || Util.isEqual(this.backupCalendarInst, this.selectedCalendarInst);
   }
 
-  saveCalednar(){
+  testAndSaveCalednar(toSave: boolean){
+   
+    this.validate();
     let ownership: BusinessCalendarOwnership = Util.copy(this.selectedBusinessCalendarOwnership);
     ownership.calendarInst = this.selectedCalendarInst as CalendarInst;
-    
+    if(this.validate()) {
+      ownership.calendarInst = this.selectedCalendarInst as CalendarInst;
+     let observable: Observable<any> | undefined = undefined;
 
+     if(toSave) {
+       observable = this.calAdminService.testAndSaveCalendarAdminInst(ownership, this.selectedYear);
+     } else {
+       observable = this.calAdminService.testCalendarAdminInst(ownership, this.selectedYear);
+     }
+     this.testResult = undefined;
+      observable.subscribe(resp => {
+        let json = JSON.stringify(resp);
+        console.log("json: " + json);
+        let error: ApiError = JSON.parse(json);
+        if(error.status == null || error.status == undefined) {
+          this.testResult =  JSON.parse(json);
+          if(toSave) {
+            this.isContentChanged = false;
+            const dialogRef = this.dialog.open(InfoDialogComponent, {
+              width: '250px',
+              height: '180px',
+              data: "The calendar rules has been paersisted to storage."
+            });
+          }
+        } else {
+          this.message = error.message;
+        }
+       },
+       error => {
+        if(error.status >= 400 && error.status < 500 ){
+          this.message = 'Required authorization to persist the calendar configure.';
+        } else if(error.status >= 500 ) {
+          this.message = 'Service not available.';
+        }
+         console.log("Error: ", error)
+        });
+    }
     console.log( "After changed: " + JSON.stringify(this.selectedCalendarInst));
   }
 
-
-  testCalednar(){
-    
+  moveToPreviousYear() {
+    this.selectedYear = Number(this.selectedYear) - 1;
+    this.testAndSaveCalednar(false);
   }
 
+  moveToNextYear() {
+    this.selectedYear = Number(this.selectedYear) + 1;
+    this.testAndSaveCalednar(false);
+  }
+
+  validate(): boolean {
+    this.message = "";
+    let hasError: boolean = false;
+    let validatedBusinessHours: BusinessHour[] = [];
+    for(let businessHour of this.selectedWeeklyBusinessHours) {
+      if(!Util.isEmpty(businessHour.businessHourFrom) &&  !Util.isEmpty(businessHour.businessHourTo)){
+        validatedBusinessHours.push(businessHour);
+      }
+    }
+    for(let businessHour of this.selectedSpecialBusinessHours) {
+      if(Util.isEmpty(businessHour.desc) || Util.isEmpty(businessHour.dayExpr)  || Util.isEmpty(businessHour.businessHourFrom)  || Util.isEmpty(businessHour.businessHourTo)){
+        hasError = true;
+      }else {
+        validatedBusinessHours.push(businessHour);
+      }
+    }
+    if(!hasError) {
+      (this.selectedCalendarInst as CalendarInst).businessHours = validatedBusinessHours;
+    }
+
+    for (let holiday of (this.selectedCalendarInst as CalendarInst).holidayRules) {
+      if(Util.isEmpty(holiday.desc) || Util.isEmpty(holiday.expr)){
+        hasError = true;
+      }
+    }
+    if(hasError) {
+      this.message = "Some field missing, Please input all required fields."
+    }
+
+    return !hasError;
+  }
+
+  setStep (step: number) {
+    this.step = step;
+  }
 
   initialize() {
     this.NUM_DOW_MAP.set(0, "Monday");

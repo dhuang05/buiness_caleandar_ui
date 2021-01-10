@@ -27,7 +27,10 @@ import { RuleEditorComponent } from './rule-editor/rule-editor.component';
 import { RuleEditorHelpComponent } from './rule-editor/help/help.component';
 import {MatTabsModule} from '@angular/material/tabs';
 import { ExprTestViewComponent } from './rule-editor/expr-test-view/expr-test-view.component';
+import {MatExpansionModule} from '@angular/material/expansion';
 import { RouterModule } from '@angular/router';
+import { CalendarViewComponent } from './calendar-view/calendar-view.component';
+import {MatGridListModule} from '@angular/material/grid-list';
 
 @NgModule({
         declarations: [
@@ -39,6 +42,7 @@ import { RouterModule } from '@angular/router';
             RuleEditorComponent,
             RuleEditorHelpComponent,
             ExprTestViewComponent,
+            CalendarViewComponent,
         ],
         imports: [
             RouterModule,
@@ -52,6 +56,8 @@ import { RouterModule } from '@angular/router';
             TextFieldModule,
             AuthModule,
             MatTabsModule,
+            MatExpansionModule,
+            MatGridListModule,
         ],
         providers: [
             CalAdminService,

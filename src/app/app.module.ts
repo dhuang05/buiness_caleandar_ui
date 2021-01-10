@@ -18,7 +18,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { CalAdminModule } from './cal-admin/cal-admin.module';
 import { MatDialogModule} from '@angular/material/dialog';
 import {MatTabsModule} from '@angular/material/tabs';
-
+import {MatGridListModule} from '@angular/material/grid-list';
 
 @NgModule({
   declarations: [
@@ -41,6 +41,7 @@ import {MatTabsModule} from '@angular/material/tabs';
     MatInputModule,
     MatSelectModule,
     MatTabsModule,
+    MatGridListModule,
   ],
   providers: [
     HttpService,

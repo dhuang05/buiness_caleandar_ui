@@ -29,6 +29,14 @@ export class CalAdminService extends HttpService{
     }
 
     public testAndSaveCalendarAdminInst (calendarOwnership: BusinessCalendarOwnership, year: number) {
+        let url = "api/admin/calendar/testsave";
+        if (year) {
+            url += "/" + year;
+        }
+        return super.post(url, calendarOwnership);
+    }
+
+    public testCalendarAdminInst (calendarOwnership: BusinessCalendarOwnership, year: number) {
         let url = "api/admin/calendar/test";
         if (year) {
             url += "/" + year;
