@@ -113,23 +113,12 @@ export class User {
         person!: Person;
         orgId!: string;
         //should be = []; after role configure
-        roles: string[] = ["SUPER_USER"];
+        roles: Role[] = [];
+}
 
-        public hasSupperRole() : boolean{
-                return this.hasRoleOf("SUPER_USER");
-        }
-
-        public hasRoleOf(aRole: string) : boolean {
-                if(this.roles) {
-                        for (let role of this.roles) {
-                                if (role.trim().toUpperCase() == aRole.trim().toUpperCase()) {
-                                        return true;
-                                }
-                        }
-                }
-                
-                return false;
-        }
+export class Role {
+        roleId: string = "";
+        description: string = "";
 }
 
 export class Person {

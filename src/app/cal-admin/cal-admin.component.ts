@@ -15,7 +15,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../common/confirm-dialog/confirm-dialog.component';
 import { InfoDialogComponent } from '../common/info-dialog/info-dialog.component';
 import { Observable } from 'rxjs';
-import { DataSet } from '../model/data-set';
+import { ConstDataSet } from '../model/data-set';
 import { utils } from 'protractor';
 
 @Component({
@@ -26,9 +26,9 @@ import { utils } from 'protractor';
 export class CalAdminComponent implements OnInit, OnDestroy {
   message: string = '';
   businessCalendarOwnerships!: BusinessCalendarOwnership[] | undefined;
-  NUM_DOW_MAP: Map<number, string> = DataSet.numDowMap();
-  DOW_NUM_MAP: Map<string, number>  = DataSet.dowNumMap();
-  timezones: string[] = DataSet.timezones;
+  NUM_DOW_MAP: Map<number, string> = ConstDataSet.numDowMap();
+  DOW_NUM_MAP: Map<string, number>  = ConstDataSet.dowNumMap();
+  timezones: string[] = ConstDataSet.timezones;
 //
   userInfoSubscription: any;
   isUserHasSuperRole = false;
@@ -46,7 +46,7 @@ export class CalAdminComponent implements OnInit, OnDestroy {
   testResult: CalendarAdminInstTestResult | undefined;
   //
   edited: boolean = false;
-  ruleNUmPerRow: number = 4;
+  ruleNumPerRow: number = 4;
   dialogRef: any;
   years: number[] = [];
   step = 0;
@@ -69,12 +69,12 @@ export class CalAdminComponent implements OnInit, OnDestroy {
       return;
     }
     this.businessCalendarOwnerships = this.authService.getUserInfo().businessCalendarOwnerships;
-    this.isUserHasSuperRole =  this.authService.getUserInfo().user.hasSupperRole();
+    this.isUserHasSuperRole =  this.authService.hasSupperRole();
     this.userInfoSubscription = this.authService.getUserInfoEventEmitter()
       .subscribe((userInfo: UserInfo) => {
         if(userInfo != undefined && userInfo.user != undefined) {
           this.businessCalendarOwnerships = userInfo.businessCalendarOwnerships;
-          this.isUserHasSuperRole =  (userInfo.user as User).hasSupperRole();
+          this.isUserHasSuperRole =  this.authService.hasSupperRole();;
         }
       });
 
@@ -143,7 +143,7 @@ export class CalAdminComponent implements OnInit, OnDestroy {
 
   sortHolidys(selectedCalendarInst: CalendarInst) {
     if(selectedCalendarInst.holidayRules) {
-      this.holidayChunks = this.chunks(selectedCalendarInst.holidayRules, this.ruleNUmPerRow) as DayRule[][];
+      this.holidayChunks = this.chunks(selectedCalendarInst.holidayRules, this.ruleNumPerRow) as DayRule[][];
     }
   }
 
@@ -167,7 +167,7 @@ export class CalAdminComponent implements OnInit, OnDestroy {
     this.selectedSpecialBusinessHours = specialBusinessHours;
 
     if(this.selectedSpecialBusinessHours) {
-      this.specialBusinessHourChunks = this.chunks(this.selectedSpecialBusinessHours, this.ruleNUmPerRow) as BusinessHour[][];
+      this.specialBusinessHourChunks = this.chunks(this.selectedSpecialBusinessHours, this.ruleNumPerRow) as BusinessHour[][];
     }
   }
 
@@ -208,7 +208,7 @@ export class CalAdminComponent implements OnInit, OnDestroy {
     }
     this.sortOpenHours(this.selectedCalendarInst as CalendarInst);
     if(this.selectedSpecialBusinessHours) {
-      this.specialBusinessHourChunks = this.chunks(this.selectedSpecialBusinessHours, this.ruleNUmPerRow) as BusinessHour[][];
+      this.specialBusinessHourChunks = this.chunks(this.selectedSpecialBusinessHours, this.ruleNumPerRow) as BusinessHour[][];
     }
     this.isChanged();
   }
@@ -274,10 +274,10 @@ export class CalAdminComponent implements OnInit, OnDestroy {
 
   testAndSaveCalednar(toSave: boolean){
    
-    this.validate();
+    let validated = this.validate();
     let ownership: BusinessCalendarOwnership = Util.copy(this.selectedBusinessCalendarOwnership);
     ownership.calendarInst = this.selectedCalendarInst as CalendarInst;
-    if(this.validate()) {
+    if(validated) {
       ownership.calendarInst = this.selectedCalendarInst as CalendarInst;
      let observable: Observable<any> | undefined = undefined;
 
@@ -289,7 +289,7 @@ export class CalAdminComponent implements OnInit, OnDestroy {
      this.testResult = undefined;
       observable.subscribe(resp => {
         let json = JSON.stringify(resp);
-        console.log("json: " + json);
+        //console.log("json: " + json);
         let error: ApiError = JSON.parse(json);
         if(error.status == null || error.status == undefined) {
           this.testResult =  JSON.parse(json);
@@ -305,7 +305,7 @@ export class CalAdminComponent implements OnInit, OnDestroy {
         this.message = Util.handleError(error);
        });
     }
-    console.log( "After changed: " + JSON.stringify(this.selectedCalendarInst));
+    //console.log( "After changed: " + JSON.stringify(this.selectedCalendarInst));
   }
 
   handleReportErrors(testResult: CalendarAdminInstTestResult| undefined) {
@@ -365,6 +365,12 @@ export class CalAdminComponent implements OnInit, OnDestroy {
     let hasError: boolean = false;
     //let missings: string[] = [];
     if(this.isUserHasSuperRole &&  Util.isEmpty(this.selectedCalendarInst?.calId)) {
+      hasError = true;
+      //missings
+    }
+
+
+    if(Util.isEmpty(this.selectedCalendarInst?.desc || this.selectedCalendarInst?.timeZone)) {
       hasError = true;
       //missings
     }

@@ -1,8 +1,4 @@
-export class DataSet {
-
-
-    
-  
+export class ConstDataSet {
 
    public static numDowMap (): Map<number, string>{
         let numDowMap: Map<number, string> = new Map();
@@ -29,8 +25,6 @@ export class DataSet {
 
         return dowNumMap;
    }
-
-
 
 
     public static timezones: string[] = ["America/Adak",

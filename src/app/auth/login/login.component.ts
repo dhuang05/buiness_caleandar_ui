@@ -38,6 +38,7 @@ export class LoginComponent implements OnInit {
       this.message = '';
       this.authService.login (this.loginForm).subscribe(resp => {
         let json = JSON.stringify(resp);
+        //console.log(json);
         let error: ApiError = JSON.parse(json);
         if(error.status == null || error.status == undefined) {
           let userInfo: UserInfo = JSON.parse(json);

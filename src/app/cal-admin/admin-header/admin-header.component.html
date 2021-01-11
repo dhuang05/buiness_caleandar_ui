@@ -1,11 +1,13 @@
 <table style="width:100%;">
     <tr class="header-title" style="width:100%;">
       <td style="text-align: left;">&nbsp;
-        <a class="alink" href="#" *ngIf= "!isMyPage('API')" (click)="gotToApis()"><span>API</span></a> 
-
-        <span *ngIf= "!isMyPage('USER_ADMIN')">
+        <span *ngIf= "isUserHasSuperRole">
+            <a  class="alink" href="#" (click)="gotToUserAdmin()"><span>Uaser admin</span>&nbsp;</a> 
             <span style="color:rgba(255, 255, 255, 0.541); font-size: 14px;">&nbsp;|&nbsp;</span>
-            <a class="alink" href="#" (click)="gotToUserAdmin()"><span>Uaser admin</span>&nbsp;</a> 
+        </span>
+        
+        <span *ngIf= "!isMyPage('USER_ADMIN')">
+            <a class="alink" href="#" *ngIf= "!isMyPage('API')" (click)="gotToApis()"><span>APIs</span></a> 
         </span>
 
         <span *ngIf= "!isMyPage('CAL_ADMIN')">

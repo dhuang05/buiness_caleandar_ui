@@ -54,6 +54,10 @@
 
 <!--calendar instance template -->
 <ng-template #calendarInst>
+  <div style="border: solid 1px rgb(240, 240, 240);"></div>
+  <div>
+    <span class="error">{{message}}</span>
+  </div>
   <div class="flow-layout" *ngIf= "selectedCalendarInst">
     <div class="div-left">
       <mat-form-field *ngIf="isUserHasSuperRole" appearance="legacy">
@@ -145,17 +149,19 @@
 <!--- Calendar rule tester  -->
 
 <ng-template #calendarTester>
+  <div style="border: solid 1px rgb(240, 240, 240);"></div>
   <div>
     <span class="error">{{message}}</span>
   </div>
   <div *ngIf="selectedCalendarInst">
-    <div class = "div-left">
+    <div class = "div-right">
       <a class="b-link" href="#" (click) = "testAndSaveCalednar(false)"> View Calendar</a> &nbsp;
       <select [(ngModel)]="selectedYear" (change)="testAndSaveCalednar(false)">
         <option *ngFor="let year of years" [value]="year">{{year}}</option>
       </select>
       &nbsp;
-      <a class="b-link" href="#" (click) = "testAndSaveCalednar(true)"> Save Calendar Rule</a>
+      <a *ngIf="isContentChanged" class="b-link" href="#" (click) = "testAndSaveCalednar(true)"> Save Calendar Rules</a>
+      <span *ngIf="!isContentChanged">Content not changed yet</span>
     </div>
 
     <diV><span>&nbsp;</span></diV>

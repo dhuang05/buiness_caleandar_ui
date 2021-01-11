@@ -15,7 +15,6 @@ export class CalendarViewComponent implements OnInit, OnDestroy {
   dayOfWeeks: string[] = ["Sunday", "Monday", "Tuesday", "Wednesday", "Tuesday", "Friday", "Saturday"];
 
   monthMap: Map<number, string> = new Map();
-
   selectedYear: number = new Date().getFullYear();
   years: number[] = [];
   currentMonth = 0;
@@ -55,6 +54,11 @@ export class CalendarViewComponent implements OnInit, OnDestroy {
   makeCalendar() {
     this.year = undefined;
     if (this.testResult) {
+      let now = new Date();
+      if(this.selectedYear == new Date().getFullYear()){
+          this.currentMonth = now.getMonth();
+      }
+
       let testResult = this.testResult as CalendarAdminInstTestResult;
       if (testResult.calendar) {
         let calendar: Calendar = testResult.calendar;

@@ -1,6 +1,7 @@
 <div class ="outmost">
-    <cal-admin-header [currentPageName] = "'API'"></cal-admin-header>
-    <div style="border: solid 1px;  padding: 10px;">
+     <cal-admin-header [currentPageName] = "'API'"></cal-admin-header>
+     <div class = "div-right"><a *ngIf = "calendarOwnerships" href="#" (click) = "showCalInfos()"> Show all accessible calendar</a></div>
+    <div style="border: solid 1px;  padding: 15px;">
         <div>
             <div><span class="label1">API:</span> <span class="label2b"> to find out available time slot of 'duration'
                     span since 'sinceDateTime' based on 'localZoneId' from calendar with 'calId'.</span></div>
@@ -64,10 +65,10 @@
 
     <div> &nbsp; </div>
 
-    <div style="border: solid 1px; padding: 4px;">
+    <div style="border: solid 1px; padding: 15px;">
         <div>
             <div><span class="label1">API:</span><span class="label2b"> to request calendar infomation about working
-                    hour. holiday info from calendar with 'calId'.</span></div>
+                    hour. holiday info from calendar with 'calId' in a year.</span></div>
             <div><span class="label2a">GET</span> <span style="color: blue;"> {{getCalendarInfoUrl()}}</span></div>
             <div><span class="label1">path variables:</span></div>
             <div><span class="label2a">&nbsp;&nbsp;&nbsp;&nbsp;calId:</span> <span class="label2b">Target calendar
@@ -79,7 +80,6 @@
         <hr/>
         <span class = "error">{{requestCalInfoError}}</span>
         <div>
-
             <mat-form-field appearance="legacy">
                 <mat-label>calId</mat-label>
                 <mat-select [(ngModel)]="calInfoRequest.calId">

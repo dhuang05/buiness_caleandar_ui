@@ -56,27 +56,30 @@
     font-size: 11px;
 }
 
-.flex-container {
+.flow-layout {
     display: flex;
-    display: -webkit-flex;
-    flex-direction: row;
-    justify-content: space-between;
 }
+
 .div-center {
     text-align:center;
     margin: 0 auto;
-    width:250px;
+    -ms-flex: 1;  /* IE 10 */  
+     flex: 1;
 }
 .div-left {
     text-align:left;
     margin: 0 auto;
-    width:250px;
+    -ms-flex: 1;  /* IE 10 */  
+     flex: 1;
 }
+
 .div-right {
     text-align:right;
     margin: 0 auto;
-    width:250px;
+    -ms-flex: 1;  /* IE 10 */  
+     flex: 1;
 }
+
 .outmost {
     height: 100%;
     width: 100%;

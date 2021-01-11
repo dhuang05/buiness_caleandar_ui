@@ -6,7 +6,7 @@ import { ContentDialogComponent } from 'src/app/common/content-dialog/content-di
 import { InfoDialogComponent } from 'src/app/common/info-dialog/info-dialog.component';
 import { Util } from 'src/app/common/util';
 import { ApiError, BusinessCalendarOwnership, UserInfo } from 'src/app/model/cal-model';
-import { DataSet } from 'src/app/model/data-set';
+import { ConstDataSet } from 'src/app/model/data-set';
 import { CalAdminService } from '../services/cal_admin.service';
 
 @Component({
@@ -16,11 +16,11 @@ import { CalAdminService } from '../services/cal_admin.service';
 })
 export class ApiTestComponent implements OnInit, OnDestroy {
   message: string | undefined;
-  timezones: string[] = DataSet.timezones;
+  timezones: string[] = ConstDataSet.timezones;
   calendarOwnerships: BusinessCalendarOwnership[] | undefined;
   timeSlotRequest = new TimeSlotRequest();
   calInfoRequest = new CalInfoRequest();
-
+  isUserHasSuperRole : boolean | undefined;
   requestTimeSlotError = "";
   requestCalInfoError = "";
 
@@ -33,9 +33,11 @@ export class ApiTestComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.isUserHasSuperRole =  this.authService.hasSupperRole();
+
     this.calAdminService.getUserAccessibleCalednars().subscribe(resp => {
       let json = JSON.stringify(resp);
-      console.log("API json: " + json);
+      //console.log("API json: " + json);
       let error: ApiError = JSON.parse(json);
       if(error.status == null || error.status == undefined) {
         this.calendarOwnerships =  JSON.parse(json);
@@ -50,6 +52,27 @@ export class ApiTestComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(){
    
+  }
+
+  showCalInfos() {
+    if(this.calendarOwnerships) {
+      let calInfos: CalInfo[] = [];
+      for(let calendarOwnership of this.calendarOwnerships) {
+        let calInfo = new CalInfo();
+        calInfo.calId = calendarOwnership.calId;
+        calInfo.calName = calendarOwnership.description;
+        calInfos.push(calInfo);
+      }
+      let json = JSON.stringify(calInfos, null, 2);
+      let result =  "\n" + json as string;
+      console.log("json=" + json );
+        const dialogRef = this.dialog.open(ContentDialogComponent, {
+          width: '500px',
+          height: '500px',
+          data: result,
+        });
+    }
+    
   }
 
   getCalendarInfoUrl() : string {
@@ -120,7 +143,7 @@ export class ApiTestComponent implements OnInit, OnDestroy {
     
     this.calAdminService.genericGet(this.getCalendarInfoUrl()).subscribe(resp => {
       let json = JSON.stringify(resp, null, 2);
-      console.log(json);
+      //console.log(json);
       let error: ApiError = JSON.parse(json);
       if(error.status == null || error.status == undefined) {
         let result =  "\n" + json as string;
@@ -156,7 +179,7 @@ export class ApiTestComponent implements OnInit, OnDestroy {
     }
     this.calAdminService.genericGet(this.getTimeslotUrl()).subscribe(resp => {
       let json = JSON.stringify(resp, null, 2);
-      console.log(json);
+      //console.log(json);
       let error: ApiError = JSON.parse(json);
       if(error.status == null || error.status == undefined) {
         let result =  "\n" + json as string;
@@ -175,6 +198,11 @@ export class ApiTestComponent implements OnInit, OnDestroy {
      );
   }
 
+}
+
+class CalInfo {
+  calId: string = "";
+  calName: string = "";
 }
 
 class CalInfoRequest {
