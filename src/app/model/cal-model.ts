@@ -13,6 +13,7 @@ export class BusinessCalendarOwnership {
         ownerId!: string;
         status!: string;
         note!: string;
+        isPublic: boolean = false;
 }
 
 export class CalendarInst {
@@ -111,6 +112,24 @@ export class User {
         userId!: string;
         person!: Person;
         orgId!: string;
+        //should be = []; after role configure
+        roles: string[] = ["SUPER_USER"];
+
+        public hasSupperRole() : boolean{
+                return this.hasRoleOf("SUPER_USER");
+        }
+
+        public hasRoleOf(aRole: string) : boolean {
+                if(this.roles) {
+                        for (let role of this.roles) {
+                                if (role.trim().toUpperCase() == aRole.trim().toUpperCase()) {
+                                        return true;
+                                }
+                        }
+                }
+                
+                return false;
+        }
 }
 
 export class Person {
@@ -153,7 +172,7 @@ export class RuleExprTestResult {
         name: string = "";
         year?: number;
         success: boolean = true;
-        ruleDates: String[] =[];
+        ruleDates: String[] = [];
         ruleExprError?: RuleExprError;
         testDate: Date = new Date();
 }
@@ -167,8 +186,9 @@ export class CalendarAdminInstTestResult {
         success: boolean = true;
         year?: number;
         calendar?: Calendar;
-        ruleExprErrors: RuleExprError[] =[];
+        ruleExprErrors: RuleExprError[] = [];
         testDate: Date = new Date();
+        updatedBusCalOwnership: BusinessCalendarOwnership | undefined;
 }
 
 export class RuleExprError {

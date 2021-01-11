@@ -7,6 +7,7 @@ import { Component, NgModule, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { Router, Params, ActivatedRoute } from '@angular/router';
 import { ApiError, LoginForm, UserInfo } from 'src/app/model/cal-model';
+import { Util } from 'src/app/common/util';
 
 @Component({
   selector: 'cal-reset-password',
@@ -46,13 +47,8 @@ export class ResetPasswordComponent implements OnInit {
           }
          },
          error => {
-          if(error.status >= 400 && error.status < 500 ){
-            this.message = 'User name or old password not matched.';
-          } else if(error.status >= 500 ) {
-            this.message = 'Service not available.';
-          }
-           console.log("Error: ", error)
-          }
+          this.message = Util.handleError(error);
+         }
          );
     
       } else {

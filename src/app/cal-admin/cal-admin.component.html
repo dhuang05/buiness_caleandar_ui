@@ -1,24 +1,9 @@
 <div class="outmost">
-  <table style="width:100%;">
-    <tr class="header-title" style="width:100%;">
-      <td>&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      </td>
-      <td style="width; 95%;">
-        <div style="text-align: center;"><span>Business Calendar Administration</span></div>
-      </td>
-      <td style="text-align: right;">
-
-        <cal-logout></cal-logout>&nbsp;<span style="color:rgba(255, 255, 255, 0.541); font-size: 14px;">|</span>&nbsp;
-        <a class="alink" href="#" (click)="resetPassword($event)"><span>Reset password</span>&nbsp;</a>
-      </td>
-    </tr>
-  </table>
+  <cal-admin-header [currentPageName] = "'CAL_ADMIN'"></cal-admin-header>
 
   <table style="width:100%; ">
     <tr>
-      <td style="vertical-align:top; width:260px;">
+      <td style="vertical-align:top; width:260px; overflow-y: scroll;">
         <div style="vertical-align: top;">
           <div class="list-item">
             <button class="button" (click)="newCalendarInstance($event)">Create Calendar from template</button>
@@ -32,7 +17,6 @@
       <td style="vertical-align: top;">
         <div *ngIf="selectedCalendarInst" style="padding:4px; width:100%; border: 1px solid rgb(33, 58, 33)">
 
-
           <mat-accordion class="example-headers-align">
             <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
               <mat-expansion-panel-header>
@@ -41,7 +25,7 @@
                 </mat-panel-title>
                 <mat-panel-description>
                   <span style="font-size:16px; font-weight:700; color:darkgreen">Editing working hour and holiday</span>
-                  <mat-icon>account_circle</mat-icon>
+                  <mat-icon>build</mat-icon>
                 </mat-panel-description>
               </mat-expansion-panel-header>
               <ng-container *ngTemplateOutlet="calendarInst"> </ng-container>
@@ -60,7 +44,6 @@
               <ng-container *ngTemplateOutlet="calendarTester"> </ng-container>
             </mat-expansion-panel>
           </mat-accordion>
-
         </div>
       </td>
     </tr>
@@ -73,11 +56,18 @@
 <ng-template #calendarInst>
   <div class="flow-layout" *ngIf= "selectedCalendarInst">
     <div class="div-left">
+      <mat-form-field *ngIf="isUserHasSuperRole" appearance="legacy">
+        <mat-label>Calendar ID</mat-label>
+        <input matInput (change)="isChanged()" class="input" name="cal_id" type="text"
+          [(ngModel)]="selectedCalendarInst.calId" />
+      </mat-form-field>
+      <span>&nbsp;&nbsp;&nbsp;</span>
       <mat-form-field appearance="legacy">
         <mat-label>Calendar Name</mat-label>
         <input matInput (change)="isChanged()" class="input" name="cal_name" type="text"
           [(ngModel)]="selectedCalendarInst.desc" />
       </mat-form-field>
+      <span>&nbsp;&nbsp;&nbsp;</span>
       <mat-form-field appearance="legacy">
         <mat-label>Timezone</mat-label>
         <mat-select (change)="isChanged()" [(ngModel)]="selectedCalendarInst.timeZone">
@@ -90,9 +80,9 @@
 
     <div class="div-right">
       <span style="font-size: 14px; color:rgb(15, 29, 44)">
-      &nbsp;&nbsp;
-       <a class="b-link" href="#" (click)="setStep(1); testAndSaveCalednar(false);"> To test and save pane </a>
-       &nbsp;&nbsp;
+        <span>&nbsp;&nbsp;&nbsp;</span>
+       <a class="b-link" href="#" (click)="setStep(1); testAndSaveCalednar(false);"> To test and save</a>
+       <span>&nbsp;&nbsp;&nbsp;</span>
     </span>
     </div>
   </div>
@@ -159,7 +149,7 @@
     <span class="error">{{message}}</span>
   </div>
   <div *ngIf="selectedCalendarInst">
-    <div class = "div-right">
+    <div class = "div-left">
       <a class="b-link" href="#" (click) = "testAndSaveCalednar(false)"> View Calendar</a> &nbsp;
       <select [(ngModel)]="selectedYear" (change)="testAndSaveCalednar(false)">
         <option *ngFor="let year of years" [value]="year">{{year}}</option>
@@ -167,6 +157,7 @@
       &nbsp;
       <a class="b-link" href="#" (click) = "testAndSaveCalednar(true)"> Save Calendar Rule</a>
     </div>
+
     <diV><span>&nbsp;</span></diV>
   </div>
 
@@ -180,5 +171,4 @@
     <diV><span>&nbsp;</span></diV>
     <cal-calendar-view  [testResult] = "testResult"></cal-calendar-view>
   </div>
-
 </ng-template>

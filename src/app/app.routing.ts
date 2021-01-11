@@ -10,6 +10,7 @@ import { ForgetPasswordComponent } from './auth/forget-password/forget-password.
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 import { CalAdminComponent } from './cal-admin/cal-admin.component';
 import { AuthGuard } from './auth-guard';
+import { ApiTestComponent } from './cal-admin/api-test/api-test.component';
 
 export const APP_ROUTES: Routes = [
     { path: '', redirectTo: 'cal-admin', pathMatch: 'full' },
@@ -18,6 +19,9 @@ export const APP_ROUTES: Routes = [
     { path: 'forgetpassword', component: ForgetPasswordComponent },
     { path: 'resetpassword', component: ResetPasswordComponent },
     { path: 'logout', component: LogoutComponent },
+    { path: 'apis', component: ApiTestComponent },
+
+    
 ];
 
 const routerOptions: ExtraOptions = { 

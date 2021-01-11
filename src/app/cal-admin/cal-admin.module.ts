@@ -31,6 +31,8 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import { RouterModule } from '@angular/router';
 import { CalendarViewComponent } from './calendar-view/calendar-view.component';
 import {MatGridListModule} from '@angular/material/grid-list';
+import { ApiTestComponent } from './api-test/api-test.component';
+import { AdminHeaderComponent } from './admin-header/admin-header.component';
 
 @NgModule({
         declarations: [
@@ -43,6 +45,8 @@ import {MatGridListModule} from '@angular/material/grid-list';
             RuleEditorHelpComponent,
             ExprTestViewComponent,
             CalendarViewComponent,
+            ApiTestComponent,
+            AdminHeaderComponent,
         ],
         imports: [
             RouterModule,

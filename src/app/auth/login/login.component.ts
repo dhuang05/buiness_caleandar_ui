@@ -9,6 +9,7 @@ import { Component, Input, NgModule, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { ApiError, LoginForm, UserInfo } from 'src/app/model/cal-model';
+import { Util } from 'src/app/common/util';
 
 
 
@@ -45,6 +46,9 @@ export class LoginComponent implements OnInit {
         } else {
           this.message = error.message;
         }
+       },
+       error => {
+        this.message = Util.handleError(error);
        });
   
     } else  {

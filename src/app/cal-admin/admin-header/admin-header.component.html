@@ -1,0 +1,26 @@
+<table style="width:100%;">
+    <tr class="header-title" style="width:100%;">
+      <td style="text-align: left;">&nbsp;
+        <a class="alink" href="#" *ngIf= "!isMyPage('API')" (click)="gotToApis()"><span>API</span></a> 
+
+        <span *ngIf= "!isMyPage('USER_ADMIN')">
+            <span style="color:rgba(255, 255, 255, 0.541); font-size: 14px;">&nbsp;|&nbsp;</span>
+            <a class="alink" href="#" (click)="gotToUserAdmin()"><span>Uaser admin</span>&nbsp;</a> 
+        </span>
+
+        <span *ngIf= "!isMyPage('CAL_ADMIN')">
+            <span style="color:rgba(255, 255, 255, 0.541); font-size: 14px;">&nbsp;|&nbsp;</span>
+            <a class="alink" href="#" (click)="gotToCalAdmin()"><span>Calendar admin</span></a> 
+        </span>
+       
+      </td>
+      <td style="width; 95%;">
+        <div style="text-align: center;"><span>Business Calendar Administration</span></div>
+      </td>
+      <td style="text-align: right;">
+        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        <cal-logout></cal-logout>&nbsp;<span style="color:rgba(255, 255, 255, 0.541); font-size: 14px;">&nbsp;|&nbsp;</span>
+        <a class="alink" href="#" *ngIf= "currentPageName != 'RESET_PASSWORD'" (click)="gotToResetPassword()"><span>Reset password</span></a> &nbsp;
+      </td>
+    </tr>
+  </table>

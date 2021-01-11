@@ -7,7 +7,7 @@ import { EventEmitter, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
-import { LoginForm, UserInfo } from 'src/app/model/cal-model';
+import { ApiError, BusinessCalendarOwnership, LoginForm, User, UserInfo } from 'src/app/model/cal-model';
 import { HttpService } from 'src/app/service/http.service';
 
 
@@ -25,8 +25,11 @@ export class AuthService extends HttpService{
     
     public setUserInfo(userInfo: UserInfo) {
         this.userInfo = userInfo;
+        //usr to type object
+        userInfo.user = Object.setPrototypeOf(userInfo.user, User.prototype);
         this.userInfoEmitter.emit(this.userInfo);
     }
+
     public getUserInfo(): UserInfo {
         return this.userInfo as UserInfo;
     }
@@ -54,5 +57,22 @@ export class AuthService extends HttpService{
 
     public isLoggedIn() : boolean {
         return this.userInfo != undefined;
+    }
+
+    public reloadUserCalendarOwnerships() {
+        if(this.userInfo && this.userInfo?.user) {
+            let loginForm = new LoginForm();
+            loginForm.userId = this.userInfo?.user.userId;
+            super.post("api/admin/user_calendar", loginForm).subscribe(resp => {
+                let json = JSON.stringify(resp);
+                let error: ApiError = JSON.parse(json);
+                if(error.status == null || error.status == undefined) {
+                  let ownerships: BusinessCalendarOwnership[] = JSON.parse(json);
+                  if(ownerships && this.userInfo) {
+                    this.userInfo.businessCalendarOwnerships = ownerships;
+                  }
+                } 
+               });
+        }
     }
 }

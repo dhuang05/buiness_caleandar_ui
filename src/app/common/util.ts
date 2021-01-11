@@ -17,4 +17,18 @@ export  class Util {
         return JSON.parse(JSON.stringify(obj));
     }
 
+
+    public static handleError(error:any) : string  {
+        let message: string | undefined;
+        if(error.status >= 400 && error.status < 500 ){
+          message = 'Required authorization to perform the request.';
+        } else if(error.status >= 500 ) {
+           message = 'Service not available.';
+        } else {
+            message = JSON.stringify(error);
+        }
+
+        return message;
+    }
+
 }
