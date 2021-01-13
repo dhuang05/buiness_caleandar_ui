@@ -1,9 +1,8 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UserInfo } from '../../model/cal-model';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { Util } from 'src/app/common/util';
-import { User } from 'src/app/model/cal-model';
+import { User, UserInfo } from 'src/app/model/cal-model';
 
 @Component({
   selector: 'cal-admin-header',
@@ -29,6 +28,10 @@ export class AdminHeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.isUserHasSuperRole =  this.authService.hasSupperRole();
+    this.userInfoSubscription = this.authService.getUserInfoEventEmitter()
+      .subscribe((userInfo: UserInfo) => {
+          this.isUserHasSuperRole =  this.authService.hasSupperRole();
+      });
   }
 
   ngOnDestroy(){
@@ -61,8 +64,9 @@ export class AdminHeaderComponent implements OnInit, OnDestroy {
   }
 
   gotToUserAdmin(){
-    //this.router.navigate(['user_admin']);
-    //this.router.navigate(["../user_admin"]);
+    this.router.dispose();
+    this.router.navigate(['user-admin']);
+  
   }
 
 }

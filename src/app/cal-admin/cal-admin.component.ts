@@ -33,7 +33,7 @@ export class CalAdminComponent implements OnInit, OnDestroy {
   userInfoSubscription: any;
   isUserHasSuperRole = false;
   //
-  selectedBusinessCalendarOwnership: BusinessCalendarOwnership | undefined;
+  selectedBusinessCalendarOwnership!: BusinessCalendarOwnership | undefined;
   selectedCalendarInst: CalendarInst | undefined;
   //temp only
   selectedWeeklyBusinessHours: BusinessHour[] = [];
@@ -74,7 +74,7 @@ export class CalAdminComponent implements OnInit, OnDestroy {
       .subscribe((userInfo: UserInfo) => {
         if(userInfo != undefined && userInfo.user != undefined) {
           this.businessCalendarOwnerships = userInfo.businessCalendarOwnerships;
-          this.isUserHasSuperRole =  this.authService.hasSupperRole();;
+          this.isUserHasSuperRole =  this.authService.hasSupperRole();
         }
       });
 
@@ -197,6 +197,9 @@ export class CalAdminComponent implements OnInit, OnDestroy {
       } else {
         this.message = error.message;
       }
+     },
+     error => {
+      this.message = Util.handleError(error);
      });
   }
 

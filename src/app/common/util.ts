@@ -1,6 +1,6 @@
 export  class Util {
-    public static isEmpty(text: string| undefined): boolean{
-        return text == null || text == undefined || text.toString().trim().length == 0;
+    public static isEmpty(text: string| undefined| any): boolean{
+        return text == null || text == undefined || text.toString().trim().length === 0;
     }
 
     public static isEqual(a:any, b: any): boolean{
@@ -25,7 +25,8 @@ export  class Util {
         } else if(error.status >= 500 ) {
            message = 'Service not available.';
         } else {
-            message = JSON.stringify(error);
+            message = JSON.stringify("Unknow Error");
+            console.log(error);
         }
 
         return message;

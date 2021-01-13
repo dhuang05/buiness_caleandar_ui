@@ -112,6 +112,7 @@ export class User {
         userId!: string;
         person!: Person;
         orgId!: string;
+        password!: string; 
         //should be = []; after role configure
         roles: Role[] = [];
 }
@@ -120,6 +121,16 @@ export class Role {
         roleId: string = "";
         description: string = "";
 }
+
+export class Organization {
+        orgId!: string;
+        orgName! : string
+        address! : string;
+        category! : string;
+        firstContactPerson!: Person;
+        secondContactPerson!: Person;
+}
+    
 
 export class Person {
         personId!: string;

@@ -33,6 +33,8 @@ import { CalendarViewComponent } from './calendar-view/calendar-view.component';
 import {MatGridListModule} from '@angular/material/grid-list';
 import { ApiTestComponent } from './api-test/api-test.component';
 import { AdminHeaderComponent } from './admin-header/admin-header.component';
+import { UserAdminComponent } from './user-admin/user-admin.component';
+import { PersonComponent } from './user-admin/person/person.component';
 
 @NgModule({
         declarations: [
@@ -47,6 +49,9 @@ import { AdminHeaderComponent } from './admin-header/admin-header.component';
             CalendarViewComponent,
             ApiTestComponent,
             AdminHeaderComponent,
+            CalAdminComponent,
+            UserAdminComponent,
+            PersonComponent,
         ],
         imports: [
             RouterModule,

@@ -7,7 +7,8 @@ import { EventEmitter, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
-import { ApiError, BusinessCalendarOwnership, LoginForm, User, UserInfo } from 'src/app/model/cal-model';
+import { Util } from 'src/app/common/util';
+import { ApiError, BusinessCalendarOwnership, LoginForm, Organization, User, UserInfo } from 'src/app/model/cal-model';
 import { HttpService } from 'src/app/service/http.service';
 
 
@@ -36,6 +37,11 @@ export class AuthService extends HttpService {
 
     public hasSupperRole(): boolean {
         return this.hasRoleOf(AuthService.SUPER_ADMIN_ROLE);
+    }
+
+
+    public hasAdminRoles(): boolean {
+        return this.hasRoleOf(AuthService.ADMIN_ROLE) || this.hasRoleOf(AuthService.SUPER_ADMIN_ROLE);
     }
 
     public hasRoleOf(aRole: string): boolean {
@@ -75,6 +81,69 @@ export class AuthService extends HttpService {
         let result = super.post("api/admin/user/forgetpassword", LoginForm);
     }
 
+    public saveUser(user: User) {
+        let url = "api/admin/user";
+        let result = super.post(url, user);
+        return result;
+    }
+
+    public saveOrganization(organization: Organization) {
+        let url = "api/admin/organization";
+        let result = super.post(url, organization);
+        return result;
+    }
+
+    public findUsers(orgId: string, keyword: string) {
+        let url = "api/admin/user";
+        if(!Util.isEmpty(orgId) || !Util.isEmpty(keyword)) {
+            url += "?" 
+            let hasParam = false;
+            if(!Util.isEmpty(orgId)) {
+                if(hasParam) {
+                    url += "&"
+                }
+                url += "orgId=" + orgId; 
+                hasParam = true;
+            }
+
+            if(!Util.isEmpty(keyword)) {
+                if(hasParam) {
+                    url += "&"
+                }
+                url += "keyword=" + keyword; 
+                hasParam = true;
+            }
+        }
+        let result = super.get(url);
+        return result;
+    }
+
+    public findOrganizations(userId: string, keyword: string) {
+        let url = "api/admin/organization";
+        if(!Util.isEmpty(userId) || !Util.isEmpty(keyword)) {
+            url += "?" 
+            let hasParam = false;
+            if(!Util.isEmpty(userId)) {
+                if(hasParam) {
+                    url += "&"
+                }
+                url += "userId=" + userId; 
+                hasParam = true;
+            }
+
+            if(!Util.isEmpty(keyword)) {
+                if(hasParam) {
+                    url += "&"
+                }
+                url += "keyword=" + keyword; 
+                hasParam = true;
+            }
+        }
+        let result = super.get(url);
+        return result;
+    }
+
+
     public isLoggedIn(): boolean {
         return this.userInfo != undefined;
     }
@@ -95,4 +164,7 @@ export class AuthService extends HttpService {
             });
         }
     }
+
+
+
 }
