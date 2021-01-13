@@ -73,7 +73,7 @@
       <span>&nbsp;&nbsp;&nbsp;</span>
       <mat-form-field appearance="legacy">
         <mat-label>Timezone</mat-label>
-        <mat-select (change)="isChanged()" [(ngModel)]="selectedCalendarInst.timeZone">
+        <mat-select (valueChange)="isChanged()" [(ngModel)]="selectedCalendarInst.timeZone">
           <mat-option><span style="color:red">please select</span></mat-option>
           <mat-option *ngFor="let timezone of timezones" [value]="timezone">{{timezone}}</mat-option>
         </mat-select>

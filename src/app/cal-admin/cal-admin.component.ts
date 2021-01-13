@@ -279,6 +279,7 @@ export class CalAdminComponent implements OnInit, OnDestroy {
 
   isChanged() {
     this.isContentChanged = true || Util.isEqual(this.backupCalendarInst, this.selectedCalendarInst);
+    this.message = "";
   }
 
   testAndSaveCalednar(toSave: boolean){

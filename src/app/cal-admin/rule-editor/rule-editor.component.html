@@ -11,12 +11,13 @@
             <div>
               <mat-label>{{data.title}}</mat-label>
             </div>
-            <div style="width:90%;"></div>
+            <div style="width:30%;"></div>
             <div>
               <select [(ngModel)]="selectedYear">
                 <option *ngFor="let year of years" [value]="year">{{year}}</option>
               </select>
             </div>
+            <span>&nbsp;</span>
             <div>
               <button *ngIf= "data.expression && data.expression.trim()"  mat-button (click)="testRule()">Test</button>
             </div>

@@ -14,6 +14,7 @@
     <ol>
       <li>Year, month, day and day of week</li>
       <li>The first, second, third, ... day of week in month</li>
+      <li>The last first, second, third, ... day of week in month</li>
       <li>The first, second, third, ... day of week in year</li>
       <li>Last day of month</li>
       <li>Built in function</li>
@@ -109,6 +110,36 @@
     </div>
 
   
+      <!-- The last first, second, third, ... day of week in month logic unit -->
+      <h2 id="xem">The last first, second, third, ... day of week in month logic unit</h2>
+      <div>
+        <span class = "desc">
+          It is a reverse counting of the previous rule. and has one more keyword '<i style="color: darkblue;">LAST </i> '.
+          The last first, second, third, ... day of week in month logic unit is a pattern base logic unit using natural English language. The pattern looks like '<i style="color: darkblue;">The LAST </i> <b>X DAY_OF_WEEK</b> <i style="color: darkblue;"> in </i><b> MONTH</b>' 
+          or '<i style="color: darkblue;">The </i> <b>X DAY_OF_WEEK</b> LAST <i style="color: darkblue;"> in </i><b> MONTH</b>' 
+          Note that the word order DOES matter here: 
+        </span>
+        <ol>
+          <li><b>X</b>: The count of day of week in month, like <i style="color: darkblue;">1st, 2nd, 3rd, 4th, 5th</i> etc. The 5th may never existing depends on months and years, there is no such thing of '<i style="color: darkblue;">6th</i>' and above in this pattern.</li>
+          <li><b>DAY_OF_WEEK</b>: Name of day of week, like <i style="color: darkblue;">Sunday, Monday, Tuesday, ...Sunday</i> etc. </li>
+          <li><b>MONTH</b>: Name of month, or '<i style="color: darkblue;">every month</i>' like <i style="color: darkblue;">January, February, March, ...December</i> or '<i style="color: darkblue;">every month</i>' etc. </li>
+          </ol>
+          <span class = "desc">
+            Examples: 
+          </span>
+          <ul>
+            <li>'<i style="color: darkblue;">The Last Monday in January</i>'. the order matter.</li>
+            <li>'<i style="color: darkblue;">The Last 1st Monday in January</i>'. equals to 'The Last Monday in January'.</li>
+            <li>'<i style="color: darkblue;">The last 2nd Saturday in May</i>'. the order matter.</li>
+            <li>'<i style="color: darkblue;">The 1st Last Monday in January</i>'. equals to 'The Last Monday in January'.</li>
+            <li>'<i style="color: darkblue;">The 3rd last Friday in June</i>'. the order matter.</li>
+            <li>'<i style="color: darkblue;">The last 4th Monday in September</i>'. the order matter.</li>
+            <li>'<i style="color: darkblue;">The 5th last Saturday in February</i>'. this day may never exists in February.</li>
+            <li>'<i style="color: darkblue;">The last 4th Monday of every month</i>'. the order matter. the 'every month' is mandary and means January, February, May, .... or Decemeber.</li>
+          </ul>
+      </div>
+  
+    
     <!-- The first, second, third, ... day of week in year logic units -->
     <h2 id="xey">The first, second, third, ... day of week in year logic unit</h2>
     <div>
