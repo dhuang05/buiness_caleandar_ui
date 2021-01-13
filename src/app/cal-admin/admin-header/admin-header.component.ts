@@ -12,12 +12,14 @@ import { User, UserInfo } from 'src/app/model/cal-model';
 export class AdminHeaderComponent implements OnInit, OnDestroy {
   @Input() currentPageName: string = "";
   isUserHasSuperRole: boolean | undefined;
+  isAdminRole : boolean | undefined;
   userInfoSubscription : any;
 
   public static CAL_ADMIN = "CAL_ADMIN";
   public static RESET_PASSWORD = "RESET_PASSWORD";
   public static API = "API";
   public static USER_ADMIN = "USER_ADMIN";
+
 
 
   constructor(
@@ -28,9 +30,11 @@ export class AdminHeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.isUserHasSuperRole =  this.authService.hasSupperRole();
+    this.isAdminRole = this.authService.hasAdminRoles();
     this.userInfoSubscription = this.authService.getUserInfoEventEmitter()
       .subscribe((userInfo: UserInfo) => {
           this.isUserHasSuperRole =  this.authService.hasSupperRole();
+          this.isAdminRole = this.authService.hasAdminRoles();
       });
   }
 

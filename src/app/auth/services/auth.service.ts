@@ -23,6 +23,7 @@ export class AuthService extends HttpService {
     public static SUPER_ADMIN_ROLE: string = "SUPER_ADMIN_ROLE";
     public static ADMIN_ROLE: string = "ADMIN_ROLE";
     public static API_ROLE: string = "API_ROLE";
+    public static TRIAL_ROLE = "TRIAL_ROLE";
 
     public getUserInfoEventEmitter() {
         return this.userInfoEmitter;
@@ -39,6 +40,9 @@ export class AuthService extends HttpService {
         return this.hasRoleOf(AuthService.SUPER_ADMIN_ROLE);
     }
 
+    public hasTrialRole(): boolean {
+        return this.hasRoleOf(AuthService.TRIAL_ROLE);
+    }
 
     public hasAdminRoles(): boolean {
         return this.hasRoleOf(AuthService.ADMIN_ROLE) || this.hasRoleOf(AuthService.SUPER_ADMIN_ROLE);

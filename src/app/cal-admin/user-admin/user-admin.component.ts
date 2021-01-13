@@ -16,6 +16,8 @@ import { ApiError, Contact, Organization, Person, Role, User, UserInfo } from 's
 export class UserAdminComponent implements OnInit, OnDestroy {
   hasLogedIn: boolean = false;
   isUserHasSuperRole: boolean = false;
+  hasTrialRole = false;
+  hasAdmin = false;
   userInfoSubscription: any;
   step = 0;
   //
@@ -42,8 +44,11 @@ export class UserAdminComponent implements OnInit, OnDestroy {
     public dialog: MatDialog){
   }
 
+
   ngOnInit() {
     this.isUserHasSuperRole =  this.authService.hasSupperRole();
+    this.hasTrialRole = this.authService.hasTrialRole();
+    this.hasAdmin = this.authService.hasAdminRoles();
     this.route.queryParams.subscribe(params => {});
     if(this.authService.hasUser()) {
         this.hasLogedIn = true;
@@ -55,9 +60,12 @@ export class UserAdminComponent implements OnInit, OnDestroy {
         if(userInfo != undefined && userInfo.user != undefined) {
           this.hasLogedIn = true;
           this.isUserHasSuperRole =  this.authService.hasSupperRole();
+          this.hasTrialRole = this.authService.hasTrialRole();
+          this.hasAdmin = this.authService.hasAdminRoles();
         }else {
           this.hasLogedIn = false;
           this.isUserHasSuperRole =  false;
+          this.hasAdmin  = false;
         }
       });
       this.findOrganizations ();
@@ -179,6 +187,16 @@ findUsers () {
       this.organizationMessage = "Please input required fields;";
       return;
     }
+
+    if(this.hasTrialRole) {
+      const dialogRef = this.dialog.open(InfoDialogComponent, {
+        width: '250px',
+        height: '180px',
+        data: "Not authorize trial user to save data."
+      });
+      return;
+    }
+
     this.authService.saveOrganization(organization)
     .subscribe(resp => {
       let json = JSON.stringify(resp);
@@ -338,6 +356,16 @@ findUsers () {
       this.userMessage = "Please check required fields;\n";
       return;
     }
+
+    if(this.hasTrialRole) {
+      const dialogRef = this.dialog.open(InfoDialogComponent, {
+        width: '250px',
+        height: '180px',
+        data: "Not authorize trial user to save data."
+      });
+      return;
+    }
+
     this.authService.saveUser(this.user)
     .subscribe(resp => {
       let json = JSON.stringify(resp);

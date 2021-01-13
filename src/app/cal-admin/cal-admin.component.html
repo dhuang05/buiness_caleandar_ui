@@ -5,11 +5,11 @@
       <td style="vertical-align:top; width:260px; overflow-y: scroll;">
         <div style="vertical-align: top;">
           <div class="list-item">
-            <button class="button" (click)="newCalendarInstance($event)">Create Calendar from template</button>
+            <a class="b-link" href="#" (click)="newCalendarInstance($event)">Create Calendar from template</a>
           </div>
           <div class="list-item" *ngFor="let businessCalendarOwnership of businessCalendarOwnerships; index as i">
-            <button class="button"
-              (click)="fetchCalendarInstance(businessCalendarOwnership)">{{businessCalendarOwnership.description}}</button>
+            <a class="b-link" href="#"
+              (click)="fetchCalendarInstance(businessCalendarOwnership)" >{{businessCalendarOwnership.description}}</a>
           </div>
         </div>
       </td>
@@ -153,6 +153,9 @@
     <span class="error">{{message}}</span>
   </div>
   <div *ngIf="selectedCalendarInst">
+    <div class = "div-center">
+    <h3>{{selectedCalendarInst.desc}}</h3>
+    </div>
     <div class = "div-right">
       <a class="b-link" href="#" (click) = "testAndSaveCalednar(false)"> View Calendar</a> &nbsp;
       <select [(ngModel)]="selectedYear" (change)="testAndSaveCalednar(false)">

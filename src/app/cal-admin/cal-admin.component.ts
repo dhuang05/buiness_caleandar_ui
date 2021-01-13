@@ -32,6 +32,7 @@ export class CalAdminComponent implements OnInit, OnDestroy {
 //
   userInfoSubscription: any;
   isUserHasSuperRole = false;
+  hasTrialRole = false;
   //
   selectedBusinessCalendarOwnership!: BusinessCalendarOwnership | undefined;
   selectedCalendarInst: CalendarInst | undefined;
@@ -70,11 +71,16 @@ export class CalAdminComponent implements OnInit, OnDestroy {
     }
     this.businessCalendarOwnerships = this.authService.getUserInfo().businessCalendarOwnerships;
     this.isUserHasSuperRole =  this.authService.hasSupperRole();
+    this.hasTrialRole = this.authService.hasTrialRole();
     this.userInfoSubscription = this.authService.getUserInfoEventEmitter()
       .subscribe((userInfo: UserInfo) => {
         if(userInfo != undefined && userInfo.user != undefined) {
           this.businessCalendarOwnerships = userInfo.businessCalendarOwnerships;
           this.isUserHasSuperRole =  this.authService.hasSupperRole();
+          this.hasTrialRole = this.authService.hasTrialRole();
+        } else {
+          this.isUserHasSuperRole =  false;
+          this.hasTrialRole = false;
         }
       });
 
@@ -276,7 +282,10 @@ export class CalAdminComponent implements OnInit, OnDestroy {
   }
 
   testAndSaveCalednar(toSave: boolean){
-   
+    if(this.hasTrialRole && toSave) {
+      toSave = false;
+      this.message = "Not authorize to save for trial user";
+    }
     let validated = this.validate();
     let ownership: BusinessCalendarOwnership = Util.copy(this.selectedBusinessCalendarOwnership);
     ownership.calendarInst = this.selectedCalendarInst as CalendarInst;
