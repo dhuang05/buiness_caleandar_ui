@@ -11,7 +11,7 @@ export class BusinessCalendarOwnership {
         description!: string;
         calendarInst!: CalendarInst;
         ownerId!: string;
-        status!: string;
+        status: string = "ACTIVE";
         note!: string;
         isPublic: boolean = false;
 }
@@ -19,6 +19,7 @@ export class BusinessCalendarOwnership {
 export class CalendarInst {
         calId!: string;
         desc!: string;
+        status ?: string;
         timeZone!: string;
         businessHours!: BusinessHour[];
         holidayRules!: DayRule[];
@@ -113,6 +114,7 @@ export class User {
         person!: Person;
         orgId!: string;
         password!: string; 
+        status: string = "ACTIVE";
         //should be = []; after role configure
         roles: Role[] = [];
 }

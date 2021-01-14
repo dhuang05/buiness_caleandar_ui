@@ -103,6 +103,21 @@ export class CalAdminComponent implements OnInit, OnDestroy {
   fetchCalendarInstance(businessCalendarOwnership: BusinessCalendarOwnership) {
     let canLoadNew = true;
     if(this.isContentChanged) {
+
+
+      const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+        width: '300px',
+        height: '200px',
+        data: "The calendar content has been edited, Are you sure to reload without persistence to backend?"
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+         if(result == true) {
+          this.dialogRef.close();
+          //this.reload(businessCalendarOwnership);
+         }
+      });
+
       this.dialogRef = this.dialog.open(ConfirmDialogComponent, {
         width: '320px',
         height: '210px',
@@ -115,6 +130,7 @@ export class CalAdminComponent implements OnInit, OnDestroy {
           this.reload(businessCalendarOwnership);
          }
       });
+    
     } else {
       this.reload(businessCalendarOwnership);
     }
@@ -286,6 +302,11 @@ export class CalAdminComponent implements OnInit, OnDestroy {
     if(this.hasTrialRole && toSave) {
       toSave = false;
       this.message = "Not authorize to save for trial user";
+      const dialogRef = this.dialog.open(InfoDialogComponent, {
+        width: '250px',
+        height: '180px',
+        data: this.message,
+      });
     }
     let validated = this.validate();
     let ownership: BusinessCalendarOwnership = Util.copy(this.selectedBusinessCalendarOwnership);
@@ -355,7 +376,8 @@ export class CalAdminComponent implements OnInit, OnDestroy {
           this.businessCalendarOwnerships.push(testResult.updatedBusCalOwnership);
         }
       }
-      
+      this.message = "The calendar rules has been persisted to storage.";
+
       const dialogRef = this.dialog.open(InfoDialogComponent, {
         width: '250px',
         height: '180px',

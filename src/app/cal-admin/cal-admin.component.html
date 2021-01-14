@@ -4,12 +4,13 @@
     <tr>
       <td style="vertical-align:top; width:260px; overflow-y: scroll;">
         <div style="vertical-align: top;">
+          <h3> Calendar Instanace List</h3>
           <div class="list-item">
-            <a class="b-link" href="#" (click)="newCalendarInstance($event)">Create Calendar from template</a>
+            <button class="b-link" href="#" (click)="newCalendarInstance($event)" style="width:250px;" >Create new calendar from template</button>
           </div>
           <div class="list-item" *ngFor="let businessCalendarOwnership of businessCalendarOwnerships; index as i">
-            <a class="b-link" href="#"
-              (click)="fetchCalendarInstance(businessCalendarOwnership)" >{{businessCalendarOwnership.description}}</a>
+            <button class="b-link" href="#" style="width:250px;"
+              (click)="fetchCalendarInstance(businessCalendarOwnership)" >{{businessCalendarOwnership.description}}</button>
           </div>
         </div>
       </td>
@@ -59,13 +60,22 @@
   </div>
   <div class="flow-layout" *ngIf= "selectedCalendarInst">
     <div class="div-left">
+      <div *ngIf = "selectedBusinessCalendarOwnership">
+        <mat-label>Status: &nbsp;&nbsp;</mat-label>
+        <mat-radio-group (click) = "isChanged()"  [(ngModel)]="selectedBusinessCalendarOwnership.status" aria-label="Calendar Status">
+          <mat-radio-button value="ACTIVE">active</mat-radio-button>
+          &nbsp;&nbsp;
+          <mat-radio-button value="PENDING">pending</mat-radio-button>
+        </mat-radio-group>
+        <div>&nbsp;</div>
+      </div>
       <mat-form-field *ngIf="isUserHasSuperRole" appearance="legacy">
         <mat-label>Calendar ID</mat-label>
         <input matInput (change)="isChanged()" class="input" name="cal_id" type="text"
           [(ngModel)]="selectedCalendarInst.calId" />
       </mat-form-field>
       <span>&nbsp;&nbsp;&nbsp;</span>
-      <mat-form-field appearance="legacy">
+      <mat-form-field appearance="legacy" style = "width: 250px">
         <mat-label>Calendar Name</mat-label>
         <input matInput (change)="isChanged()" class="input" name="cal_name" type="text"
           [(ngModel)]="selectedCalendarInst.desc" />
@@ -79,19 +89,20 @@
         </mat-select>
       </mat-form-field>
     </div>
-    
-
-    <div class="div-right">
-      <span style="font-size: 14px; color:rgb(15, 29, 44)">
-        <span>&nbsp;&nbsp;&nbsp;</span>
-       <a class="b-link" href="#" (click)="setStep(1); testAndSaveCalednar(false);"> To test and save</a>
-       <span>&nbsp;&nbsp;&nbsp;</span>
-    </span>
-    </div>
+    <div class="div-center" style="width: 250px;">
+      <div>
+        <span style="font-size: 14px; color:rgb(15, 29, 44)">
+          <span>&nbsp;&nbsp;&nbsp;</span>
+         <button class="b-link" href="#" (click)="setStep(1); testAndSaveCalednar(false);" [style] = "isContentChanged? 'color:red' : 'color:black;'"> Go to test and saving pane</button>
+         <span>&nbsp;&nbsp;&nbsp;</span>
+      </span>
+      </div>
   </div>
+  </div>
+
   <div style="width:100%;">
     <div>
-      <h3>Weekly Working Hour</h3>
+      <span class="header3">Weekly Working Hour</span>
     </div>
     <div class="flow-layout">
       <div class="weekly-workinghour-block" *ngFor="let businessHour of selectedWeeklyBusinessHours">
@@ -102,7 +113,7 @@
 
   </div>
   <div>
-    <h3>Special Working Hour</h3>
+    <span class="header3">Special Working Hour</span>
     <div class="flow-layout" *ngFor="let specialBusinessHours of specialBusinessHourChunks; let i = index;">
       <div class="special-workinghour-block" *ngFor="let businessHour of specialBusinessHours; let j = index;"
         style="vertical-align: top;">
@@ -122,7 +133,7 @@
     </div>
   </div>
   <div>
-    <h3>Holiday Rules</h3>
+    <span class="header3">Holiday Rules</span>
     <div class="flow-layout" *ngFor="let holidayRules of holidayChunks; let i = index;">
       <div class="holiday-rule-block" *ngFor="let holidayRule of holidayRules; let j = index;"
         style="vertical-align: top;">
@@ -162,7 +173,7 @@
         <option *ngFor="let year of years" [value]="year">{{year}}</option>
       </select>
       &nbsp;
-      <a *ngIf="isContentChanged" class="b-link" href="#" (click) = "testAndSaveCalednar(true)"> Save Calendar Rules</a>
+      <button *ngIf="isContentChanged" class="b-link" style="color: red;" href="#" (click) = "testAndSaveCalednar(true)"> Save Calendar Rules</button>
       <span *ngIf="!isContentChanged">Content not changed yet</span>
     </div>
     <diV><span>&nbsp;</span></diV>

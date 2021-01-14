@@ -35,6 +35,7 @@ import { ApiTestComponent } from './api-test/api-test.component';
 import { AdminHeaderComponent } from './admin-header/admin-header.component';
 import { UserAdminComponent } from './user-admin/user-admin.component';
 import { PersonComponent } from './user-admin/person/person.component';
+import {MatRadioModule} from '@angular/material/radio';
 
 @NgModule({
         declarations: [
@@ -67,6 +68,8 @@ import { PersonComponent } from './user-admin/person/person.component';
             MatTabsModule,
             MatExpansionModule,
             MatGridListModule,
+            MatIconModule,
+            MatRadioModule,
         ],
         providers: [
             CalAdminService,

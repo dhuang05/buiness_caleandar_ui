@@ -112,6 +112,9 @@ findUsers () {
       });
 }
 
+  isEditItself(): boolean {
+    return this.user?.userId === this.authService.getUserInfo().user.userId;
+  }
 
   logout(e:Event) {
     this.authService.logout ( this.authService.getUserInfo().user.userId);

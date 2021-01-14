@@ -19,6 +19,7 @@ import { CalAdminModule } from './cal-admin/cal-admin.module';
 import { MatDialogModule} from '@angular/material/dialog';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatGridListModule} from '@angular/material/grid-list';
+import {MatRadioModule} from '@angular/material/radio';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import {MatGridListModule} from '@angular/material/grid-list';
     MatSelectModule,
     MatTabsModule,
     MatGridListModule,
+    MatRadioModule,
   ],
   providers: [
     HttpService,
