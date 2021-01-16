@@ -52,6 +52,7 @@ export class CalAdminComponent implements OnInit, OnDestroy {
   years: number[] = [];
   step = 0;
   //
+  calFilter: string = "";
 
   constructor(
     private router: Router,
@@ -65,10 +66,12 @@ export class CalAdminComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.businessCalendarOwnerships = undefined;
+    this.calFilter = "";
     if(this.authService.getUserInfo() == undefined) {
       this.router.navigate(['login']);
       return;
     }
+ 
     this.businessCalendarOwnerships = this.authService.getUserInfo().businessCalendarOwnerships;
     this.isUserHasSuperRole =  this.authService.hasSupperRole();
     this.hasTrialRole = this.authService.hasTrialRole();
@@ -78,6 +81,7 @@ export class CalAdminComponent implements OnInit, OnDestroy {
           this.businessCalendarOwnerships = userInfo.businessCalendarOwnerships;
           this.isUserHasSuperRole =  this.authService.hasSupperRole();
           this.hasTrialRole = this.authService.hasTrialRole();
+          this.calFilter = "";
         } else {
           this.isUserHasSuperRole =  false;
           this.hasTrialRole = false;
@@ -128,13 +132,13 @@ export class CalAdminComponent implements OnInit, OnDestroy {
       let json = JSON.stringify(resp);
       console.log("json: " + json);
       let error: ApiError = JSON.parse(json);
-      if(error.status == null || error.status == undefined) {
+      if(!ApiError.isError(error)) {
         this.selectedCalendarInst = JSON.parse(json);
         this.selectedBusinessCalendarOwnership = businessCalendarOwnership;
         this.sortCalendar(this.selectedCalendarInst as CalendarInst);
         this.backupCalendarInst = Util.copy(this.selectedCalendarInst);
       } else {
-        this.message = error.message;
+        this.message = error.errMessage;
       }
      },
      error => {
@@ -190,7 +194,7 @@ export class CalAdminComponent implements OnInit, OnDestroy {
       let json = JSON.stringify(resp);
       console.log("json: " + json);
       let error: ApiError = JSON.parse(json);
-      if(error.status == null || error.status == undefined) {
+      if(!ApiError.isError(error)) {
         let calIntTemplate: CalendarInst = JSON.parse(json);
         //
         this.selectedBusinessCalendarOwnership = new BusinessCalendarOwnership();
@@ -202,7 +206,7 @@ export class CalAdminComponent implements OnInit, OnDestroy {
         this.sortCalendar(this.selectedCalendarInst as CalendarInst);
         this.backupCalendarInst = Util.copy(this.selectedCalendarInst);
       } else {
-        this.message = error.message;
+        this.message = error.errMessage;
       }
      },
      error => {
@@ -319,14 +323,14 @@ export class CalAdminComponent implements OnInit, OnDestroy {
         let json = JSON.stringify(resp);
         //console.log("json: " + json);
         let error: ApiError = JSON.parse(json);
-        if(error.status == null || error.status == undefined) {
+        if(!ApiError.isError(error)) {
           this.testResult =  JSON.parse(json);
           if(toSave) {
             this.handlePostSaveResult(this.testResult);
           }
           this.handleReportErrors(this.testResult);
         } else {
-          this.message = error.message;
+          this.message = error.errMessage;
         }
        },
        error => {
@@ -344,6 +348,20 @@ export class CalAdminComponent implements OnInit, OnDestroy {
        }
        this.message = errors;
     }
+  }
+
+  doFilter(text : string): boolean {
+    if(this.calFilter && Util.isEmpty(this.calFilter.trim())) {
+      return true;
+    }
+    let regex = /[\s|,|;]{1,}/;
+    let parts = this.calFilter.replace(regex, " ").split(" ");
+    for(let part of parts) {
+      if(text.toUpperCase().indexOf(part.toUpperCase().trim()) < 0) {
+        return false;
+      }
+    }
+    return true;
   }
 
   handlePostSaveResult(testResult: CalendarAdminInstTestResult| undefined){

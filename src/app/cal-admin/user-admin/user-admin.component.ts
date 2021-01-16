@@ -83,10 +83,10 @@ findOrganizations () {
         let json = JSON.stringify(resp);
         console.log("json: " + json);
         let error: ApiError = JSON.parse(json);
-        if(error.status == null || error.status == undefined) {
+        if(!ApiError.isError(error)) {
             this.organizations = JSON.parse(json) as Organization[];
         } else {
-          this.organizationMessage = error.message;
+          this.organizationMessage = error.errMessage;
         }
        },
        error => {
@@ -101,10 +101,10 @@ findUsers () {
         let json = JSON.stringify(resp);
         console.log("json: " + json);
         let error: ApiError = JSON.parse(json);
-        if(error.status == null || error.status == undefined) {
+        if(!ApiError.isError(error)) {
             this.users = JSON.parse(json) as User[];
         } else {
-          this.userMessage = error.message;
+          this.userMessage = error.errMessage;
         }
        },
        error => {
@@ -205,7 +205,7 @@ findUsers () {
       let json = JSON.stringify(resp);
       console.log("json: " + json);
       let error: ApiError = JSON.parse(json);
-      if(error.status == null || error.status == undefined) {
+      if(!ApiError.isError(error)) {
         let organization: Organization = JSON.parse(json);
         if(!this.organizations) {
           this.organizations = [];
@@ -227,7 +227,7 @@ findUsers () {
           data: "Organization saved."
         });
       } else {
-        this.organizationMessage = error.message;
+        this.organizationMessage = error.errMessage;
       }
      },
      error => {
@@ -250,10 +250,10 @@ findUsers () {
         let json = JSON.stringify(resp);
         console.log("json: " + json);
         let error: ApiError = JSON.parse(json);
-        if(error.status == null || error.status == undefined) {
+        if(!ApiError.isError(error)) {
             this.organizations = JSON.parse(json) as Organization[];
         } else {
-          this.organizationMessage = error.message;
+          this.organizationMessage = error.errMessage;
         }
        },
        error => {
@@ -374,7 +374,7 @@ findUsers () {
       let json = JSON.stringify(resp);
       console.log("json: " + json);
       let error: ApiError = JSON.parse(json);
-      if(error.status == null || error.status == undefined) {
+      if(!ApiError.isError(error)) {
         let user: User = JSON.parse(json);
         if(!this.users) {
           this.users = [];
@@ -396,7 +396,7 @@ findUsers () {
           data: "User saved."
         });
       } else {
-        this.userMessage = error.message;
+        this.userMessage = error.errMessage;
         this.user = user;
       }
      },
@@ -405,6 +405,8 @@ findUsers () {
     });
 
   }
+
+  
 
   isPasswordRequired(): boolean {
     return !Util.isEmpty(this.user) && this.isNewUser && Util.isEmpty(this.user?.password);
@@ -418,7 +420,7 @@ findUsers () {
   }
 
   addEditUser(org: Organization) {
-    if(this.organization && org != this.organization ) {
+    if(this.organization && !Util.isEqual(org.orgId, this.organization.orgId)) {
       this.dialogRef = this.dialog.open(ConfirmDialogComponent, {
         width: '320px',
         height: '210px',
@@ -433,8 +435,8 @@ findUsers () {
          }
       });
     }
-    this.organization = org;
-    this.setStep(1);
+    //this.organization = org;
+    //this.setStep(1);
   }
 
   userIdValidate() {
@@ -457,10 +459,10 @@ findUsers () {
       let json = JSON.stringify(resp);
       console.log("json: " + json);
       let error: ApiError = JSON.parse(json);
-      if(error.status == null || error.status == undefined) {
+      if(!ApiError.isError(error)) {
           this.users = JSON.parse(json) as User[];
       } else {
-        this.userMessage = error.message;
+        this.userMessage = error.errMessage;
       }
      },
      error => {

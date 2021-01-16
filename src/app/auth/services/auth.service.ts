@@ -159,7 +159,7 @@ export class AuthService extends HttpService {
             super.post("api/admin/user_calendar", loginForm).subscribe(resp => {
                 let json = JSON.stringify(resp);
                 let error: ApiError = JSON.parse(json);
-                if (error.status == null || error.status == undefined) {
+                if (!ApiError.isError(error)) {
                     let ownerships: BusinessCalendarOwnership[] = JSON.parse(json);
                     if (ownerships && this.userInfo) {
                         this.userInfo.businessCalendarOwnerships = ownerships;

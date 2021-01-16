@@ -1,3 +1,5 @@
+import { Util } from "../common/util";
+
 export class LoginForm {
         userId!: string;
         email!: string;
@@ -153,11 +155,19 @@ export class Contact {
 }
 
 export class ApiError {
-        status!: string;
+        errStatus!: string;
         timestamp!: Date;
-        code !: string;
-        message !: string;
+        errCode !: string;
+        errMessage !: string;
+
         subErrors !: string[];
+
+        public static isError(err: ApiError) : boolean {
+                if(err.errStatus && (err.timestamp || err.errCode)) {
+                        return true;
+                }
+                return false;
+        } 
 }
 
 export class RuleEditData {

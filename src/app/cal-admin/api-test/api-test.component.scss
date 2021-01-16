@@ -105,3 +105,13 @@
     font-size: 12px;
     font-weight: 400;
 }
+
+.no-border-button {
+    border: none;
+    background-color: transparent;
+    outline: none;
+    cursor:pointer;
+}
+button:hover{
+    color: blue;
+}

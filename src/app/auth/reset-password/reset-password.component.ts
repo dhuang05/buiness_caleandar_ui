@@ -37,13 +37,13 @@ export class ResetPasswordComponent implements OnInit {
         this.authService.resetpassword(this.loginForm).subscribe(resp => {
           let json = JSON.stringify(resp);
           let error: ApiError = JSON.parse(json);
-          if(error.status == null || error.status == undefined) {
+          if(!ApiError.isError(error)) {
             let userInfo: UserInfo = JSON.parse(json);
             this.authService.setUserInfo(userInfo);
             this.router.navigate(['cal-admin', {calendarOwnerships: userInfo.businessCalendarOwnerships}]);
             this.router.navigate(['login']);
           } else {
-            this.message = error.message;
+            this.message = error.errMessage;
           }
          },
          error => {

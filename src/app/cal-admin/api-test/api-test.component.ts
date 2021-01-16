@@ -39,10 +39,10 @@ export class ApiTestComponent implements OnInit, OnDestroy {
       let json = JSON.stringify(resp);
       //console.log("API json: " + json);
       let error: ApiError = JSON.parse(json);
-      if(error.status == null || error.status == undefined) {
+      if(!ApiError.isError(error)) {
         this.calendarOwnerships =  JSON.parse(json);
       } else {
-        this.message = error.message;
+        this.message = error.errMessage;
       }
      },
        error => {
@@ -145,7 +145,7 @@ export class ApiTestComponent implements OnInit, OnDestroy {
       let json = JSON.stringify(resp, null, 2);
       //console.log(json);
       let error: ApiError = JSON.parse(json);
-      if(error.status == null || error.status == undefined) {
+      if(!ApiError.isError(error)) {
         let result =  "\n" + json as string;
         const dialogRef = this.dialog.open(ContentDialogComponent, {
           width: '500px',
@@ -153,7 +153,7 @@ export class ApiTestComponent implements OnInit, OnDestroy {
           data: result,
         });
       } else {
-        this.requestCalInfoError = error.message;
+        this.requestCalInfoError = error.errMessage;
       }
      },
      error => {
@@ -181,7 +181,7 @@ export class ApiTestComponent implements OnInit, OnDestroy {
       let json = JSON.stringify(resp, null, 2);
       //console.log(json);
       let error: ApiError = JSON.parse(json);
-      if(error.status == null || error.status == undefined) {
+      if(!ApiError.isError(error)) {
         let result =  "\n" + json as string;
         const dialogRef = this.dialog.open(ContentDialogComponent, {
           width: '500px',
@@ -189,7 +189,7 @@ export class ApiTestComponent implements OnInit, OnDestroy {
           data: result,
         });
       } else {
-        this.requestTimeSlotError = error.message;
+        this.requestTimeSlotError = error.errMessage;
       }
      },
      error => {

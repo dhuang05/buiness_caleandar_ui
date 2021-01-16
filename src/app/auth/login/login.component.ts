@@ -40,12 +40,12 @@ export class LoginComponent implements OnInit {
         let json = JSON.stringify(resp);
         //console.log(json);
         let error: ApiError = JSON.parse(json);
-        if(error.status == null || error.status == undefined) {
+        if(!ApiError.isError(error)) {
           let userInfo: UserInfo = JSON.parse(json);
           this.authService.setUserInfo(userInfo);
           this.router.navigate(['cal-admin', {calendarOwnerships: userInfo.businessCalendarOwnerships}]);
         } else {
-          this.message = error.message;
+          this.message = error.errMessage;
         }
        },
        error => {

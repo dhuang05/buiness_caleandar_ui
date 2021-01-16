@@ -100,7 +100,7 @@
         </div>
         <div class="div-center" *ngIf = "user" >
             <mat-grid-list cols="2" rowHeight="6:1">
-                <mat-grid-tile>
+                <mat-grid-tile *ngIf = "isNewUser">
                     <mat-form-field appearance="legacy" style = "width:250px;">
                         <mat-label><span [class] = "isEmpty(user.userId) ?  'required' : 'filled'">User Id (or Email) </span></mat-label>
                         <input matInput type="text" (change) = "userIdValidate()" [(ngModel)]="user.userId">
