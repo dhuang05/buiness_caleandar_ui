@@ -103,21 +103,6 @@ export class CalAdminComponent implements OnInit, OnDestroy {
   fetchCalendarInstance(businessCalendarOwnership: BusinessCalendarOwnership) {
     let canLoadNew = true;
     if(this.isContentChanged) {
-
-
-      const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-        width: '300px',
-        height: '200px',
-        data: "The calendar content has been edited, Are you sure to reload without persistence to backend?"
-      });
-  
-      dialogRef.afterClosed().subscribe(result => {
-         if(result == true) {
-          this.dialogRef.close();
-          //this.reload(businessCalendarOwnership);
-         }
-      });
-
       this.dialogRef = this.dialog.open(ConfirmDialogComponent, {
         width: '320px',
         height: '210px',
@@ -298,14 +283,24 @@ export class CalAdminComponent implements OnInit, OnDestroy {
     this.message = "";
   }
 
+ 
+
   testAndSaveCalednar(toSave: boolean){
+    this.selectedYear = new Date().getFullYear();
+    this.doTestAndSave(toSave) ;
+  }
+
+  doTestAndSave(toSave: boolean)  {
     if(this.hasTrialRole && toSave) {
       toSave = false;
-      this.message = "Not authorize to save for trial user";
+      this.message = "Not authorize to save for trial user, will do the test.";
       const dialogRef = this.dialog.open(InfoDialogComponent, {
         width: '250px',
         height: '180px',
         data: this.message,
+      });
+      this.dialogRef.afterClosed().subscribe((result: boolean) => {
+         this.dialogRef.close();
       });
     }
     let validated = this.validate();
@@ -314,7 +309,6 @@ export class CalAdminComponent implements OnInit, OnDestroy {
     if(validated) {
       ownership.calendarInst = this.selectedCalendarInst as CalendarInst;
      let observable: Observable<any> | undefined = undefined;
-
      if(toSave) {
        observable = this.calAdminService.testAndSaveCalendarAdminInst(ownership, this.selectedYear);
      } else {
@@ -376,23 +370,25 @@ export class CalAdminComponent implements OnInit, OnDestroy {
           this.businessCalendarOwnerships.push(testResult.updatedBusCalOwnership);
         }
       }
-      this.message = "The calendar rules has been persisted to storage.";
 
       const dialogRef = this.dialog.open(InfoDialogComponent, {
         width: '250px',
         height: '180px',
         data: "The calendar rules has been persisted to storage."
       });
+      this.dialogRef.afterClosed().subscribe((result: boolean) => {
+        this.dialogRef.close();
+      });
     }
   }
   moveToPreviousYear() {
     this.selectedYear = Number(this.selectedYear) - 1;
-    this.testAndSaveCalednar(false);
+    this.doTestAndSave(false);
   }
 
   moveToNextYear() {
     this.selectedYear = Number(this.selectedYear) + 1;
-    this.testAndSaveCalednar(false);
+    this.doTestAndSave(false);
   }
 
   validate(): boolean {

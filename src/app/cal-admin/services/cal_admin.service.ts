@@ -57,4 +57,9 @@ export class CalAdminService extends HttpService{
     public genericGet(url: string) {
         return super.get(url);
     }
+
+    public getAllAddOnFunctions() {
+        let url = "api/admin/calendar/all-addon-functions";
+        return super.get(url);
+    }
 }

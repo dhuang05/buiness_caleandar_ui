@@ -4,12 +4,12 @@
     <tr>
       <td style="vertical-align:top; width:260px; overflow-y: scroll;">
         <div style="vertical-align: top;">
-          <h3> Calendar Instanace List</h3>
+          <span class="header3"> Calendar Instanace List </span>
           <div class="list-item">
-            <button class="b-link" href="#" (click)="newCalendarInstance($event)" style="width:250px;" >Create new calendar from template</button>
+            <button class="no-border-button" href="#" (click)="newCalendarInstance($event)" style="width:250px;" >Create new calendar from template</button>
           </div>
           <div class="list-item" *ngFor="let businessCalendarOwnership of businessCalendarOwnerships; index as i">
-            <button class="b-link" href="#" style="width:250px;"
+            <button class="no-border-button" href="#" style="width:250px;"
               (click)="fetchCalendarInstance(businessCalendarOwnership)" >{{businessCalendarOwnership.description}}</button>
           </div>
         </div>
@@ -164,19 +164,16 @@
     <span class="error">{{message}}</span>
   </div>
   <div *ngIf="selectedCalendarInst">
-    <div class = "div-center">
-    <h3>{{selectedCalendarInst.desc}}</h3>
-    </div>
+    <div class = "div-left" ></div>
+    <div class = "div-center, header3">{{selectedCalendarInst.desc}}</div>
     <div class = "div-right">
-      <a class="b-link" href="#" (click) = "testAndSaveCalednar(false)"> View Calendar</a> &nbsp;
-      <select [(ngModel)]="selectedYear" (change)="testAndSaveCalednar(false)">
-        <option *ngFor="let year of years" [value]="year">{{year}}</option>
-      </select>
-      &nbsp;
-      <button *ngIf="isContentChanged" class="b-link" style="color: red;" href="#" (click) = "testAndSaveCalednar(true)"> Save Calendar Rules</button>
+      <button class="b-link" href="#" (click) = "testAndSaveCalednar(false)"> View Calendar</button>
+      &nbsp; &nbsp;
+      <button *ngIf="isContentChanged" class="b-link" style="color: red;" href="#" (click) = "testAndSaveCalednar(true)">Save Calendar Rules</button>
       <span *ngIf="!isContentChanged">Content not changed yet</span>
+      &nbsp; &nbsp;
     </div>
-    <diV><span>&nbsp;</span></diV>
+   
   </div>
 
   <div *ngIf="testResult" class= "header-title">

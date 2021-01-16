@@ -16,10 +16,17 @@ export class RuleEditorHelpComponent implements OnInit {
   @Input() language: string = "en";
 
   constructor(
+    public dialogRef: MatDialogRef<RuleEditorHelpComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: String
     ){
   }
 
   ngOnInit() {
-    
   }
+
+  ok() {
+    this.dialogRef.close(this.data);
+  }
+
 }
+

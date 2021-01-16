@@ -20,6 +20,7 @@ import { MatDialogModule} from '@angular/material/dialog';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatRadioModule} from '@angular/material/radio';
+import {ClipboardModule} from '@angular/cdk/clipboard';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import {MatRadioModule} from '@angular/material/radio';
     MatTabsModule,
     MatGridListModule,
     MatRadioModule,
+    ClipboardModule,
   ],
   providers: [
     HttpService,

@@ -92,7 +92,7 @@ table, th, td {
     text-align:left;
     margin: 0 auto;
     -ms-flex: 2;  /* IE 10 */  
-     flex: 2;
+     flex: 1;
 }
 
 .div-right {
@@ -143,6 +143,17 @@ table, th, td {
 }
 
 a:hover{
+    color: blue;
+}
+
+
+.no-border-button {
+    border: none;
+    background-color: transparent;
+    outline: none;
+    cursor:pointer;
+}
+button:hover{
     color: blue;
 }
 

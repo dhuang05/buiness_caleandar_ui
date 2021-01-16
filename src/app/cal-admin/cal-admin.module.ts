@@ -36,6 +36,8 @@ import { AdminHeaderComponent } from './admin-header/admin-header.component';
 import { UserAdminComponent } from './user-admin/user-admin.component';
 import { PersonComponent } from './user-admin/person/person.component';
 import {MatRadioModule} from '@angular/material/radio';
+import { SelectDialogComponent } from '../common/select-dialog/select-dialog.component';
+import {ClipboardModule} from '@angular/cdk/clipboard';
 
 @NgModule({
         declarations: [
@@ -46,6 +48,7 @@ import {MatRadioModule} from '@angular/material/radio';
             ErrorComponent,
             RuleEditorComponent,
             RuleEditorHelpComponent,
+            SelectDialogComponent,
             ExprTestViewComponent,
             CalendarViewComponent,
             ApiTestComponent,
@@ -70,6 +73,7 @@ import {MatRadioModule} from '@angular/material/radio';
             MatGridListModule,
             MatIconModule,
             MatRadioModule,
+            ClipboardModule,
         ],
         providers: [
             CalAdminService,

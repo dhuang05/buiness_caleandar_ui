@@ -13,9 +13,12 @@ import { RuleEditData, RuleExprTestResult } from 'src/app/model/cal-model';
   styleUrls: ['./expr-test-view.component.scss']
 })
 export class ExprTestViewComponent implements OnInit {
-  @Input() exprTestResult: RuleExprTestResult | undefined;
+  //@Input() exprTestResult: RuleExprTestResult | undefined;
 
-  constructor(){
+  constructor(
+    public dialogRef: MatDialogRef<ExprTestViewComponent>,
+    @Inject(MAT_DIALOG_DATA) public exprTestResult: RuleExprTestResult | undefined
+    ){
   }
 
   ngOnInit() {
@@ -25,4 +28,9 @@ export class ExprTestViewComponent implements OnInit {
   hasDates () {
     return this.exprTestResult?.ruleDates != undefined &&  this.exprTestResult?.ruleDates.length > 0;
   }
+
+  ok() {
+    this.dialogRef.close();
+  }
+
 }

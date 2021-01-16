@@ -1,4 +1,5 @@
 <div *ngIf="exprTestResult">
+  <button (click) = "ok()" >close</button>
   <h3>{{exprTestResult?.name}}</h3>
   <div><span [className] = "exprTestResult?.success? 'label' : 'error'" ><b>Status: </b>{{exprTestResult?.success? 'Success' : 'Failure'}}</span></div>
 
@@ -6,10 +7,12 @@
  
   <div *ngIf="exprTestResult && exprTestResult?.ruleDates">
     <h3>Dates matched in year {{exprTestResult.year}} </h3>
-    <div class = "flow-layout">
-      <div *ngFor = "let ruleDate of exprTestResult?.ruleDates">
-         <span>{{ruleDate}} &nbsp; &nbsp; &nbsp;</span>
-      </div>
+    <div>
+      <ul *ngIf = "hasDates()">
+        <li *ngFor = "let ruleDate of exprTestResult?.ruleDates">
+          <span>{{ruleDate}} &nbsp; &nbsp; &nbsp;</span>
+        </li>
+      </ul>
       <div *ngIf = "!hasDates()">
         <span>No date matched</span>
      </div>
@@ -25,4 +28,5 @@
         </span>
     </div>
   </div>
+  <button (click) = "ok()" >close</button>
 </div>
