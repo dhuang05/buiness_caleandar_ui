@@ -82,7 +82,7 @@ export class AuthService extends HttpService {
     }
 
     public forgetpassword(loginForm: LoginForm) {
-        let result = super.post("api/admin/user/forgetpassword", LoginForm);
+        return super.post("api/admin/user/forgetpassword", loginForm);
     }
 
     public saveUser(user: User) {
@@ -90,6 +90,16 @@ export class AuthService extends HttpService {
         let result = super.post(url, user);
         return result;
     }
+
+    public saveNewUser(user: User) {
+        let url = "api/admin/newuser";
+        let result = super.post(url, user);
+        return result;
+    }
+
+
+    
+
 
     public saveOrganization(organization: Organization) {
         let url = "api/admin/organization";

@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { ConfirmDialogComponent } from 'src/app/common/confirm-dialog/confirm-dialog.component';
 import { InfoDialogComponent } from 'src/app/common/info-dialog/info-dialog.component';
@@ -25,7 +26,9 @@ export class UserAdminComponent implements OnInit, OnDestroy {
   userMessage: string = "";
   isNewUser: boolean = false;
   dialogRef: any;
-
+  
+  submitTime = new Date().getTime() / 1000;
+  submitWait = 4;
 //
   organizations: Organization[] | undefined;
   users: User[] | undefined; 
@@ -36,6 +39,7 @@ export class UserAdminComponent implements OnInit, OnDestroy {
 
   organizationNameToSearch = "";
   userNameToSearch = "";
+
 
   constructor(
     private router: Router,
@@ -78,10 +82,13 @@ export class UserAdminComponent implements OnInit, OnDestroy {
   }
 
 findOrganizations () {
+  if(!this.canResubmit()) {
+    return;
+  }
   this.authService.findOrganizations(this.authService.getUserInfo().user.userId, "")
       .subscribe(resp => {
         let json = JSON.stringify(resp);
-        console.log("json: " + json);
+        //console.log("json: " + json);
         let error: ApiError = JSON.parse(json);
         if(!ApiError.isError(error)) {
             this.organizations = JSON.parse(json) as Organization[];
@@ -95,11 +102,14 @@ findOrganizations () {
 }
 
 findUsers () {
+  if(!this.canResubmit()) {
+    return;
+  }
   this.userMessage = "";
   this.authService.findUsers(this.authService.getUserInfo().user.orgId, "")
       .subscribe(resp => {
         let json = JSON.stringify(resp);
-        console.log("json: " + json);
+        //console.log("json: " + json);
         let error: ApiError = JSON.parse(json);
         if(!ApiError.isError(error)) {
             this.users = JSON.parse(json) as User[];
@@ -152,6 +162,9 @@ findUsers () {
   }
 
   saveOrganization() {
+    if(!this.canResubmit()) {
+      return;
+    }
     let error = false;
     this.organizationMessage = "\n";
     if(!this.organization) {
@@ -203,7 +216,7 @@ findUsers () {
     this.authService.saveOrganization(organization)
     .subscribe(resp => {
       let json = JSON.stringify(resp);
-      console.log("json: " + json);
+      //console.log("json: " + json);
       let error: ApiError = JSON.parse(json);
       if(!ApiError.isError(error)) {
         let organization: Organization = JSON.parse(json);
@@ -237,6 +250,9 @@ findUsers () {
   }
 
   searchOrganizations() {
+    if(!this.canResubmit()) {
+      return;
+    }
     this.organizationMessage = "\n";
       if(Util.isEmpty(this.organizationNameToSearch) || this.organizationNameToSearch.replace("*", "").trim().length < 2) {
         this.organizationMessage = "At least 2 charaters to search.";
@@ -248,7 +264,7 @@ findUsers () {
       this.authService.findOrganizations("", this.organizationNameToSearch)
       .subscribe(resp => {
         let json = JSON.stringify(resp);
-        console.log("json: " + json);
+        //console.log("json: " + json);
         let error: ApiError = JSON.parse(json);
         if(!ApiError.isError(error)) {
             this.organizations = JSON.parse(json) as Organization[];
@@ -307,6 +323,9 @@ findUsers () {
   }
 
   saveUser() {
+    if(!this.canResubmit()) {
+      return;
+    }
     this.userMessage = "\n";
     let error = false;
     if(!this.user) {
@@ -368,11 +387,16 @@ findUsers () {
       });
       return;
     }
-
-    this.authService.saveUser(this.user)
-    .subscribe(resp => {
+    let observable: Observable<any> | undefined = undefined;
+    if(this.isNewUser) {
+      observable = this.authService.saveNewUser(this.user) as Observable<any>;
+    } else {
+      observable = this.authService.saveUser(this.user) as Observable<any>;
+    }
+    
+    observable.subscribe(resp => {
       let json = JSON.stringify(resp);
-      console.log("json: " + json);
+      //console.log("json: " + json);
       let error: ApiError = JSON.parse(json);
       if(!ApiError.isError(error)) {
         let user: User = JSON.parse(json);
@@ -434,9 +458,11 @@ findUsers () {
           this.setStep(1);
          }
       });
+    } else {
+       this.organization = org;
+       this.setStep(1);
     }
-    //this.organization = org;
-    //this.setStep(1);
+
   }
 
   userIdValidate() {
@@ -446,6 +472,9 @@ findUsers () {
   }
 
   searchUsers() {
+    if(!this.canResubmit()) {
+      return;
+    }
     this.userMessage = "\n";
       if(Util.isEmpty(this.userNameToSearch) || this.userNameToSearch.replace("*", "").trim().length < 2) {
         this.userMessage = "At least 2 charaters to search."
@@ -457,7 +486,7 @@ findUsers () {
       this.authService.findUsers(orgId, this.userNameToSearch)
     .subscribe(resp => {
       let json = JSON.stringify(resp);
-      console.log("json: " + json);
+      //console.log("json: " + json);
       let error: ApiError = JSON.parse(json);
       if(!ApiError.isError(error)) {
           this.users = JSON.parse(json) as User[];
@@ -492,5 +521,14 @@ findUsers () {
     let contact = new Contact();
     person.contact = contact;
     return user;
+  }
+
+  canResubmit(): boolean {
+    if ((new Date().getTime() / 1000 - this.submitTime) > this.submitWait) {
+      this.submitTime = new Date().getTime() / 1000;
+      return true;
+    } else {
+      return false;
+    }
   }
 }

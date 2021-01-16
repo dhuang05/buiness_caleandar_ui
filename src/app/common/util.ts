@@ -32,4 +32,16 @@ export  class Util {
         return message;
     }
 
+    // submit control;
+    private submitTime = new Date().getTime() / 1000;
+    private submitWait = 4;
+    public canSubmit(): boolean {
+      if ((new Date().getTime() / 1000 - this.submitTime) > this.submitWait) {
+        this.submitTime = new Date().getTime() / 1000;
+        return true;
+      } else {
+        return false;
+      }
+    }
+  
 }

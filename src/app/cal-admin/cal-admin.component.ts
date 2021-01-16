@@ -5,7 +5,7 @@
 
 
 import { map } from 'rxjs/operators';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ApiError, BusinessCalendarOwnership, BusinessHour, CalendarAdminInstTestResult, CalendarInst, DayRule, User, UserInfo } from '../model/cal-model';
 import { CalAdminService } from './services/cal_admin.service';
@@ -53,7 +53,13 @@ export class CalAdminComponent implements OnInit, OnDestroy {
   step = 0;
   //
   calFilter: string = "";
+  //
+  submitTime = new Date().getTime() / 1000;
+  submitWait = 4;
 
+  screenWidth: any;
+  screenHeight: any;
+  
   constructor(
     private router: Router,
     private calAdminService: CalAdminService,
@@ -65,6 +71,10 @@ export class CalAdminComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    //
+    this.screenWidth = window.innerWidth;
+    this.screenHeight = window.innerHeight;
+    //
     this.businessCalendarOwnerships = undefined;
     this.calFilter = "";
     if(this.authService.getUserInfo() == undefined) {
@@ -103,6 +113,11 @@ export class CalAdminComponent implements OnInit, OnDestroy {
     }
   }
 
+  @HostListener('window:resize', ['$event'])
+  onResize(event :Event) {
+    this.screenWidth = window.innerWidth;
+    this.screenHeight = window.innerHeight;
+  }
   
   fetchCalendarInstance(businessCalendarOwnership: BusinessCalendarOwnership) {
     let canLoadNew = true;
@@ -126,11 +141,14 @@ export class CalAdminComponent implements OnInit, OnDestroy {
   }
 
   private reload(businessCalendarOwnership: BusinessCalendarOwnership) {
+    if(!this.canResubmit()) {
+      return;
+    }
     this.message = "";
     this.clearSelectd();
     this.calAdminService.fetchCalendarInst(businessCalendarOwnership.calId).subscribe(resp => {
       let json = JSON.stringify(resp);
-      console.log("json: " + json);
+      //console.log("json: " + json);
       let error: ApiError = JSON.parse(json);
       if(!ApiError.isError(error)) {
         this.selectedCalendarInst = JSON.parse(json);
@@ -190,9 +208,12 @@ export class CalAdminComponent implements OnInit, OnDestroy {
   }
 
   newCalendarInstance(e: Event) {
+    if(!this.canResubmit()) {
+      return;
+    }
     this.calAdminService.getCalendarInstTemplate ().subscribe(resp => {
       let json = JSON.stringify(resp);
-      console.log("json: " + json);
+      //console.log("json: " + json);
       let error: ApiError = JSON.parse(json);
       if(!ApiError.isError(error)) {
         let calIntTemplate: CalendarInst = JSON.parse(json);
@@ -295,6 +316,9 @@ export class CalAdminComponent implements OnInit, OnDestroy {
   }
 
   doTestAndSave(toSave: boolean)  {
+    if(!this.canResubmit()) {
+      return;
+    }
     if(this.hasTrialRole && toSave) {
       toSave = false;
       this.message = "Not authorize to save for trial user, will do the test.";
@@ -459,5 +483,13 @@ export class CalAdminComponent implements OnInit, OnDestroy {
 
 
 
+  canResubmit(): boolean {
+    if ((new Date().getTime() / 1000 - this.submitTime) > this.submitWait) {
+      this.submitTime = new Date().getTime() / 1000;
+      return true;
+    } else {
+      return false;
+    }
+  }
 
 }

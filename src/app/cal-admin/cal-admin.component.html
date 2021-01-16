@@ -10,7 +10,7 @@
           </div>
           <input matInput (change)="isChanged()" class="input" style= "width: 250px;" name="cal_filter" type="text" [(ngModel)]="calFilter" placeholder = "filter, multiple key words"/>
           <div>&nbsp;</div>
-          <div class="list-item" >
+          <div class="list-item"  [style] = "'height:' + (screenHeight - 20) + 'px;'">
             <ng-container *ngFor="let businessCalendarOwnership of businessCalendarOwnerships; index as i">
               <div *ngIf= "doFilter(businessCalendarOwnership.description)" ><mat-icon>date_range</mat-icon>
                 <a  class="b-link" href="#" style="width:250px;"

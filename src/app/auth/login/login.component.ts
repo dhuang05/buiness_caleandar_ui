@@ -21,6 +21,12 @@ import { Util } from 'src/app/common/util';
 export class LoginComponent implements OnInit {
   loginForm: LoginForm = new LoginForm();
   message: string = '';
+  loginCount = 0;
+  //
+  submitTime = new Date().getTime() / 1000;
+  submitWait = 4;
+
+
 
   constructor(
     private router: Router,
@@ -34,6 +40,9 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
+    if(!this.canResubmit()) {
+      return;
+    }
     if(!this.isEmpty(this.loginForm.password) && !this.isEmpty(this.loginForm.userId)) {
       this.message = '';
       this.authService.login (this.loginForm).subscribe(resp => {
@@ -46,6 +55,11 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['cal-admin', {calendarOwnerships: userInfo.businessCalendarOwnerships}]);
         } else {
           this.message = error.errMessage;
+          this.loginCount++;
+          if(this.loginCount > 3) {
+            this.router.navigate(['forgetpassword']);
+            this.loginCount = 0;
+          }
         }
        },
        error => {
@@ -60,6 +74,15 @@ export class LoginComponent implements OnInit {
 
   isEmpty(text: string| undefined): boolean{
     return text == null || text == undefined || text.trim().length == 0;
+  }
+
+  canResubmit(): boolean {
+    if ((new Date().getTime() / 1000 - this.submitTime) > this.submitWait) {
+      this.submitTime = new Date().getTime() / 1000;
+      return true;
+    } else {
+      return false;
+    }
   }
 
 }

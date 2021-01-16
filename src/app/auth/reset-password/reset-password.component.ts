@@ -18,7 +18,10 @@ export class ResetPasswordComponent implements OnInit {
   message: string = '';
   loginForm: LoginForm = new LoginForm();
   repeatNewpepassword = '';
-
+  //
+  submitTime = new Date().getTime() / 1000;
+  submitWait = 4;
+  //
   constructor(
     private router: Router,
     private authService: AuthService,
@@ -30,6 +33,9 @@ export class ResetPasswordComponent implements OnInit {
   }
 
   resetpassword(e: Event){
+    if(!this.canResubmit()) {
+      return;
+    }
     this.message = '';
     let isAllFilled: boolean = !this.isEmpty(this.loginForm.userId) && !this.isEmpty(this.loginForm.password) && !this.isEmpty(this.loginForm.newPassword) && !this.isEmpty(this.repeatNewpepassword);
     if(isAllFilled){
@@ -70,4 +76,14 @@ export class ResetPasswordComponent implements OnInit {
   isEmpty(text: string){
     return text == null || text == undefined || text.trim().length == 0;
   }
+
+  canResubmit(): boolean {
+    if ((new Date().getTime() / 1000 - this.submitTime) > this.submitWait) {
+      this.submitTime = new Date().getTime() / 1000;
+      return true;
+    } else {
+      return false;
+    }
+  }  
+  
 }

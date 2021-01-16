@@ -49,7 +49,8 @@
                     </div>
                     <ul>
                         <li *ngIf = "isUserHasSuperRole"><a class="b-link" href="#" (click)="setNewOrg()">New Organization</a></li>
-                        <li *ngFor= "let org of organizations"><a class="b-link" href="#" (click)="setCurrentOrg(org)">{{org.orgName}}</a>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a class="b-link" href="#" (click)="addEditUser(org)"> <mat-icon>person</mat-icon></a></li>
+                        <li *ngFor= "let org of organizations"><a class="b-link" href="#" (click)="setCurrentOrg(org)">{{org.orgName}}</a>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                             <a class="b-link" href="#" (click)="addEditUser(org)"> <mat-icon>person</mat-icon></a></li>
                     </ul>
                 </div>
             </div>

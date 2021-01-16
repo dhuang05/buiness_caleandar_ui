@@ -28,6 +28,9 @@ export class RuleEditorComponent implements OnInit {
   oringinalExpr: string; 
   functionNames: string[] = [];
   samples: Sample[] = [];
+  //
+  submitTime = new Date().getTime() / 1000;
+  submitWait = 4;
 
   constructor(
     private router: Router,
@@ -56,7 +59,7 @@ export class RuleEditorComponent implements OnInit {
     //this.allAddOnFunctions = "";
     this.calAdminService.getAllAddOnFunctions().subscribe(resp => {
       let json = JSON.stringify(resp);
-      console.log("json: " + json);
+      //console.log("json: " + json);
       this.functionNames = JSON.parse(json) as string[];
       //for (let func of functionNames) {
       //  this.allAddOnFunctions += func + "\n";
@@ -104,7 +107,7 @@ export class RuleEditorComponent implements OnInit {
         ruleExpr.name = this.data.title;
         this.calAdminService.testCalendarRuleExpr(ruleExpr, this.selectedYear).subscribe(resp => {
           let json = JSON.stringify(resp);
-          console.log("json: " + json);
+          //console.log("json: " + json);
           this.exprTestResult = JSON.parse(json);
           if(this.exprTestResult?.success) {
             this.canSave = true;
