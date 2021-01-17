@@ -34,7 +34,7 @@
             cdkAutosizeMaxRows="5" 
             (click) = "openEditor()"
             class = "rule"
-            [style] = "passedTest? 'color:darkblue' :'color:darkred'" 
+            [style] = "ruleStyle()" 
             (change)="checkValue(true)" readonly [(ngModel)]="holidayRule.expr">
           </textarea>
         </mat-form-field>

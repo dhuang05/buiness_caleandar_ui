@@ -8,7 +8,7 @@
           <div class="list-item">
             <button class="no-border-button" href="#" (click)="newCalendarInstance($event)" style="width:240px;text-align:left;" ><mat-icon>add</mat-icon>Create new calendar</button>
           </div>
-          <input matInput (change)="isChanged()" class="input" style= "width: 240px;" name="cal_filter" type="text" [(ngModel)]="calFilter" placeholder = "filter, multiple key words"/>
+          <input matInput (change)="isChanged()" style= "width: 240px;" name="cal_filter" type="text" [(ngModel)]="calFilter" placeholder = "filter, multiple key words"/>
           <div>&nbsp;</div>
           <div class="list-item"  [style] = "'height:' + (screenHeight - 20) + 'px;'">
             <ng-container *ngFor="let businessCalendarOwnership of businessCalendarOwnerships; index as i">
@@ -184,11 +184,11 @@
     <div class = "div-left" ></div>
     <div class = "div-center, header3"><mat-icon>date_range</mat-icon><span>{{selectedCalendarInst.desc}}</span></div>
     <div class = "div-right">
-      <button class="b-link" href="#" (click) = "setStep(0)">Back to Configure</button>
+      <button class="no-border-button" href="#" (click) = "setStep(0)">Back to Configure</button>
       &nbsp; &nbsp;
-      <button class="b-link" href="#" (click) = "testAndSaveCalednar(false)"> View Calendar</button>
+      <button class="no-border-button" href="#" (click) = "testAndSaveCalednar(false)"> View Calendar</button>
       &nbsp; &nbsp;
-      <button *ngIf="isContentChanged" class="b-link" style="color: red;" href="#" (click) = "testAndSaveCalednar(true)">Save Calendar Rules</button>
+      <button *ngIf="isContentChanged" class="no-border-button" style="color: red;" href="#" (click) = "testAndSaveCalednar(true)">Save Calendar Rules</button>
       <span *ngIf="!isContentChanged">Content not changed yet</span>
       &nbsp; &nbsp;
     </div>
@@ -198,9 +198,9 @@
   <div *ngIf="testResult" class= "header-title">
     <diV><span>&nbsp;</span></diV>
     <div class="flow-layout" >
-      <div class="div-left">&nbsp;&nbsp;<a class="alink" style = "font-size: 38px;" href="#" (click)="moveToPreviousYear()">&laquo;</a></div>
+      <div class="div-left">&nbsp;&nbsp;<button class="no-border-button" style = "font-size: 38px;" href="#" (click)="moveToPreviousYear()">&laquo;</button></div>
       <div class="div-center"><span style = "font-size: 28px;" class="alink">{{testResult.year}}</span></div>
-      <div class="div-right"><a class="alink" style = "font-size: 38px;" href="#" (click)="moveToNextYear()">&raquo;</a>&nbsp;&nbsp;</div>
+      <div class="div-right"><button class="no-border-button " style = "font-size: 38px;" href="#" (click)="moveToNextYear()">&raquo;</button>&nbsp;&nbsp;</div>
     </div>
     <diV><span>&nbsp;</span></diV>
     <cal-calendar-view  [testResult] = "testResult"></cal-calendar-view>

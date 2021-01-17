@@ -96,3 +96,14 @@ table, th, td {
 a:hover{
     color: blue;
 }
+
+
+.no-border-button {
+    border: none;
+    background-color: transparent;
+    outline: none;
+    cursor:pointer;
+}
+button:hover{
+    color: blue;
+}
