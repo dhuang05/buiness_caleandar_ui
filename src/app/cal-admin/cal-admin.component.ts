@@ -55,7 +55,7 @@ export class CalAdminComponent implements OnInit, OnDestroy {
   calFilter: string = "";
   //
   submitTime = new Date().getTime() / 1000;
-  submitWait = 4;
+  submitWait = 1;
 
   screenWidth: any;
   screenHeight: any;
@@ -488,6 +488,7 @@ export class CalAdminComponent implements OnInit, OnDestroy {
       this.submitTime = new Date().getTime() / 1000;
       return true;
     } else {
+      this.submitTime = new Date().getTime() / 1000;
       return false;
     }
   }

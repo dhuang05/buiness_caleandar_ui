@@ -19,7 +19,7 @@ export class ForgetPasswordComponent implements OnInit {
   loginForm: LoginForm = new LoginForm();
   errorMsg: string = '';
   submitTime = new Date().getTime() / 1000;
-  submitWait = 4;
+  submitWait = 1;
 
   constructor(
     private router: Router,
@@ -83,6 +83,7 @@ export class ForgetPasswordComponent implements OnInit {
       this.submitTime = new Date().getTime() / 1000;
       return true;
     } else {
+      this.submitTime = new Date().getTime() / 1000;
       return false;
     }
   }

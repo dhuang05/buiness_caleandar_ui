@@ -28,7 +28,7 @@ export class UserAdminComponent implements OnInit, OnDestroy {
   dialogRef: any;
   
   submitTime = new Date().getTime() / 1000;
-  submitWait = 4;
+  submitWait = 1;
 //
   organizations: Organization[] | undefined;
   users: User[] | undefined; 
@@ -528,6 +528,7 @@ findUsers () {
       this.submitTime = new Date().getTime() / 1000;
       return true;
     } else {
+      this.submitTime = new Date().getTime() / 1000;
       return false;
     }
   }

@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
   loginCount = 0;
   //
   submitTime = new Date().getTime() / 1000;
-  submitWait = 4;
+  submitWait = 1;
 
 
 
@@ -81,6 +81,7 @@ export class LoginComponent implements OnInit {
       this.submitTime = new Date().getTime() / 1000;
       return true;
     } else {
+      this.submitTime = new Date().getTime() / 1000;
       return false;
     }
   }

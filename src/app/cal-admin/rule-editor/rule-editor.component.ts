@@ -8,6 +8,7 @@ import { ConfirmDialogComponent } from 'src/app/common/confirm-dialog/confirm-di
 import { ContentDialogComponent } from 'src/app/common/content-dialog/content-dialog.component';
 import { InfoDialogComponent } from 'src/app/common/info-dialog/info-dialog.component';
 import { OptionData, SelectData, SelectDialogComponent } from 'src/app/common/select-dialog/select-dialog.component';
+import { Util } from 'src/app/common/util';
 import { RuleEditData, RuleExpr, RuleExprTestResult } from 'src/app/model/cal-model';
 import { CalAdminService } from '../services/cal_admin.service';
 import { ExprTestViewComponent } from './expr-test-view/expr-test-view.component';
@@ -30,7 +31,7 @@ export class RuleEditorComponent implements OnInit {
   samples: Sample[] = [];
   //
   submitTime = new Date().getTime() / 1000;
-  submitWait = 4;
+  submitWait = 1;
 
   constructor(
     private router: Router,
@@ -124,7 +125,7 @@ export class RuleEditorComponent implements OnInit {
               this.dialogRef.close();
              }
           });
-          
+          //
 
          });
        }
@@ -161,6 +162,29 @@ export class RuleEditorComponent implements OnInit {
   saveRule() {
     if(this.exprTestResult != undefined && this.exprTestResult.success) {
       this.dialogRef.close(this.data);
+    }
+  }
+
+  copyToRule(expr: string) {
+    if(expr && !Util.isEmpty(expr)) {
+      if(!this.data.expression) {
+        this.data.expression = expr;
+        return;
+      }
+      if(expr.trim().endsWith(";") && !Util.isEmpty(this.data.expression.trim())) {
+        const dialogRef = this.dialog.open(InfoDialogComponent, {
+          width: '250px',
+          height: '180px',
+          data: "The range definition should be in the beginning of the rule expression."
+        });
+        return;
+      }
+      let temp  = this.data.expression;
+      if(!temp.trim().endsWith("and") && !temp.trim().endsWith("or") ) {
+        temp += " and";
+      }
+      temp += " " + expr;
+      this.data.expression = temp;
     }
   }
 

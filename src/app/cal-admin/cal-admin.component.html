@@ -8,7 +8,7 @@
           <div class="list-item">
             <mat-icon>add</mat-icon> <a class="b-link" href="#" (click)="newCalendarInstance($event)" style="width:250px;" >Create new calendar</a>
           </div>
-          <input matInput (change)="isChanged()" class="input" style= "width: 250px;" name="cal_filter" type="text" [(ngModel)]="calFilter" placeholder = "filter, multiple key words"/>
+          <input matInput (change)="isChanged()" class="input" style= "width: 240px;" name="cal_filter" type="text" [(ngModel)]="calFilter" placeholder = "filter, multiple key words"/>
           <div>&nbsp;</div>
           <div class="list-item"  [style] = "'height:' + (screenHeight - 20) + 'px;'">
             <ng-container *ngFor="let businessCalendarOwnership of businessCalendarOwnerships; index as i">
@@ -61,6 +61,17 @@
 <!--calendar instance template -->
 <ng-template #calendarInst>
   <div style="border: solid 1px rgb(240, 240, 240);"></div>
+  <div class="div-center">
+    <h2>
+    <mat-icon>date_range</mat-icon>
+    <span  *ngIf="selectedBusinessCalendarOwnership?.description">
+      {{selectedBusinessCalendarOwnership?.description}}
+    </span>
+    <span  *ngIf="!selectedBusinessCalendarOwnership?.description">
+      New Calendar
+    </span>
+    </h2>
+</div>  
   <div>
     <span class="error">{{message}}</span>
   </div>
@@ -171,7 +182,7 @@
   </div>
   <div *ngIf="selectedCalendarInst">
     <div class = "div-left" ></div>
-    <div class = "div-center, header3">{{selectedCalendarInst.desc}}</div>
+    <div class = "div-center, header3"><mat-icon>date_range</mat-icon><span>{{selectedCalendarInst.desc}}</span></div>
     <div class = "div-right">
       <button class="b-link" href="#" (click) = "testAndSaveCalednar(false)"> View Calendar</button>
       &nbsp; &nbsp;

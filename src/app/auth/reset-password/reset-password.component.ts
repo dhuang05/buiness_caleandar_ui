@@ -20,7 +20,7 @@ export class ResetPasswordComponent implements OnInit {
   repeatNewpepassword = '';
   //
   submitTime = new Date().getTime() / 1000;
-  submitWait = 4;
+  submitWait = 1;
   //
   constructor(
     private router: Router,
@@ -82,6 +82,7 @@ export class ResetPasswordComponent implements OnInit {
       this.submitTime = new Date().getTime() / 1000;
       return true;
     } else {
+      this.submitTime = new Date().getTime() / 1000;
       return false;
     }
   }  
