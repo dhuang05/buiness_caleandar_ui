@@ -26,7 +26,7 @@
     </div>
   </div>
   <div  class= "div-center" style="padding-left:4px; text-align :left; overflow-y: auto;">
-    <div><span class= "header3" >Samples (click and [ctl-v] to past)</span></div>
+    <div><span class= "header3" >Samples (double click to past)</span></div>
     <div>&nbsp;</div>
     <div *ngFor="let sample of samples"><button *ngIf = "sample.expr != ''" class = "no-border-button" [cdkCopyToClipboard]="sample.expr" (dblclick) = "copyToRule(sample.expr);">{{sample.expr}}</button> 
       &nbsp; <span style = "font-weight: 400; font-size:10px; color: darkgrey;">{{sample.desc}}</span></div>
