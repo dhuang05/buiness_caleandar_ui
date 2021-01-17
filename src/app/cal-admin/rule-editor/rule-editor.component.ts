@@ -29,6 +29,7 @@ export class RuleEditorComponent implements OnInit {
   oringinalExpr: string; 
   functionNames: string[] = [];
   samples: Sample[] = [];
+  previousExpr: string | undefined;
   //
   submitTime = new Date().getTime() / 1000;
   submitWait = 1;
@@ -168,6 +169,7 @@ export class RuleEditorComponent implements OnInit {
   copyToRule(expr: string) {
     if(expr && !Util.isEmpty(expr)) {
       if(!this.data.expression) {
+        this.previousExpr = this.data.expression;
         this.data.expression = expr;
         return;
       }
@@ -184,7 +186,15 @@ export class RuleEditorComponent implements OnInit {
         temp += " and";
       }
       temp += " " + expr;
+      this.previousExpr = this.data.expression;
       this.data.expression = temp;
+    }
+  }
+
+  undoPast() {
+    if(this.previousExpr) {
+       this.data.expression = this.previousExpr;
+       this.previousExpr = undefined;
     }
   }
 
@@ -205,9 +215,9 @@ export class RuleEditorComponent implements OnInit {
   samples.push(new Sample("","Month, Day, Day of week"));
   samples.push(new Sample("December 25, 2021","or 2021 Dec/25"));
   samples.push(new Sample("Sept 5th Friday","Sept/5th and Friday"));
-  samples.push(new Sample("05th Fri ","5th of each month and Friday"));
+  samples.push(new Sample("5th Fri ","5th of each month and Friday"));
   samples.push(new Sample("Dec and Fri (1,2)","1 or 2 days after"));
-  samples.push(new Sample("5th Fri","5th of each month and Friday"));
+  samples.push(new Sample("5th","5th of each month"));
   samples.push(new Sample("May 10 (-1, 0, 1, 2, 3)","May/9...May/13"));
   samples.push(new Sample("","xth day of week in month"));
   samples.push(new Sample("The 3rd Friday in October","try it"));
