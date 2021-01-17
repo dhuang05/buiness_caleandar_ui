@@ -184,6 +184,8 @@
     <div class = "div-left" ></div>
     <div class = "div-center, header3"><mat-icon>date_range</mat-icon><span>{{selectedCalendarInst.desc}}</span></div>
     <div class = "div-right">
+      <button class="b-link" href="#" (click) = "setStep(0)">Back to Configure</button>
+      &nbsp; &nbsp;
       <button class="b-link" href="#" (click) = "testAndSaveCalednar(false)"> View Calendar</button>
       &nbsp; &nbsp;
       <button *ngIf="isContentChanged" class="b-link" style="color: red;" href="#" (click) = "testAndSaveCalednar(true)">Save Calendar Rules</button>
