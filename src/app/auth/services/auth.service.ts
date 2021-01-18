@@ -92,6 +92,15 @@ export class AuthService extends HttpService {
         return result;
     }
 
+    public saveNewUser(user: User) {
+        let url = "api/admin/newuser";
+        let result = super.post(url, user);
+        return result;
+    }
+
+
+    
+
     public registerUser(user: User) {
         let url = "api/admin/auth/user/register";
         let result = super.post(url, user);

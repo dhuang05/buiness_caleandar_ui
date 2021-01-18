@@ -77,13 +77,13 @@ export class SpecialWorkingHourComponent implements OnInit {
     if(Util.isEmpty(this.businessHour?.desc)) {
       const dialogRef = this.dialog.open(InfoDialogComponent, {
         width: '250px',
-        height: '180px',
+        height: '200px',
         data: "Please input name before editing rule expression."
       });
     } else {
       const dialogRef = this.dialog.open(RuleEditorComponent, {
         width: '1000px',
-        height: '600px',
+        height: '620px',
         data: new RuleEditData(this.businessHour?.dayExpr as string, this.businessHour?.desc as string)
       });
   

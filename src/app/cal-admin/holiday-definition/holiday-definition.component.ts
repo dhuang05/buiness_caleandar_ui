@@ -65,13 +65,13 @@ export class HoldayDefinitionComponent implements OnInit {
     if(Util.isEmpty(this.holidayRule?.desc)) {
       const dialogRef = this.dialog.open(InfoDialogComponent, {
         width: '250px',
-        height: '180px',
+        height: '200px',
         data: "Please input name before editing rule expression."
       });
     } else {
       const dialogRef = this.dialog.open(RuleEditorComponent, {
         width: '1000px',
-        height: '600px',
+        height: '620px',
         data: new RuleEditData(this.holidayRule?.expr as string, this.holidayRule?.desc as string)
       });
   

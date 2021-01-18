@@ -104,6 +104,7 @@
     background-color: transparent;
     outline: none;
     font-size: 14px;
+    line-height: normal;
     cursor: pointer;
 }
 button:hover{
@@ -141,4 +142,9 @@ button:hover{
     text-align:left;
     color:blue;
     margin: 0 auto;
+}
+
+.div-sample {
+    overflow-y: auto; 
+    height: 500px;
 }

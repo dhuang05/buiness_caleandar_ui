@@ -97,7 +97,7 @@ export class RuleEditorComponent implements OnInit {
     selectData.title = "Please select a year to test expression.";
     const dialogRef = this.dialog.open(SelectDialogComponent, {
       width: '300px',
-      height: '200px',
+      height: '220px',
       data: selectData
     });
 
@@ -117,7 +117,7 @@ export class RuleEditorComponent implements OnInit {
 
           const dialogRef = this.dialog.open(ExprTestViewComponent, {
             width: '400px',
-            height: '500px',
+            height: '550px',
             data: this.exprTestResult
           });
       
@@ -154,7 +154,7 @@ export class RuleEditorComponent implements OnInit {
   help() {
     const dialogRef = this.dialog.open(RuleEditorHelpComponent, {
       width: '600px',
-      height: '500px',
+      height: '550px',
       //data: "The rule expression has been edited, Are you sure to cancel without update?"
     });
     
@@ -176,7 +176,7 @@ export class RuleEditorComponent implements OnInit {
       if(expr.trim().endsWith(";") && !Util.isEmpty(this.data.expression.trim())) {
         const dialogRef = this.dialog.open(InfoDialogComponent, {
           width: '250px',
-          height: '180px',
+          height: '200px',
           data: "The range definition should be in the beginning of the rule expression."
         });
         return;
@@ -209,7 +209,7 @@ export class RuleEditorComponent implements OnInit {
   
  makeSamples() {
   let samples: Sample[] = [];
-  samples.push(new Sample("","Leading should follow by date expression, and end by ';'"));
+  //samples.push(new Sample("","Leading should follow by date expression, and end by ';'"));
   samples.push(new Sample("From November/1 To Nov/15th;","Leading"));
   samples.push(new Sample("Between Jan 1th and Jan 09;","Leading"));
   samples.push(new Sample("","Month, Day, Day of week"));
@@ -233,7 +233,7 @@ export class RuleEditorComponent implements OnInit {
   samples.push(new Sample("43rd Mon of year","in year"));
   samples.push(new Sample("","Others"));
   samples.push(new Sample("Fri and  not (Dec or Jan)","Complex"));
-  samples.push(new Sample("May 24(0,-1,-2,-3,-4) and (Mon or Thu)",""));
+  samples.push(new Sample("May/24(0,-1,-2,-3) and (Mon or Thu)",""));
   samples.push(new Sample("Chinese 5/5","Dragon boat day"));
   samples.push(new Sample("Chinese 01/01","Chinese new year"));
   

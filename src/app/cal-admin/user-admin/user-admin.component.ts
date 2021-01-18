@@ -389,7 +389,7 @@ findUsers () {
     }
     let observable: Observable<any> | undefined = undefined;
     if(this.isNewUser) {
-      observable = this.authService.registerUser(this.user) as Observable<any>;
+      observable = this.authService.saveNewUser(this.user) as Observable<any>;
     } else {
       observable = this.authService.saveUser(this.user) as Observable<any>;
     }
