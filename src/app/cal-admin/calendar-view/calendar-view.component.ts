@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/services/auth.service';
-import {Calendar, CalendarAdminInstTestResult, DowBusinessHour, Holiday, OverridingBusinessHour, UserInfo } from 'src/app/model/cal-model';
+import {Calendar, CalendarAdminInstTestResult, DowBusinessHour, Holiday, OverridingBusinessHour } from 'src/app/model/cal-model';
 
 @Component({
   selector: 'cal-calendar-view',

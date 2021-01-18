@@ -6,15 +6,14 @@
         <div style="vertical-align: top;">
           <span class="header3"> Calendar Instanace List </span>
           <div class="list-item">
-            <button class="no-border-button" href="#" (click)="newCalendarInstance($event)" style="width:240px;text-align:left;" ><mat-icon>add</mat-icon>Create new calendar</button>
+            <button class="no-border-button" href="#" (click)="newCalendarInstance($event)" style="width:240px;text-align:left;" ><mat-icon style="font-size: 18px;">add_circle_outline</mat-icon>Create new calendar</button>
           </div>
-          <input matInput (change)="isChanged()" style= "width: 240px;" name="cal_filter" type="text" [(ngModel)]="calFilter" placeholder = "filter, multiple key words"/>
-          <div>&nbsp;</div>
+          <input (change)="isChanged()" style= "width: 240px;" name="cal_filter" type="text" [(ngModel)]="calFilter" placeholder = "filter, multiple key words"/>
           <div class="list-item"  [style] = "'height:' + (screenHeight - 20) + 'px;'">
             <ng-container *ngFor="let businessCalendarOwnership of businessCalendarOwnerships; index as i">
               <div *ngIf= "doFilter(businessCalendarOwnership.description)" >
                 <button  class="no-border-button" href="#" style="width:230px; text-align:left;"
-                (click)="fetchCalendarInstance(businessCalendarOwnership)"><mat-icon>date_range</mat-icon>{{businessCalendarOwnership.description}}</button>
+                (click)="fetchCalendarInstance(businessCalendarOwnership)"><mat-icon style="font-size: 18px;">date_range</mat-icon>{{businessCalendarOwnership.description}}</button>
               </div> 
             </ng-container>
           </div>

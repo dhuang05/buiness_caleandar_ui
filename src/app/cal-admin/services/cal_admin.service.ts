@@ -7,7 +7,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
-import { BusinessCalendarOwnership, LoginForm, RuleExpr, UserInfo } from 'src/app/model/cal-model';
+import { BusinessCalendarOwnership, LoginForm, RuleExpr} from 'src/app/model/cal-model';
 import { HttpService } from 'src/app/service/http.service';
 
 

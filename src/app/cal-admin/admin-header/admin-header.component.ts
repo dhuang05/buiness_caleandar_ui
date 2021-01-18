@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { Util } from 'src/app/common/util';
-import { User, UserInfo } from 'src/app/model/cal-model';
+import { User} from 'src/app/model/cal-model';
 
 @Component({
   selector: 'cal-admin-header',
@@ -31,8 +31,8 @@ export class AdminHeaderComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.isUserHasSuperRole =  this.authService.hasSupperRole();
     this.isAdminRole = this.authService.hasAdminRoles();
-    this.userInfoSubscription = this.authService.getUserInfoEventEmitter()
-      .subscribe((userInfo: UserInfo) => {
+    this.userInfoSubscription = this.authService.getUserEventEmitter()
+      .subscribe((user: User) => {
           this.isUserHasSuperRole =  this.authService.hasSupperRole();
           this.isAdminRole = this.authService.hasAdminRoles();
       });
@@ -49,7 +49,7 @@ export class AdminHeaderComponent implements OnInit, OnDestroy {
   }
 
   gotToResetPassword(){
-    if(this.authService.getUserInfo() != undefined) {
+    if(this.authService.getUser() != undefined) {
       this.router.dispose();
       this.router.navigate(['resetpassword']);
     }

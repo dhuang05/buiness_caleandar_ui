@@ -6,7 +6,7 @@ import { AuthService } from 'src/app/auth/services/auth.service';
 import { ConfirmDialogComponent } from 'src/app/common/confirm-dialog/confirm-dialog.component';
 import { InfoDialogComponent } from 'src/app/common/info-dialog/info-dialog.component';
 import { Util } from 'src/app/common/util';
-import { ApiError, Contact, Organization, Person, Role, User, UserInfo } from 'src/app/model/cal-model';
+import { ApiError, Contact, Organization, Person, Role, User} from 'src/app/model/cal-model';
 
 
 @Component({
@@ -59,9 +59,9 @@ export class UserAdminComponent implements OnInit, OnDestroy {
       }else {
         this.hasLogedIn = false;
     }
-    this.userInfoSubscription = this.authService.getUserInfoEventEmitter()
-      .subscribe((userInfo: UserInfo) => {
-        if(userInfo != undefined && userInfo.user != undefined) {
+    this.userInfoSubscription = this.authService.getUserEventEmitter()
+      .subscribe((user: User) => {
+        if(user != undefined && user != undefined) {
           this.hasLogedIn = true;
           this.isUserHasSuperRole =  this.authService.hasSupperRole();
           this.hasTrialRole = this.authService.hasTrialRole();
@@ -85,7 +85,7 @@ findOrganizations () {
   if(!this.canResubmit()) {
     return;
   }
-  this.authService.findOrganizations(this.authService.getUserInfo().user.userId, "")
+  this.authService.findOrganizations(this.authService.getUser().userId, "")
       .subscribe(resp => {
         let json = JSON.stringify(resp);
         //console.log("json: " + json);
@@ -106,7 +106,7 @@ findUsers () {
     return;
   }
   this.userMessage = "";
-  this.authService.findUsers(this.authService.getUserInfo().user.orgId, "")
+  this.authService.findUsers(this.authService.getUser().orgId, "")
       .subscribe(resp => {
         let json = JSON.stringify(resp);
         //console.log("json: " + json);
@@ -123,11 +123,11 @@ findUsers () {
 }
 
   isEditItself(): boolean {
-    return this.user?.userId === this.authService.getUserInfo().user.userId;
+    return this.user?.userId === this.authService.getUser().userId;
   }
 
   logout(e:Event) {
-    this.authService.logout ( this.authService.getUserInfo().user.userId);
+    this.authService.logout ( this.authService.getUser().userId);
     this.router.navigate(["../login"]);
   }
 
@@ -259,7 +259,7 @@ findUsers () {
       }
       let userId = "";
       if(!this.isUserHasSuperRole) {
-        userId = this.authService.getUserInfo().user.userId;
+        userId = this.authService.getUser().userId;
       }
       this.authService.findOrganizations("", this.organizationNameToSearch)
       .subscribe(resp => {
@@ -389,7 +389,7 @@ findUsers () {
     }
     let observable: Observable<any> | undefined = undefined;
     if(this.isNewUser) {
-      observable = this.authService.saveNewUser(this.user) as Observable<any>;
+      observable = this.authService.registerUser(this.user) as Observable<any>;
     } else {
       observable = this.authService.saveUser(this.user) as Observable<any>;
     }

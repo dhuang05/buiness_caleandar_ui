@@ -6,7 +6,7 @@
 import { Component, NgModule, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { Router, Params, ActivatedRoute } from '@angular/router';
-import { ApiError, LoginForm, UserInfo } from 'src/app/model/cal-model';
+import { ApiError, LoginForm, User } from 'src/app/model/cal-model';
 import { Util } from 'src/app/common/util';
 
 @Component({
@@ -44,9 +44,9 @@ export class ResetPasswordComponent implements OnInit {
           let json = JSON.stringify(resp);
           let error: ApiError = JSON.parse(json);
           if(!ApiError.isError(error)) {
-            let userInfo: UserInfo = JSON.parse(json);
-            this.authService.setUserInfo(userInfo);
-            this.router.navigate(['cal-admin', {calendarOwnerships: userInfo.businessCalendarOwnerships}]);
+            let user: User = JSON.parse(json);
+            this.authService.setUser(user);
+            this.router.navigate(['cal-admin']);
             this.router.navigate(['login']);
           } else {
             this.message = error.errMessage;

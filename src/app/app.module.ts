@@ -21,6 +21,7 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatRadioModule} from '@angular/material/radio';
 import {ClipboardModule} from '@angular/cdk/clipboard';
+import { authInterceptorProviders } from './auth/services/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import {ClipboardModule} from '@angular/cdk/clipboard';
   providers: [
     HttpService,
     AuthService,
-    AuthGuard
+    AuthGuard,
+    authInterceptorProviders
   ],
   bootstrap: [AppComponent]
 })

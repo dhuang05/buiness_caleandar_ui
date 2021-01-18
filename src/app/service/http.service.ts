@@ -9,7 +9,6 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root',
 })
 export class HttpService {
-  
   constructor(
     private httpClient: HttpClient,
     private router: Router, private route: ActivatedRoute,

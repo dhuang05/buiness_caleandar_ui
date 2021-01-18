@@ -8,7 +8,7 @@ import { map } from 'rxjs/operators';
 import { Component, Input, NgModule, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-import { ApiError, LoginForm, UserInfo } from 'src/app/model/cal-model';
+import { ApiError, LoginForm, User } from 'src/app/model/cal-model';
 import { Util } from 'src/app/common/util';
 
 
@@ -50,9 +50,9 @@ export class LoginComponent implements OnInit {
         //console.log(json);
         let error: ApiError = JSON.parse(json);
         if(!ApiError.isError(error)) {
-          let userInfo: UserInfo = JSON.parse(json);
-          this.authService.setUserInfo(userInfo);
-          this.router.navigate(['cal-admin', {calendarOwnerships: userInfo.businessCalendarOwnerships}]);
+          let user: User = JSON.parse(json);
+          this.authService.setUser(user);
+          this.router.navigate(['cal-admin']);
         } else {
           this.message = error.errMessage;
           this.loginCount++;

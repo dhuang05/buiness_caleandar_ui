@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UserInfo } from 'src/app/model/cal-model';
+import { User } from 'src/app/model/cal-model';
 import { AuthService } from '../services/auth.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { AuthService } from '../services/auth.service';
 })
 export class LogoutComponent implements OnInit, OnDestroy {
   hasLogedIn: boolean = false;
-  userInfoSubscription: any;
+  userSubscription: any;
 
   constructor(
     private router: Router,
@@ -25,9 +25,9 @@ export class LogoutComponent implements OnInit, OnDestroy {
       }else {
         this.hasLogedIn = false;
     }
-    this.userInfoSubscription = this.authService.getUserInfoEventEmitter()
-      .subscribe((userInfo: UserInfo) => {
-        if(userInfo != undefined && userInfo.user != undefined) {
+    this.userSubscription = this.authService.getUserEventEmitter()
+      .subscribe((user: User) => {
+        if(user != undefined ) {
           this.hasLogedIn = true;
         }else {
           this.hasLogedIn = false;
@@ -37,13 +37,17 @@ export class LogoutComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(){
-    if(this.userInfoSubscription != null) {
-      this.userInfoSubscription.unsubscribe();
+    if(this.userSubscription != null) {
+      this.userSubscription.unsubscribe();
     }
   }
 
   logout(e:Event){
-    this.authService.logout ( this.authService.getUserInfo().user.userId);
+    if( this.authService.getUser()) {
+      let userId = this.authService.getUser().userId; 
+      this.authService.logout (userId);
+    }
+
     this.router.navigate(["../login"]);
   }
 

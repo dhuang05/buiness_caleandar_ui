@@ -11,7 +11,7 @@
             class="example-tab-icon">library_books</mat-icon> </a>
       </div>
     </div>
-    <textarea class="editor" [(ngModel)]="data.expression" (input)="changeExpr($event)" rows="30" cols="50">
+    <textarea class="editor" [(ngModel)]="data.expression" (input)="changeExpr($event)" rows="26" cols="50">
         </textarea>
     <div class="flow-layout" style="align-content: center;">
       <div class="div-left">
@@ -25,11 +25,13 @@
       </div>
     </div>
   </div>
-  <div  class= "div-center" style="padding-left:4px; text-align :left; overflow-y: auto;">
+  <div  class= "div-center" style="padding-left:4px; text-align :left;">
     <div><span class= "header3" >Samples (double click to past)</span></div>
     <div>&nbsp; <button *ngIf="previousExpr" class = "no-border-button" (click)="undoPast()"><mat-icon>restore</mat-icon></button></div>
-    <div *ngFor="let sample of samples"><button *ngIf = "sample.expr != ''" class = "no-border-button" [cdkCopyToClipboard]="sample.expr" (dblclick) = "copyToRule(sample.expr);">{{sample.expr}}</button> 
-      &nbsp; <span style = "font-weight: 400; font-size:10px; color: darkgrey;">{{sample.desc}}</span></div>
+    <div style= "overflow-y: auto; height: 450px;">
+      <div  *ngFor="let sample of samples"><button *ngIf = "sample.expr != ''" class = "no-border-button" [cdkCopyToClipboard]="sample.expr" (dblclick) = "copyToRule(sample.expr);">{{sample.expr}}</button> 
+        &nbsp; <span style = "font-weight: 400; font-size:10px; color: darkgrey;">{{sample.desc}}</span></div>
+    </div>
   </div>
   <div  class= "div-right" style = "text-align : left; overflow-y: auto;">
     <div><span class= "header3" >Add-on dates expressions</span></div>

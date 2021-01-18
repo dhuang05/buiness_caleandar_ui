@@ -103,6 +103,7 @@
     border: none;
     background-color: transparent;
     outline: none;
+    font-size: 14px;
     cursor: pointer;
 }
 button:hover{
@@ -138,5 +139,6 @@ button:hover{
 .editor {
     line-height: 120%;
     text-align:left;
+    color:blue;
     margin: 0 auto;
 }

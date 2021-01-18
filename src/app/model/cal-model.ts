@@ -106,15 +106,11 @@ export class Element {
         text!: string;
 }
 
-export class UserInfo {
-        user!: User;
-        businessCalendarOwnerships!: BusinessCalendarOwnership[];
-}
-
 export class User {
         userId!: string;
         person!: Person;
         orgId!: string;
+        token!: string;
         password!: string; 
         status: string = "ACTIVE";
         //should be = []; after role configure

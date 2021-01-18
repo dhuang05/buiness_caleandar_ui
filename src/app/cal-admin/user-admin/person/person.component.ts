@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { Util } from 'src/app/common/util';
-import { Person, UserInfo } from 'src/app/model/cal-model';
+import { Person} from 'src/app/model/cal-model';
 
 
 @Component({

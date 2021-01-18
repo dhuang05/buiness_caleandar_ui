@@ -7,7 +7,7 @@
 import { map } from 'rxjs/operators';
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ApiError, BusinessCalendarOwnership, BusinessHour, CalendarAdminInstTestResult, CalendarInst, DayRule, User, UserInfo } from '../model/cal-model';
+import { ApiError, BusinessCalendarOwnership, BusinessHour, CalendarAdminInstTestResult, CalendarInst, DayRule, User } from '../model/cal-model';
 import { CalAdminService } from './services/cal_admin.service';
 import { AuthService } from '../auth/services/auth.service';
 import { Util } from '../common/util';
@@ -30,7 +30,7 @@ export class CalAdminComponent implements OnInit, OnDestroy {
   DOW_NUM_MAP: Map<string, number>  = ConstDataSet.dowNumMap();
   timezones: string[] = ConstDataSet.timezones;
 //
-  userInfoSubscription: any;
+  userSubscription: any;
   isUserHasSuperRole = false;
   hasTrialRole = false;
   //
@@ -77,18 +77,17 @@ export class CalAdminComponent implements OnInit, OnDestroy {
     //
     this.businessCalendarOwnerships = undefined;
     this.calFilter = "";
-    if(this.authService.getUserInfo() == undefined) {
+    if(this.authService.getUser() == undefined) {
       this.router.navigate(['login']);
       return;
     }
- 
-    this.businessCalendarOwnerships = this.authService.getUserInfo().businessCalendarOwnerships;
+    this.loadCalendarOwnerships();
+
     this.isUserHasSuperRole =  this.authService.hasSupperRole();
     this.hasTrialRole = this.authService.hasTrialRole();
-    this.userInfoSubscription = this.authService.getUserInfoEventEmitter()
-      .subscribe((userInfo: UserInfo) => {
-        if(userInfo != undefined && userInfo.user != undefined) {
-          this.businessCalendarOwnerships = userInfo.businessCalendarOwnerships;
+    this.userSubscription = this.authService.getUserEventEmitter()
+      .subscribe((user: User) => {
+        if(user != undefined) {
           this.isUserHasSuperRole =  this.authService.hasSupperRole();
           this.hasTrialRole = this.authService.hasTrialRole();
           this.calFilter = "";
@@ -107,9 +106,24 @@ export class CalAdminComponent implements OnInit, OnDestroy {
     this.step = 0;
   }
 
-  ngOnDestroy(){
-    if(this.userInfoSubscription != null) {
-      this.userInfoSubscription.unsubscribe();
+
+
+loadCalendarOwnerships() {
+  this.authService.reloadUserCalendarOwnerships().subscribe(resp => {
+    let json = JSON.stringify(resp);
+    let error: ApiError = JSON.parse(json);
+    if (!ApiError.isError(error)) {
+        let ownerships: BusinessCalendarOwnership[] = JSON.parse(json);
+        if (ownerships) {
+            this.businessCalendarOwnerships = ownerships;
+        }
+    }
+});
+}
+
+ngOnDestroy(){
+    if(this.userSubscription != null) {
+      this.userSubscription.unsubscribe();
     }
   }
 
@@ -219,7 +233,7 @@ export class CalAdminComponent implements OnInit, OnDestroy {
         let calIntTemplate: CalendarInst = JSON.parse(json);
         //
         this.selectedBusinessCalendarOwnership = new BusinessCalendarOwnership();
-        this.selectedBusinessCalendarOwnership.ownerId = this.authService.getUserInfo().user.orgId;
+        this.selectedBusinessCalendarOwnership.ownerId = this.authService.getUser().orgId;
         this.selectedBusinessCalendarOwnership.status = "ACTIVE";
         this.selectedBusinessCalendarOwnership.calendarInst = calIntTemplate;
         this.selectedCalendarInst = this.selectedBusinessCalendarOwnership.calendarInst;
@@ -289,7 +303,7 @@ export class CalAdminComponent implements OnInit, OnDestroy {
   }
 
   resetPassword(e: Event) {
-    if(this.authService.getUserInfo() != undefined) {
+    if(this.authService.getUser() != undefined) {
       this.router.dispose();
       this.router.navigate(['resetpassword']);
     }

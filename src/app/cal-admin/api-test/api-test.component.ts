@@ -5,7 +5,7 @@ import { AuthService } from 'src/app/auth/services/auth.service';
 import { ContentDialogComponent } from 'src/app/common/content-dialog/content-dialog.component';
 import { InfoDialogComponent } from 'src/app/common/info-dialog/info-dialog.component';
 import { Util } from 'src/app/common/util';
-import { ApiError, BusinessCalendarOwnership, UserInfo } from 'src/app/model/cal-model';
+import { ApiError, BusinessCalendarOwnership} from 'src/app/model/cal-model';
 import { ConstDataSet } from 'src/app/model/data-set';
 import { CalAdminService } from '../services/cal_admin.service';
 
@@ -76,7 +76,7 @@ export class ApiTestComponent implements OnInit, OnDestroy {
   }
 
   getCalendarInfoUrl() : string {
-    let url = "/api/calendar/inst/info";
+    let url = "/api/calendar/inst/auth/info";
     if(this.calInfoRequest.calId) {
       url += "/" + this.calInfoRequest.calId;
     }else {
@@ -92,7 +92,7 @@ export class ApiTestComponent implements OnInit, OnDestroy {
   } 
   
   getTimeslotUrl() : string{
-    let url = "/api/calendar/businesstime";
+    let url = "/api/calendar/auth/businesstime";
     if(this.timeSlotRequest.calId) {
       url += "/" + this.timeSlotRequest.calId;
     }else {

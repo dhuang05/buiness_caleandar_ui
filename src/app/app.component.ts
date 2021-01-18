@@ -17,7 +17,7 @@ export class AppComponent {
   }
 
   ngOnInit() {
-    if(this.authService.getUserInfo() == undefined) {
+    if(this.authService.getUser() == undefined) {
       this.router.navigate(['login']);
     }
   }

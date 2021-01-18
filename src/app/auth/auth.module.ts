@@ -27,7 +27,7 @@ import { AuthGuard } from '../auth-guard';
             ReactiveFormsModule
         ],
         providers: [
-            AuthService
+            AuthService,
         ],
         exports: [
             ForgetPasswordComponent,

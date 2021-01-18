@@ -8,32 +8,32 @@ import { Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { Util } from 'src/app/common/util';
-import { ApiError, BusinessCalendarOwnership, LoginForm, Organization, User, UserInfo } from 'src/app/model/cal-model';
+import { ApiError, BusinessCalendarOwnership, LoginForm, Organization, User} from 'src/app/model/cal-model';
 import { HttpService } from 'src/app/service/http.service';
 
+
+const TOKEN_KEY = 'auth-token';
+const USER_KEY = 'auth-user';
 
 
 @Injectable({
     providedIn: 'root',
 })
 export class AuthService extends HttpService {
-    private userInfo: UserInfo | undefined;
-    private userInfoEmitter: EventEmitter<UserInfo> = new EventEmitter();
-
+    private userEmitter: EventEmitter<User> = new EventEmitter();
     public static SUPER_ADMIN_ROLE: string = "SUPER_ADMIN_ROLE";
     public static ADMIN_ROLE: string = "ADMIN_ROLE";
     public static API_ROLE: string = "API_ROLE";
     public static TRIAL_ROLE = "TRIAL_ROLE";
 
-    public getUserInfoEventEmitter() {
-        return this.userInfoEmitter;
+    public getUserEventEmitter() {
+        return this.userEmitter;
     }
 
-    public setUserInfo(userInfo: UserInfo) {
-        this.userInfo = userInfo;
-        //usr to type object
-        userInfo.user = Object.setPrototypeOf(userInfo.user, User.prototype);
-        this.userInfoEmitter.emit(this.userInfo);
+    public setUser(user: User) {
+        this.storeUser(user);
+        this.saveToken(user.token);
+        this.userEmitter.emit(user);
     }
 
     public hasSupperRole(): boolean {
@@ -49,8 +49,9 @@ export class AuthService extends HttpService {
     }
 
     public hasRoleOf(aRole: string): boolean {
-        if (this.userInfo && this.userInfo.user && this.userInfo.user.roles) {
-            for (let role of this.userInfo.user.roles) {
+        let user = this.fetchUser();  
+        if (user && user.roles) {
+            for (let role of user.roles) {
                 if (role.roleId.trim().toUpperCase() == aRole.trim().toUpperCase()) {
                     return true;
                 }
@@ -60,29 +61,29 @@ export class AuthService extends HttpService {
         return false;
     }
 
-    public getUserInfo(): UserInfo {
-        return this.userInfo as UserInfo;
+    public getUser(): User {
+        return this.fetchUser() as User;
     }
 
     public hasUser(): boolean {
-        return this.userInfo != undefined && this.userInfo.user != undefined;
+        return this.isLoggedIn();
     }
 
     public login(loginForm: LoginForm): Observable<any> {
-        return super.post("api/admin/user/login", loginForm);
+        return super.post("api/admin/auth/user/login", loginForm);
     }
 
     public logout(userId: string) {
         let result = super.get("api/admin/user/logout/" + userId);
-        this.userInfo = undefined;
+        window.sessionStorage.clear();
     }
 
     public resetpassword(loginForm: LoginForm) {
-        return super.post("api/admin/user/resetpassword", loginForm);
+        return super.post("api/admin/auth/user/resetpassword", loginForm);
     }
 
     public forgetpassword(loginForm: LoginForm) {
-        return super.post("api/admin/user/forgetpassword", loginForm);
+        return super.post("api/admin/auth/user/forgetpassword", loginForm);
     }
 
     public saveUser(user: User) {
@@ -91,8 +92,8 @@ export class AuthService extends HttpService {
         return result;
     }
 
-    public saveNewUser(user: User) {
-        let url = "api/admin/newuser";
+    public registerUser(user: User) {
+        let url = "api/admin/auth/user/register";
         let result = super.post(url, user);
         return result;
     }
@@ -159,26 +160,36 @@ export class AuthService extends HttpService {
 
 
     public isLoggedIn(): boolean {
-        return this.userInfo != undefined;
+        return !Util.isEmpty(this.fetchUser());
     }
 
     public reloadUserCalendarOwnerships() {
-        if (this.userInfo && this.userInfo?.user) {
-            let loginForm = new LoginForm();
-            loginForm.userId = this.userInfo?.user.userId;
-            super.post("api/admin/user_calendar", loginForm).subscribe(resp => {
-                let json = JSON.stringify(resp);
-                let error: ApiError = JSON.parse(json);
-                if (!ApiError.isError(error)) {
-                    let ownerships: BusinessCalendarOwnership[] = JSON.parse(json);
-                    if (ownerships && this.userInfo) {
-                        this.userInfo.businessCalendarOwnerships = ownerships;
-                    }
-                }
-            });
-        }
+        let user = this.fetchUser() as User;  
+        return super.get("api/admin/user/businessCalendarOwnerships/" + user.orgId);
     }
 
 
+    public saveToken(token: string): void {
+        window.sessionStorage.removeItem(TOKEN_KEY);
+        window.sessionStorage.setItem(TOKEN_KEY, token);
+      }
+    
+      public getToken(): string| null {
+        return window.sessionStorage.getItem(TOKEN_KEY);
+      }
+    
+      public storeUser( user: User): void {
+        window.sessionStorage.removeItem(USER_KEY);
+        window.sessionStorage.setItem(USER_KEY, JSON.stringify(user));
+      }
+    
+      public fetchUser(): User | undefined {
+       let json = window.sessionStorage.getItem(USER_KEY);
+       if(json) {
+        let user =  JSON.parse(json) as User;
+        return Object.setPrototypeOf(user, User.prototype);
+       }
+       return undefined;
+      }
 
 }
