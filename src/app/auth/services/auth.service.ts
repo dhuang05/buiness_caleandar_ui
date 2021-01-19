@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { Util } from 'src/app/common/util';
-import { ApiError, BusinessCalendarOwnership, LoginForm, Organization, User} from 'src/app/model/cal-model';
+import { ApiError, BusinessCalendarOwnership, LoginForm, Organization, RegistrationForm, User} from 'src/app/model/cal-model';
 import { HttpService } from 'src/app/service/http.service';
 
 
@@ -25,6 +25,7 @@ export class AuthService extends HttpService {
     public static ADMIN_ROLE: string = "ADMIN_ROLE";
     public static API_ROLE: string = "API_ROLE";
     public static TRIAL_ROLE = "TRIAL_ROLE";
+    public static SUPER_USER: string = "SUPER_USER"; 
 
     public getUserEventEmitter() {
         return this.userEmitter;
@@ -98,18 +99,11 @@ export class AuthService extends HttpService {
         return result;
     }
 
-
-    
-
-    public registerUser(user: User) {
+    public registerUser(registerForm: RegistrationForm) {
         let url = "api/admin/auth/user/register";
-        let result = super.post(url, user);
+        let result = super.post(url, registerForm);
         return result;
     }
-
-
-    
-
 
     public saveOrganization(organization: Organization) {
         let url = "api/admin/organization";
@@ -142,7 +136,7 @@ export class AuthService extends HttpService {
         return result;
     }
 
-    public findOrganizations(userId: string, keyword: string) {
+    public findOrganizations(userId: string | undefined, keyword: string | undefined) {
         let url = "api/admin/organization";
         if(!Util.isEmpty(userId) || !Util.isEmpty(keyword)) {
             url += "?" 

@@ -5,7 +5,7 @@
     <div  class="div-center" style="width:90%">&nbsp;</div>
     <div>
       <select (change) = "selected()" [(ngModel)]="data.selectedValue" style= "width: 200px;">
-        <option [value]="undefined">None</option>
+        <option [value]="undefined"  selected>None</option>
         <option *ngFor="let optionData of data.options" [value]="optionData.value">{{optionData.name}}</option>
       </select>
     </div>

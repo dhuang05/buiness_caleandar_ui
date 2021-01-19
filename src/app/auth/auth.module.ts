@@ -13,18 +13,37 @@ import { AuthService } from './services/auth.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthGuard } from '../auth-guard';
+import { RegistrationComponent } from './registration/register.component';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { TextFieldModule } from '@angular/cdk/text-field';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatRadioModule } from '@angular/material/radio';
 
 @NgModule({
         declarations: [
             LoginComponent,
             ForgetPasswordComponent,
             ResetPasswordComponent,
-            LogoutComponent
+            LogoutComponent,
+            RegistrationComponent
         ],
         imports: [
             CommonModule,
             FormsModule,
-            ReactiveFormsModule
+            ReactiveFormsModule,
+            MatInputModule,
+            MatSelectModule,
+            MatInputModule,
+            MatInputModule,
+            TextFieldModule,
+            MatTabsModule,
+            MatExpansionModule,
+            MatGridListModule,
+            MatInputModule,
+            MatRadioModule,
         ],
         providers: [
             AuthService,
@@ -32,7 +51,8 @@ import { AuthGuard } from '../auth-guard';
         exports: [
             ForgetPasswordComponent,
             ResetPasswordComponent,
-            LogoutComponent
+            LogoutComponent,
+            RegistrationComponent
         ]
     }
 )

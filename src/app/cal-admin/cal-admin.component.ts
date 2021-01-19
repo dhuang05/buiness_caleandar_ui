@@ -17,6 +17,8 @@ import { InfoDialogComponent } from '../common/info-dialog/info-dialog.component
 import { Observable } from 'rxjs';
 import { ConstDataSet } from '../model/data-set';
 import { utils } from 'protractor';
+import { OptionData, SelectData, SelectDialogComponent } from '../common/select-dialog/select-dialog.component';
+import { getMatFormFieldPlaceholderConflictError } from '@angular/material/form-field';
 
 @Component({
   selector: 'cal-cal-admin',
@@ -26,6 +28,7 @@ import { utils } from 'protractor';
 export class CalAdminComponent implements OnInit, OnDestroy {
   message: string = '';
   businessCalendarOwnerships!: BusinessCalendarOwnership[] | undefined;
+  userAccessableCalendars: OptionData[] = [];
   NUM_DOW_MAP: Map<number, string> = ConstDataSet.numDowMap();
   DOW_NUM_MAP: Map<string, number>  = ConstDataSet.dowNumMap();
   timezones: string[] = ConstDataSet.timezones;
@@ -47,7 +50,7 @@ export class CalAdminComponent implements OnInit, OnDestroy {
   testResult: CalendarAdminInstTestResult | undefined;
   //
   edited: boolean = false;
-  ruleNumPerRow: number = 4;
+  
   dialogRef: any;
   years: number[] = [];
   step = 0;
@@ -104,9 +107,22 @@ export class CalAdminComponent implements OnInit, OnDestroy {
     }
     this.selectedYear = selectedYear;
     this.step = 0;
+    //
+    this.fetchUserAccessibleTemplate();
   }
 
-
+canCreateNew() : boolean {
+  this.hasTrialRole = this.authService.hasTrialRole();
+  if(!this.hasTrialRole) {
+    return true;
+  } else {
+    if(this.businessCalendarOwnerships && this.businessCalendarOwnerships.length > 0) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+}
 
 loadCalendarOwnerships() {
   this.authService.reloadUserCalendarOwnerships().subscribe(resp => {
@@ -186,7 +202,7 @@ ngOnDestroy(){
 
   sortHolidys(selectedCalendarInst: CalendarInst) {
     if(selectedCalendarInst.holidayRules) {
-      this.holidayChunks = this.chunks(selectedCalendarInst.holidayRules, this.ruleNumPerRow) as DayRule[][];
+      this.holidayChunks = this.chunks(selectedCalendarInst.holidayRules, this.ruleNumPerRow()) as DayRule[][];
     }
   }
 
@@ -210,7 +226,7 @@ ngOnDestroy(){
     this.selectedSpecialBusinessHours = specialBusinessHours;
 
     if(this.selectedSpecialBusinessHours) {
-      this.specialBusinessHourChunks = this.chunks(this.selectedSpecialBusinessHours, this.ruleNumPerRow) as BusinessHour[][];
+      this.specialBusinessHourChunks = this.chunks(this.selectedSpecialBusinessHours, this.ruleNumPerRow()) as BusinessHour[][];
     }
   }
 
@@ -225,7 +241,45 @@ ngOnDestroy(){
     if(!this.canResubmit()) {
       return;
     }
-    this.calAdminService.getCalendarInstTemplate ().subscribe(resp => {
+
+    if(!this.canCreateNew()) {
+      this.message = "Trial user can only have one calendar, Please contact admin to upgrade";
+      const dialogRef = this.dialog.open(InfoDialogComponent, {
+        width: '250px',
+        height: '200px',
+        data: this.message,
+      });
+      this.dialogRef.afterClosed().subscribe((result: boolean) => {
+         this.dialogRef.close();
+      });
+      return;
+    }
+
+    if(!this.userAccessableCalendars || this.userAccessableCalendars.length == 0) {
+      this.getTemplate(undefined);
+      return;
+    }
+    let selectData = new SelectData(); 
+    selectData.selectedValue = undefined;
+    selectData.options = this.userAccessableCalendars;
+    selectData.selectedValue = this.selectedYear;
+    selectData.title = "Please select a calendar template.";
+    const dialogRef = this.dialog.open(SelectDialogComponent, {
+      width: '300px',
+      height: '220px',
+      data: selectData
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      let calId = undefined;
+      if(result) {
+        calId = result as string;
+      } 
+      this.getTemplate(calId);
+    });
+  }
+
+    getTemplate(calId: string|undefined) {
+        this.calAdminService.getCalendarInstTemplate (calId).subscribe(resp => {
       let json = JSON.stringify(resp);
       //console.log("json: " + json);
       let error: ApiError = JSON.parse(json);
@@ -249,6 +303,31 @@ ngOnDestroy(){
      });
   }
 
+  fetchUserAccessibleTemplate(){
+    this.calAdminService.getUserAccessibleCalednars().subscribe(resp => {
+      let json = JSON.stringify(resp);
+      //console.log("API json: " + json);
+      let error: ApiError = JSON.parse(json);
+      if(!ApiError.isError(error)) {
+          let userAccessibleCalendarOwnerships =  JSON.parse(json) as BusinessCalendarOwnership[];
+          let userAccessableCalendars: OptionData[] = [];
+          for(let calOwner of userAccessibleCalendarOwnerships) {
+            let optionData = new OptionData();
+            optionData.name = calOwner.description;
+            optionData.value = calOwner.calId;
+            userAccessableCalendars.push(optionData);
+          }
+          this.userAccessableCalendars = userAccessableCalendars;
+
+      } else {
+        this.message = error.errMessage;
+      }
+     },
+       error => {
+        this.message = Util.handleError(error);
+       });
+  }
+
   deleteSpecialBusinessHour(businessHour: BusinessHour){
     if(this.selectedCalendarInst?.businessHours) {
       this.selectedCalendarInst?.businessHours.forEach( (item, index) => {
@@ -257,7 +336,7 @@ ngOnDestroy(){
     }
     this.sortOpenHours(this.selectedCalendarInst as CalendarInst);
     if(this.selectedSpecialBusinessHours) {
-      this.specialBusinessHourChunks = this.chunks(this.selectedSpecialBusinessHours, this.ruleNumPerRow) as BusinessHour[][];
+      this.specialBusinessHourChunks = this.chunks(this.selectedSpecialBusinessHours, this.ruleNumPerRow()) as BusinessHour[][];
     }
     this.isChanged();
   }
@@ -317,12 +396,18 @@ ngOnDestroy(){
     return chunks;
   }
 
+  ruleNumPerRow() : number{
+    if(!this.screenWidth) {
+      return 4;
+    }
+    return Math.floor((this.screenWidth - 250 ) / 200.0);
+    
+  }
+
   isChanged() {
     this.isContentChanged = true || Util.isEqual(this.backupCalendarInst, this.selectedCalendarInst);
     this.message = "";
   }
-
- 
 
   testAndSaveCalednar(toSave: boolean){
     this.selectedYear = new Date().getFullYear();
@@ -333,18 +418,7 @@ ngOnDestroy(){
     if(!this.canResubmit()) {
       return;
     }
-    if(this.hasTrialRole && toSave) {
-      toSave = false;
-      this.message = "Not authorize to save for trial user, will do the test.";
-      const dialogRef = this.dialog.open(InfoDialogComponent, {
-        width: '250px',
-        height: '180px',
-        data: this.message,
-      });
-      this.dialogRef.afterClosed().subscribe((result: boolean) => {
-         this.dialogRef.close();
-      });
-    }
+  
     let validated = this.validate();
     let ownership: BusinessCalendarOwnership = Util.copy(this.selectedBusinessCalendarOwnership);
     ownership.calendarInst = this.selectedCalendarInst as CalendarInst;
@@ -405,11 +479,7 @@ ngOnDestroy(){
   handlePostSaveResult(testResult: CalendarAdminInstTestResult| undefined){
     if(testResult) {
       this.isContentChanged = false;
-      
-      //too expensive
-      //authService.reloadUserCalendarOwnerships();
-
-      //cheaper here
+      //
       if(testResult.updatedBusCalOwnership) {
         if(!this.businessCalendarOwnerships) {
           this.businessCalendarOwnerships = [];
@@ -432,9 +502,12 @@ ngOnDestroy(){
         height: '180px',
         data: "The calendar rules has been persisted to storage."
       });
-      this.dialogRef.afterClosed().subscribe((result: boolean) => {
-        this.dialogRef.close();
-      });
+      if(this.dialogRef) {
+        this.dialogRef.afterClosed().subscribe((result: boolean) => {
+          this.dialogRef.close();
+        });
+      }
+     
     }
   }
   moveToPreviousYear() {

@@ -12,6 +12,7 @@ import { CalAdminComponent } from './cal-admin/cal-admin.component';
 import { AuthGuard } from './auth-guard';
 import { ApiTestComponent } from './cal-admin/api-test/api-test.component';
 import { UserAdminComponent } from './cal-admin/user-admin/user-admin.component';
+import { RegistrationComponent } from './auth/registration/register.component';
 
 export const APP_ROUTES: Routes = [
     { path: '', redirectTo: 'cal-admin', pathMatch: 'full' },
@@ -22,9 +23,7 @@ export const APP_ROUTES: Routes = [
     { path: 'logout', component: LogoutComponent },
     { path: 'apis', component: ApiTestComponent, canActivate: [AuthGuard]  },
     { path: 'user-admin', component: UserAdminComponent, canActivate: [AuthGuard]  },
-    
-
-    
+    { path: 'registration', component: RegistrationComponent },
 ];
 
 const routerOptions: ExtraOptions = { 

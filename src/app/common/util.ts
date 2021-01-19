@@ -43,5 +43,14 @@ export  class Util {
         return false;
       }
     }
+
+    public static isValidatedEmail(email: string | undefined): boolean {
+        if(!email) {
+            return false;
+        }
+        let atIndex = email.trim().indexOf("@");
+       let dotIndex = email.trim().lastIndexOf(".");
+       return atIndex > 0 && dotIndex > 0 && dotIndex > atIndex;
+    }
   
 }

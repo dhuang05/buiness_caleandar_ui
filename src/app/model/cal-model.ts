@@ -117,6 +117,11 @@ export class User {
         roles: Role[] = [];
 }
 
+export class RegistrationForm {
+        user!: User ;
+        organization!: Organization;
+}
+
 export class Role {
         roleId: string = "";
         description: string = "";
@@ -139,6 +144,7 @@ export class Person {
         solute!: string;
         firstName!: string;
         lastName!: string;
+        position!: string;
 }
 
 export class Contact {

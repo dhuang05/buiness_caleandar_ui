@@ -38,24 +38,25 @@
         <div class="flow-layout">
             <div class="div-left">
                 <div>
-                    <div *ngIf = "isUserHasSuperRole">
+                    <div *ngIf = "hasAdmin">
                         <mat-form-field class="example-margin" style = "width:250px;">
                             <mat-label>Organization Name (* as wildcard) </mat-label>
                             <input matInput type="text" [(ngModel)]="organizationNameToSearch">
                         </mat-form-field>
                         <button mat-raised-button (click)="searchOrganizations()">Search Organizations</button>
                         <span>&nbsp;&nbsp;</span>
-                        <a href="#" class="b-link" (click)="findOrganizations()">List direct calendar</a>
+                        <button class="no-border-button" (click)="findOrganizations()">List direct calendar</button>
                     </div>
                     <ul>
-                        <li *ngIf = "isUserHasSuperRole"><a class="b-link" href="#" (click)="setNewOrg()">New Organization</a></li>
-                        <li *ngFor= "let org of organizations"><a class="b-link" href="#" (click)="setCurrentOrg(org)">{{org.orgName}}</a>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                             <a class="b-link" href="#" (click)="addEditUser(org)"> <mat-icon>person</mat-icon></a></li>
+                        <li *ngIf = "isUserHasSuperRole"><button class="no-border-button" (click)="setNewOrg()">New Organization</button></li>
+                        <li *ngFor= "let org of organizations"><button class="no-border-button" (click)="setCurrentOrg(org)">{{org.orgName}}</button>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                             <button class="no-border-button" (click)="addEditUser(org)"> <mat-icon>person</mat-icon></button>
+                        </li>
                     </ul>
                 </div>
             </div>
             <div class = "div-center" *ngIf="organization">
-                <mat-grid-list cols="2" rowHeight="10:1">
+                <mat-grid-list cols="2" rowHeight="60px">
                     <mat-grid-tile>
                         <mat-form-field appearance="legacy" style = "width:250px;">
                             <mat-label><span [class] = "isEmpty(organization.orgName) ?  'required' : 'filled'">Organization Name</span></mat-label>
@@ -100,7 +101,7 @@
             </div>
         </div>
         <div class="div-center" *ngIf = "user" >
-            <mat-grid-list cols="2" rowHeight="6:1">
+            <mat-grid-list cols="2" rowHeight="60px">
                 <mat-grid-tile *ngIf = "isNewUser">
                     <mat-form-field appearance="legacy" style = "width:250px;">
                         <mat-label><span [class] = "isEmpty(user.userId) ?  'required' : 'filled'">User Id (or Email) </span></mat-label>
@@ -108,7 +109,7 @@
                     </mat-form-field>
                 </mat-grid-tile>
                 <mat-grid-tile>
-                    <mat-form-field appearance="legacy">
+                    <mat-form-field appearance="legacy"  style = "width:250px;">
                         <mat-label><span [class] = "!userRoles || userRoles.length === 0  ?  'required' : 'filled'">Roles</span></mat-label>
                         <mat-select multiple [(ngModel)]="userRoles" style="width:250px;">
                             <mat-option value="API_ROLE">API</mat-option>
@@ -121,7 +122,7 @@
                 <mat-grid-tile>
                     <mat-form-field appearance="legacy" style = "width:250px;">
                         <mat-label><span [class] = "isPasswordRequired() ?  'required' : 'filled'"> {{passwordLabel()}} </span></mat-label>
-                        <input matInput type="text"  [(ngModel)]="user.password">
+                        <input matInput type="password"  [(ngModel)]="user.password">
                     </mat-form-field>
                 </mat-grid-tile>
                 <mat-grid-tile>

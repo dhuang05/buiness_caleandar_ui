@@ -44,8 +44,11 @@ export class CalAdminService extends HttpService{
         return super.post(url, calendarOwnership);
     }
 
-    public getCalendarInstTemplate () {
+    public getCalendarInstTemplate (calId: string | undefined) {
         let url = "api/admin/calendar/template";
+        if(calId) {
+            url += "/" + calId;
+        }
         return super.get(url);
     }
 

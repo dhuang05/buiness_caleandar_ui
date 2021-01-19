@@ -99,5 +99,17 @@ table, th, td {
 }
 
 mat-grid-tile {
-    background: lightblue;
+    background: white;
+}
+
+.no-border-button {
+    border: none;
+    background-color: transparent;
+    outline: none;
+    font-size: 14px;
+    line-height: normal;
+    cursor: pointer;
+}
+button:hover{
+    color: blue;
 }

@@ -103,6 +103,17 @@ a:hover{
     color: blue;
 }
 
+.no-border-button {
+    border: none;
+    background-color: transparent;
+    outline: none;
+    font-size: 14px;
+    line-height: normal;
+    cursor: pointer;
+}
+button:hover{
+    color: blue;
+}
 
 .mat-expansion-panel-header-title,
 .mat-expansion-panel-header-description {

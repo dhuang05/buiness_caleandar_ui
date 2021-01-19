@@ -52,11 +52,13 @@ export class LoginComponent implements OnInit {
         if(!ApiError.isError(error)) {
           let user: User = JSON.parse(json);
           this.authService.setUser(user);
+          this.router.dispose();
           this.router.navigate(['cal-admin']);
         } else {
           this.message = error.errMessage;
           this.loginCount++;
           if(this.loginCount > 3) {
+            this.router.dispose();
             this.router.navigate(['forgetpassword']);
             this.loginCount = 0;
           }
@@ -71,6 +73,10 @@ export class LoginComponent implements OnInit {
     }
   }
   
+  goToRegistration() {
+    this.router.dispose();
+    this.router.navigate(['registration']);
+  }
 
   isEmpty(text: string| undefined): boolean{
     return text == null || text == undefined || text.trim().length == 0;
