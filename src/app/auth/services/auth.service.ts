@@ -136,26 +136,18 @@ export class AuthService extends HttpService {
         return result;
     }
 
-    public findOrganizations(userId: string | undefined, keyword: string | undefined) {
-        let url = "api/admin/organization";
-        if(!Util.isEmpty(userId) || !Util.isEmpty(keyword)) {
-            url += "?" 
-            let hasParam = false;
-            if(!Util.isEmpty(userId)) {
-                if(hasParam) {
-                    url += "&"
-                }
-                url += "userId=" + userId; 
-                hasParam = true;
-            }
+    public findOrganization(orgId: string) {
+        let url = "api/admin/organization/" + orgId;
+        let result = super.get(url);
+        return result;
+    }
 
-            if(!Util.isEmpty(keyword)) {
-                if(hasParam) {
-                    url += "&"
-                }
-                url += "keyword=" + keyword; 
-                hasParam = true;
-            }
+
+    public findOrganizations(keyword: string | undefined) {
+        let url = "api/admin/organizations";
+        if(!Util.isEmpty(keyword)) {
+            url += "?keyword=" + keyword; 
+
         }
         let result = super.get(url);
         return result;

@@ -40,6 +40,7 @@ export class UserAdminComponent implements OnInit, OnDestroy {
   organizationNameToSearch = "";
   userNameToSearch = "";
 
+  userOrgName : string | undefined;
 
   constructor(
     private router: Router,
@@ -83,7 +84,7 @@ export class UserAdminComponent implements OnInit, OnDestroy {
 
   findOrganizations() {
       let userId = this.authService.getUser().userId;
-    this.authService.findOrganizations(userId, undefined)
+    this.authService.findOrganizations(undefined)
       .subscribe(resp => {
         let json = JSON.stringify(resp);
         //console.log("json: " + json);
@@ -283,7 +284,7 @@ export class UserAdminComponent implements OnInit, OnDestroy {
       this.organizationMessage = "At least 2 charaters to search.";
     }
     
-    this.authService.findOrganizations(undefined, this.organizationNameToSearch)
+    this.authService.findOrganizations(this.organizationNameToSearch)
       .subscribe(resp => {
         let json = JSON.stringify(resp);
         //console.log("json: " + json);
@@ -318,6 +319,26 @@ export class UserAdminComponent implements OnInit, OnDestroy {
     this.userMessage = "";
     this.user = user;
     this.prepareUser();
+
+    this.userOrgName = this.findUserOrgName();
+    if(!this.userOrgName  && this.user.orgId) {
+      this.authService.findOrganization(this.user.orgId)
+      .subscribe(resp => {
+        let json = JSON.stringify(resp);
+      //console.log("json: " + json);
+      let error: ApiError = JSON.parse(json);
+        if (!ApiError.isError(error)) {
+          let org: Organization = JSON.parse(json);
+          this.userOrgName = org.orgName;
+        } else {
+          this.userMessage = error.errMessage;
+          this.user = user;
+        }
+      },
+        error => {
+          this.userMessage = Util.handleError(error);
+        });
+    }
   }
 
 
@@ -452,8 +473,13 @@ export class UserAdminComponent implements OnInit, OnDestroy {
 
   }
 
-
-
+  findUserOrgName () : string | undefined{
+    if(this.organization && this.user && Util.isEqual(this.user.orgId, this.organization.orgId)) {
+        return this.organization.orgName;
+    }
+    return undefined;
+  }
+  
   isPasswordRequired(): boolean {
     return !Util.isEmpty(this.user) && this.isNewUser && Util.isEmpty(this.user?.password);
   }

@@ -45,7 +45,7 @@
                         </mat-form-field>
                         <button mat-raised-button (click)="searchOrganizations()">Search Organizations</button>
                         <span>&nbsp;&nbsp;</span>
-                        <button class="no-border-button" (click)="findOrganizations()">List direct calendar</button>
+                        <button class="no-border-button" (click)="findOrganizations()">List Organizations</button>
                     </div>
                     <ul>
                         <li *ngIf = "isUserHasSuperRole"><button class="no-border-button" (click)="setNewOrg()">New Organization</button></li>
@@ -92,7 +92,7 @@
                 </mat-form-field>
                 <button mat-raised-button (click)="searchUsers()">search all</button>
                 <span>&nbsp;&nbsp;&nbsp;</span>
-                <a href="#" class="b-link" (click)="findUsers()">List direct users</a>
+                <a href="#" class="b-link" (click)="findUsers()">List users</a>
                 <ul>
                     <li><a class="b-link" href="#" (click)="setNewUser()">New User</a></li>
                     <li *ngFor= "let auser of users"><a class="b-link" href="#" (click)="setCurrentUser(auser)">{{auser.userId}} : {{auser.person?.firstName}} &nbsp; {{auser.person?.lastName}} </a></li>
@@ -101,6 +101,7 @@
             </div>
         </div>
         <div class="div-center" *ngIf = "user" >
+            <div class="div-center"><h3>{{userOrgName}}</h3></div>
             <mat-grid-list cols="2" rowHeight="60px">
                 <mat-grid-tile *ngIf = "isNewUser">
                     <mat-form-field appearance="legacy" style = "width:250px;">
