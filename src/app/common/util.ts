@@ -25,7 +25,7 @@ export  class Util {
         } else if(error.status >= 500 ) {
            message = 'Service not available.';
         } else {
-            message = JSON.stringify("Unknow Error");
+            message = "Is app running?";
             console.log(error);
         }
 
@@ -49,8 +49,8 @@ export  class Util {
             return false;
         }
         let atIndex = email.trim().indexOf("@");
-       let dotIndex = email.trim().lastIndexOf(".");
-       return atIndex > 0 && dotIndex > 0 && dotIndex > atIndex;
+        let dotIndex = email.trim().lastIndexOf(".");
+        return atIndex > 0 && dotIndex > 0 && dotIndex > atIndex;
     }
   
 }
