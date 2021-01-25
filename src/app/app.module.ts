@@ -1,3 +1,8 @@
+
+/**
+ * Copyright © Nusino Technologies Inc, 2021, All rights reserved.
+ * dhuang05@gmail.com
+ */
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 //

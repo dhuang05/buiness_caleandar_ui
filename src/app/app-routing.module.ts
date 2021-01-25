@@ -1,3 +1,8 @@
+
+/**
+ * Copyright © Nusino Technologies Inc, 2021, All rights reserved.
+ * dhuang05@gmail.com
+ */
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';

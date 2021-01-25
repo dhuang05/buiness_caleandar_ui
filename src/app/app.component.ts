@@ -1,3 +1,8 @@
+
+/**
+ * Copyright © Nusino Technologies Inc, 2021, All rights reserved.
+ * dhuang05@gmail.com
+ */
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { AuthService } from './auth/services/auth.service';

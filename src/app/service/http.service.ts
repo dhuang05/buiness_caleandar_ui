@@ -1,4 +1,9 @@
 
+/**
+ * Copyright © Nusino Technologies Inc, 2021, All rights reserved.
+ * dhuang05@gmail.com
+ */
+
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';

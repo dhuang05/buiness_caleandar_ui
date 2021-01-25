@@ -1,3 +1,8 @@
+
+/**
+ * Copyright © Nusino Technologies Inc, 2021, All rights reserved.
+ * dhuang05@gmail.com
+ */
 export class ConstDataSet {
 
    public static numDowMap (): Map<number, string>{

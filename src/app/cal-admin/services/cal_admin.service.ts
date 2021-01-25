@@ -1,7 +1,8 @@
-/*
- * Copyright © 2014-2019 Capco. All rights reserved.
- * Capco Digital Framework.
+/**
+ * Copyright © Nusino Technologies Inc, 2021, All rights reserved.
+ * dhuang05@gmail.com
  */
+
 
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';

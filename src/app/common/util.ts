@@ -1,3 +1,8 @@
+
+/**
+ * Copyright © Nusino Technologies Inc, 2021, All rights reserved.
+ * dhuang05@gmail.com
+ */
 export  class Util {
     public static isEmpty(text: string| undefined| any): boolean{
         return text == null || text == undefined || text.toString().trim().length === 0;
